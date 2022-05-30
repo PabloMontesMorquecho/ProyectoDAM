@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CrearActividad"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="175dp"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/huer5"
+        android:scaleType="fitXY"/>
+
+    <EditText
+        android:id="@+id/etCrearActividadTipoActividad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:hint="Riego / Poda / Abono / Etc."
+        android:inputType="text"
+        android:minHeight="48dp"/>
+
+    <EditText
+        android:id="@+id/etCrearActividadDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:hint="Descripción"
+        android:inputType="text"
+        android:minHeight="48dp"/>
+
+    <EditText
+        android:id="@+id/etCrearActividadFecha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:hint="Fecha"
+        android:inputType="date"
+        android:minHeight="48dp"/>
+
+    <Button
+        android:id="@+id/btnAddActividad"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="24dp"
+        android:layout_gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/accent"
+        android:text="Añadir actividad"/>
+
+    <ProgressBar
+        android:id="@+id/pbCrearActividadCargando"
+        android:layout_width="146dp"
+        android:layout_height="146dp"
+        android:layout_gravity="center"
+        android:alpha="0.3"
+        android:clickable="false"
+        android:visibility="invisible"/>
+
+</LinearLayout>

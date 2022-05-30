@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.huertapp">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.HuertAPP">
+        <activity
+            android:name=".CrearActividad"
+            android:exported="false" />
+        <activity
+            android:name=".Recolecta"
+            android:exported="true" />
+        <activity
+            android:name=".Fumigacion"
+            android:exported="true" />
+        <activity
+            android:name=".Abono"
+            android:exported="true" />
+        <activity
+            android:name=".Poda"
+            android:exported="true" />
+        <activity
+            android:name=".Riego"
+            android:exported="true" />
+        <activity
+            android:name=".DetallePlanta"
+            android:exported="true" />
+        <activity
+            android:name=".MisPlantas"
+            android:exported="true" />
+        <activity
+            android:name=".CrearHuerto"
+            android:exported="true" />
+        <activity
+            android:name=".CrearPlanta"
+            android:exported="true" />
+        <activity
+            android:name=".Perfil"
+            android:exported="true" />
+        <activity
+            android:name=".MisHuertos"
+            android:exported="true" />
+        <activity
+            android:name=".Registro"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>
+
+</manifest>

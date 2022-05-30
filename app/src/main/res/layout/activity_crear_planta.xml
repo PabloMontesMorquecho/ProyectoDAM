@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CrearPlanta"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarCrearPlanta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="175dp"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/huer5"
+        android:scaleType="fitXY">
+    </ImageView>
+
+    <EditText
+        android:id="@+id/etCrearPlantaNombreHuerto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:hint="Nombre de la planta"
+        android:inputType="text"
+        android:minHeight="48dp">
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/etCrearPlantaDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:hint="Descripción"
+        android:inputType="text"
+        android:minHeight="48dp">
+
+    </EditText>
+
+    <Button
+        android:id="@+id/btnCrearPlanta"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="24dp"
+        android:layout_gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/accent"
+        android:text="Crear planta">
+
+    </Button>
+
+    <ProgressBar
+        android:id="@+id/pbCrearPlantaCargando"
+        android:layout_width="146dp"
+        android:layout_height="146dp"
+        android:layout_gravity="center"
+        android:alpha="0.3"
+        android:clickable="false"
+        android:visibility="invisible">
+
+    </ProgressBar>
+
+
+</LinearLayout>
