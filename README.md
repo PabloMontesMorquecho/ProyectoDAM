@@ -19,20 +19,9 @@ Cada espécimen plantado será introducido en el sistema por el propio usuario,
 indicando su nombre, la fecha en la que es plantado y un campo de observaciones 
 para introducir el tamaño al ser plantado u otros detalles parecidos.
 
-Queremos llevar un registro de las siguientes acciones realizadas sobre cada espécimen: 
-Riego, anotando quién riega, la cantidad, la fecha 
-y ofreciendo un campo observaciones para texto libre 
-donde poder anotar cualquier tipo de datos relevantes relacionados. 
+Queremos llevar un registro de las diferentes acciones 
+que pueden ser realizadas sobre cada espécimen.
 
-Recolección, anotando quién recolecta, la cantidad, la fecha 
-y ofreciendo un campo observaciones para describir el tamaño de las piezas u otros detalles similares. 
+Riego, recolección, abono, poda, fumigación, etc. 
 
-Abono, anotando quién abona, en qué fecha y ofreciendo un campo observaciones 
-para describir el tipo de abono usado, la cantidad, etc. 
-
-Poda, anotando quién ha podado, cuando se ha realizado la poda. 
-Además, también debe haber un campo de texto donde poder anotar
-cualquier tipo de observaciones o datos de relevancia relacionados.
-
-Fumigación, anotando quién ha fumigado, la fecha y ofreciendo un campo observaciones 
-para describir el tipo de producto usado, la cantidad, etc. 
+Anotando el tipo de acción, la fecha y los detalles correspondientes.
