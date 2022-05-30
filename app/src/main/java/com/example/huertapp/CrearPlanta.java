@@ -42,8 +42,10 @@ public class CrearPlanta extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         Bundle bundle = getIntent().getExtras();
-        keyHuerto = bundle.getString("idHuerto");
-        System.out.println("yeah, keyHUERTO: "+keyHuerto);
+        if (bundle != null) {
+            keyHuerto = bundle.getString("idHuerto");
+            System.out.println("yeah, keyHUERTO: " + keyHuerto);
+        }
     }
 
     @Override
@@ -79,7 +81,6 @@ public class CrearPlanta extends AppCompatActivity {
                         binding.pbCrearPlantaCargando.setVisibility(View.INVISIBLE);
                         Bundle bundle = new Bundle();
                         bundle.putString("idHuerto", keyHuerto);
-//                        bundle.putSerializable("planta", planta);
                         intent.putExtras(bundle);
                         startActivity(intent);
                         finish();

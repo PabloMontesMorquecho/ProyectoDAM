@@ -13,9 +13,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.huertapp.adaptador.AdaptadorActividad;
-import com.example.huertapp.adaptador.AdaptadorPlanta;
 import com.example.huertapp.databinding.ActivityDetallePlantaBinding;
 import com.example.huertapp.modelo.Actividad;
+import com.example.huertapp.modelo.Huerto;
 import com.example.huertapp.modelo.Planta;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,7 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class DetallePlanta extends AppCompatActivity implements ItemClickListener {
@@ -34,6 +33,9 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     DatabaseReference databaseReference;
     List<Actividad> listaActividades;
     AdaptadorActividad adaptadorActividad;
+    Huerto huerto;
+    String keyHuerto;
+    Planta planta;
     String keyPlanta;
 
     @Override
@@ -49,7 +51,9 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            Planta planta = (Planta) getIntent().getSerializableExtra("planta");
+            huerto = (Huerto) getIntent().getSerializableExtra("huerto");
+            keyHuerto = bundle.getString("idHuerto");
+            planta = (Planta) getIntent().getSerializableExtra("planta");
             keyPlanta = bundle.getString("idPlanta");
             System.out.println("yeah, keyPLANTA: "+keyPlanta);
         }
@@ -59,7 +63,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     protected void onStart() {
         super.onStart();
 
-        // Preparo el Recycler View de Plantas
+        // Preparo el Recycler View de Actividades
         // Con un adaptador vacío
         binding.rvActividades.setLayoutManager(new LinearLayoutManager(this));
         listaActividades = new ArrayList<>();
@@ -69,7 +73,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
 
         // Recorro FB Realtime DB
         // y actualizo el adaptador
-        // del Recycler View de Productos
+        // del Recycler View de Actividades
         databaseReference.child("actividades").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -100,9 +104,24 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
 
         switch (menuItem.getItemId()) {
 
+            case R.id.mnDetallePlantaMisPlantas: {
+                Intent intent = new Intent(getApplicationContext(), MisPlantas.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("idHuerto", keyHuerto);
+                bundle.putSerializable("huerto", huerto);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                break;
+            }
+
             case R.id.mnDetallePlantaCrearActividad: {
                 Intent intent = new Intent(getApplicationContext(), CrearActividad.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("idPlanta", keyPlanta);
+                bundle.putSerializable("planta", planta);
+                intent.putExtras(bundle);
                 startActivity(intent);
+                finish();
                 break;
             }
 
@@ -112,13 +131,13 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
                 break;
             }
 
-            case R.id.perfilID: {
+            case R.id.mnDetallePlantaPerfil: {
                 Intent intent = new Intent(getApplicationContext(), Perfil.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.logOutID: {
+            case R.id.mnDetallePlantaLogout: {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(DetallePlanta.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -140,13 +159,13 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
      */
     @Override
     public void onClick(View view, int position) {
-        final Actividad actividad = listaActividades.get(position);
-        Intent i = new Intent(this, DetallePlanta.class);
+//        final Actividad actividad = listaActividades.get(position);
+//        Intent i = new Intent(this, DetallePlanta.class);
 //        Bundle bundle = new Bundle();
 //        bundle.putString("idPlanta", planta.getIdPlanta());
 //        bundle.putSerializable("planta", planta);
 //        i.putExtras(bundle);
-//        Log.i("Nombre de la planta: ", planta.getNombre() + " · Descripción: " + planta.getDescripcion() + " · KEY: " + planta.getIdPlanta());
-        startActivity(i);
+        Log.i("Nombre de la planta: ", planta.getNombre() + " · Descripción: " + planta.getDescripcion() + " · KEY: " + planta.getIdPlanta());
+//        startActivity(i);
     }
 }

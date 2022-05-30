@@ -10,10 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Toast;
 
-import com.example.huertapp.adaptador.AdaptadorHuerto;
 import com.example.huertapp.adaptador.AdaptadorPlanta;
 import com.example.huertapp.databinding.ActivityMisPlantasBinding;
 import com.example.huertapp.modelo.Huerto;
@@ -34,6 +32,7 @@ public class MisPlantas extends AppCompatActivity implements ItemClickListener {
     DatabaseReference databaseReference;
     List<Planta> listaPlantas;
     AdaptadorPlanta adaptadorPlanta;
+    Huerto huerto;
     String keyHuerto;
 
     @Override
@@ -49,7 +48,7 @@ public class MisPlantas extends AppCompatActivity implements ItemClickListener {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            Huerto huerto = (Huerto) getIntent().getSerializableExtra("huerto");
+            huerto = (Huerto) getIntent().getSerializableExtra("huerto");
             keyHuerto = bundle.getString("idHuerto");
             System.out.println("yeah, keyHUERTO: "+keyHuerto);
         }
@@ -69,7 +68,7 @@ public class MisPlantas extends AppCompatActivity implements ItemClickListener {
 
         // Recorro FB Realtime DB
         // y actualizo el adaptador
-        // del Recycler View de Productos
+        // del Recycler View de Plantas
         databaseReference.child("plantas").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -151,6 +150,8 @@ public class MisPlantas extends AppCompatActivity implements ItemClickListener {
         final Planta planta = listaPlantas.get(position);
         Intent i = new Intent(this, DetallePlanta.class);
         Bundle bundle = new Bundle();
+        bundle.putString("idHuerto", huerto.getIdHuerto());
+        bundle.putSerializable("huerto", huerto);
         bundle.putString("idPlanta", planta.getIdPlanta());
         bundle.putSerializable("planta", planta);
         i.putExtras(bundle);

@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/mnDetallePlantaMisPlantas"
+        android:title="Mis plantas" />
+    <item
         android:id="@+id/mnDetallePlantaCrearActividad"
-        android:title="Añadir actividad">
-
-    </item>
+        android:title="Añadir actividad"/>
 
     <item
         android:id="@+id/mnDetallePlantaBorrarPlanta"
-        android:title="Borrar planta">
-
-    </item>
+        android:title="Borrar planta"/>
 
     <item
         android:id="@+id/mnDetallePlantaPerfil"
-        android:title="Perfil">
-
-    </item>
+        android:title="Perfil"/>
 
     <item
         android:id="@+id/mnDetallePlantaLogout"
-        android:title="Log out">
-    </item>
+        android:title="Log out"/>
 
 </menu>

@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Intent intent = new Intent(getApplicationContext(), MisHuertos.class);
                                 startActivity(intent);
-
+                                finish();
                             } else {
                                 String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
                                 errorToast(errorCode); // en caso de que hubiese algún otro tipo de error incluso después de haber introducido todos los campos correctamente
