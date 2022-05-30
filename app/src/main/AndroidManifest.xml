@@ -11,7 +11,7 @@
         android:theme="@style/Theme.HuertAPP">
         <activity
             android:name=".CrearActividad"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".Recolecta"
             android:exported="true" />
