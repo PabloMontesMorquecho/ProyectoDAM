@@ -4,29 +4,29 @@
 
 
     <item
-        android:id="@+id/misHuertos"
+        android:id="@+id/mnMisPlantasGoToMisHuertos"
         android:title="Mis huertos" />
 
     <item
-        android:id="@+id/anadirPlantaID"
+        android:id="@+id/mnMisPlantasAddPlanta"
         android:title="Añadir planta">
 
     </item>
 
     <item
-        android:id="@+id/borrarHuertoID"
+        android:id="@+id/mnMisPlantasBorrarHuerto"
         android:title="Borrar huerto">
 
     </item>
 
     <item
-        android:id="@+id/perfilID"
+        android:id="@+id/mnMisPlantasPerfil"
         android:title="Perfil">
 
     </item>
 
     <item
-        android:id="@+id/logOutID"
+        android:id="@+id/mnMisPlantasLogout"
         android:title="Log out">
     </item>
 

@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/misHuertosID"
-        android:title="Mis huertos">
-
-    </item>
+        android:id="@+id/mnPerfilSubirFoto"
+        android:title="Log out"/>
 
     <item
-        android:id="@+id/logOutID"
-        android:title="Log out">
+        android:id="@+id/mnPerfilGoToMisHuertos"
+        android:title="Mis huertos"/>
 
-    </item>
+    <item
+        android:id="@+id/mnPerfilLogout"
+        android:title="Log out"/>
 
 </menu>

@@ -28,6 +28,7 @@ import java.util.List;
 
 public class MisPlantas extends AppCompatActivity implements ItemClickListener {
 
+    private static final String TAG = "Mis Plantas Activity";
     ActivityMisPlantasBinding binding;
     DatabaseReference databaseReference;
     List<Planta> listaPlantas;
@@ -43,7 +44,7 @@ public class MisPlantas extends AppCompatActivity implements ItemClickListener {
         View view = binding.getRoot();
         setContentView(view);
 
-        setSupportActionBar(binding.toolbarMispPlantas);
+        setSupportActionBar(binding.toolbarMisPlantas);
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         Bundle bundle = getIntent().getExtras();
@@ -92,6 +93,7 @@ public class MisPlantas extends AppCompatActivity implements ItemClickListener {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_mis_plantas, menu);
+//        binding.toolbarMisPlantas.setTitle("Mis Plantas");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -99,13 +101,13 @@ public class MisPlantas extends AppCompatActivity implements ItemClickListener {
 
         switch (menuItem.getItemId()) {
 
-            case R.id.misHuertos: {
+            case R.id.mnMisPlantasGoToMisHuertos: {
                 Intent intent = new Intent(getApplicationContext(), MisHuertos.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.anadirPlantaID: {
+            case R.id.mnMisPlantasAddPlanta: {
                 Intent intent = new Intent(getApplicationContext(), CrearPlanta.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("idHuerto", keyHuerto);
@@ -114,18 +116,21 @@ public class MisPlantas extends AppCompatActivity implements ItemClickListener {
                 break;
             }
 
-            case R.id.borrarHuertoID: {
-
+            case R.id.mnMisPlantasBorrarHuerto: {
+                borrarHuerto(keyHuerto);
                 break;
             }
 
-            case R.id.perfilID: {
+            case R.id.mnMisPlantasPerfil: {
                 Intent intent = new Intent(getApplicationContext(), Perfil.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("idHuerto", keyHuerto);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.logOutID: {
+            case R.id.mnMisPlantasLogout: {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(MisPlantas.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -135,6 +140,17 @@ public class MisPlantas extends AppCompatActivity implements ItemClickListener {
             }
         }
         return true;
+    }
+
+    private void borrarHuerto(String keyHuerto) {
+        databaseReference.child("huertos").child(keyHuerto).removeValue();
+        Log.d(TAG, "Huerto borrada.");
+        Toast.makeText(getApplicationContext(),
+                "Huerto borrado correctamente",
+                Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(getApplicationContext(), MisHuertos.class);
+        startActivity(intent);
+        finish();
     }
 
     /**

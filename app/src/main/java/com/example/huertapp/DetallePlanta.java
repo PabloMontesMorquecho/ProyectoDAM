@@ -29,7 +29,8 @@ import java.util.List;
 
 public class DetallePlanta extends AppCompatActivity implements ItemClickListener {
 
-    @NonNull ActivityDetallePlantaBinding binding;
+    private static final String TAG = "Detalle Planta Activity";
+    ActivityDetallePlantaBinding binding;
     DatabaseReference databaseReference;
     List<Actividad> listaActividades;
     AdaptadorActividad adaptadorActividad;
@@ -55,6 +56,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
             keyHuerto = bundle.getString("idHuerto");
             planta = (Planta) getIntent().getSerializableExtra("planta");
             keyPlanta = bundle.getString("idPlanta");
+            System.out.println("yeah, keyHUERTO: "+keyHuerto);
             System.out.println("yeah, keyPLANTA: "+keyPlanta);
         }
     }
@@ -97,6 +99,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detalle_planta, menu);
+        binding.toolbarActividadPlanta.setTitle("Detalle Planta");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -104,11 +107,25 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
 
         switch (menuItem.getItemId()) {
 
-            case R.id.mnDetallePlantaMisPlantas: {
+            case R.id.mnDetallePlantaGoToMisHuertos: {
+                Intent intent = new Intent(getApplicationContext(), MisHuertos.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("idHuerto", keyHuerto);
+                bundle.putSerializable("huerto", huerto);
+                bundle.putString("idPlanta", keyPlanta);
+                bundle.putSerializable("planta", planta);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.mnDetallePlantaGoToMisPlantas: {
                 Intent intent = new Intent(getApplicationContext(), MisPlantas.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("idHuerto", keyHuerto);
                 bundle.putSerializable("huerto", huerto);
+                bundle.putString("idPlanta", keyPlanta);
+                bundle.putSerializable("planta", planta);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
@@ -117,17 +134,17 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
             case R.id.mnDetallePlantaCrearActividad: {
                 Intent intent = new Intent(getApplicationContext(), CrearActividad.class);
                 Bundle bundle = new Bundle();
+                bundle.putString("idHuerto", keyHuerto);
+                bundle.putSerializable("huerto", huerto);
                 bundle.putString("idPlanta", keyPlanta);
                 bundle.putSerializable("planta", planta);
                 intent.putExtras(bundle);
                 startActivity(intent);
-                finish();
                 break;
             }
 
             case R.id.mnDetallePlantaBorrarPlanta: {
-                Intent intent = new Intent(getApplicationContext(), CrearHuerto.class);
-                startActivity(intent);
+                borrarPlanta(keyPlanta);
                 break;
             }
 
@@ -147,6 +164,20 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
             }
         }
         return true;
+    }
+
+    private void borrarPlanta(String keyPlanta) {
+        databaseReference.child("plantas").child(keyPlanta).removeValue();
+        Log.d(TAG, "Planta borrada.");
+        Toast.makeText(getApplicationContext(),
+                "Planta borrado correctamente",
+                Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(getApplicationContext(), MisPlantas.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("idHuerto", keyHuerto);
+        bundle.putSerializable("huerto", huerto);
+        startActivity(intent);
+        finish();
     }
 
     /**

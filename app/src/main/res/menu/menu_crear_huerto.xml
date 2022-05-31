@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/perfilID"
+        android:id="@+id/mnCrearHuertoPerfil"
         android:title="Perfil">
 
     </item>
 
     <item
-        android:id="@+id/logOutID"
+        android:id="@+id/mnCrearHuertoLogout"
         android:title="Log out">
 
     </item>

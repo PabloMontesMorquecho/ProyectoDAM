@@ -78,6 +78,7 @@ public class CrearHuerto extends AppCompatActivity {
                         binding.pbCrearHuertoCargando.setVisibility(View.INVISIBLE);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("idHuerto",keyHuerto);
+                        bundle.putSerializable("huerto", huerto);
                         intent.putExtras(bundle);
                         startActivity(intent);
                         finish();
@@ -90,6 +91,7 @@ public class CrearHuerto extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_crear_huerto, menu);
+        binding.toolbarCrearHuerto.setTitle("Crear Huerto");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -97,13 +99,13 @@ public class CrearHuerto extends AppCompatActivity {
 
         switch (menuItem.getItemId()) {
 
-            case R.id.perfilID: {
+            case R.id.mnCrearHuertoPerfil: {
                 Intent intent = new Intent(getApplicationContext(), Perfil.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.logOutID: {
+            case R.id.mnCrearHuertoLogout: {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(CrearHuerto.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);

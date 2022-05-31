@@ -27,7 +27,10 @@ public class CrearPlanta extends AppCompatActivity {
     ActivityCrearPlantaBinding binding;
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
+    Huerto huerto;
     String keyHuerto;
+    Planta planta;
+    String keyPlanta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +46,12 @@ public class CrearPlanta extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
+            huerto = (Huerto) getIntent().getSerializableExtra("huerto");
             keyHuerto = bundle.getString("idHuerto");
-            System.out.println("yeah, keyHUERTO: " + keyHuerto);
+            planta = (Planta) getIntent().getSerializableExtra("planta");
+            keyPlanta = bundle.getString("idPlanta");
+            System.out.println("yeah, keyHUERTO: "+keyHuerto);
+            System.out.println("yeah, keyPLANTA: "+keyPlanta);
         }
     }
 
@@ -65,34 +72,31 @@ public class CrearPlanta extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
+                            binding.pbCrearPlantaCargando.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), "Planta creada correctamente", Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(getApplicationContext(), DetallePlanta.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("idHuerto", keyHuerto);
+                            bundle.putSerializable("huerto", huerto);
+                            bundle.putString("idPlanta", keyPlanta);
+                            bundle.putSerializable("planta", planta);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                            finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "!!! No se ha podido crear la planta, intentelo de nuevo más tarde ;(", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
-
-                Intent intent = new Intent(getApplicationContext(), MisPlantas.class);
-
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        binding.pbCrearPlantaCargando.setVisibility(View.INVISIBLE);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("idHuerto", keyHuerto);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                        finish();
-                    }
-                }, 1000);
             }
         });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_crear_huerto, menu);
+        getMenuInflater().inflate(R.menu.menu_crear_planta, menu);
+        binding.toolbarCrearPlanta.setTitle("Crear Planta");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -100,13 +104,13 @@ public class CrearPlanta extends AppCompatActivity {
 
         switch (menuItem.getItemId()) {
 
-            case R.id.perfilID: {
+            case R.id.mnCrearPlantaPerfil: {
                 Intent intent = new Intent(getApplicationContext(), Perfil.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.logOutID: {
+            case R.id.mnCrearPlantaLogout: {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(CrearPlanta.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);

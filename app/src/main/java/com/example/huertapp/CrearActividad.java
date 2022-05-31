@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.huertapp.databinding.ActivityCrearActividadBinding;
 import com.example.huertapp.modelo.Actividad;
+import com.example.huertapp.modelo.Huerto;
 import com.example.huertapp.modelo.Planta;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,6 +31,8 @@ public class CrearActividad extends AppCompatActivity {
     DatabaseReference databaseReference;
     Planta planta;
     String keyPlanta;
+    Huerto huerto;
+    String keyHuerto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +49,12 @@ public class CrearActividad extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
+            huerto = (Huerto) getIntent().getSerializableExtra("huerto");
+            keyHuerto = bundle.getString("idHuerto");
             planta = (Planta) getIntent().getSerializableExtra("planta");
             keyPlanta = bundle.getString("idPlanta");
-            System.out.println("yeah, keyPLANTA: " + keyPlanta);
+            System.out.println("yeah, keyHUERTO: "+keyHuerto);
+            System.out.println("yeah, keyPLANTA: "+keyPlanta);
         }
     }
 
@@ -85,6 +91,8 @@ public class CrearActividad extends AppCompatActivity {
                     public void run() {
                         binding.pbCrearActividadCargando.setVisibility(View.INVISIBLE);
                         Bundle bundle = new Bundle();
+                        bundle.putString("idHuerto", keyHuerto);
+                        bundle.putSerializable("huerto", huerto);
                         bundle.putString("idPlanta", keyPlanta);
                         bundle.putSerializable("planta", planta);
                         intent.putExtras(bundle);

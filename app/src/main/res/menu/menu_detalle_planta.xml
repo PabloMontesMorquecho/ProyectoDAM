@@ -3,7 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/mnDetallePlantaMisPlantas"
+        android:id="@+id/mnDetallePlantaGoToMisHuertos"
+        android:title="Mis huertos" />
+    <item
+        android:id="@+id/mnDetallePlantaGoToMisPlantas"
         android:title="Mis plantas" />
     <item
         android:id="@+id/mnDetallePlantaCrearActividad"

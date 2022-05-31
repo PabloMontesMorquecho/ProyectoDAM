@@ -2,19 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/crearID"
-        android:title="Crear">
-
-    </item>
-
-    <item
-        android:id="@+id/perfilID"
+        android:id="@+id/mnCrearPlantaPerfil"
         android:title="Perfil">
 
     </item>
 
     <item
-        android:id="@+id/logOutID"
+        android:id="@+id/mnCrearPlantaLogout"
         android:title="Log out">
 
     </item>

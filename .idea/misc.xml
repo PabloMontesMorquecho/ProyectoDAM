@@ -17,7 +17,12 @@
         <entry key="..\:/ANDROID/Github/ProyectoDAM/app/src/main/res/layout/fila_actividad.xml" value="0.32065217391304346" />
         <entry key="..\:/ANDROID/Github/ProyectoDAM/app/src/main/res/layout/fila_huerto.xml" value="0.32065217391304346" />
         <entry key="..\:/ANDROID/Github/ProyectoDAM/app/src/main/res/layout/fila_planta.xml" value="0.32065217391304346" />
+        <entry key="..\:/ANDROID/Github/ProyectoDAM/app/src/main/res/menu/menu_crear_huerto.xml" value="0.434375" />
+        <entry key="..\:/ANDROID/Github/ProyectoDAM/app/src/main/res/menu/menu_crear_planta.xml" value="0.434375" />
         <entry key="..\:/ANDROID/Github/ProyectoDAM/app/src/main/res/menu/menu_detalle_planta.xml" value="0.3098958333333333" />
+        <entry key="..\:/ANDROID/Github/ProyectoDAM/app/src/main/res/menu/menu_mis_huertos.xml" value="0.434375" />
+        <entry key="..\:/ANDROID/Github/ProyectoDAM/app/src/main/res/menu/menu_mis_plantas.xml" value="0.434375" />
+        <entry key="..\:/ANDROID/Github/ProyectoDAM/app/src/main/res/menu/menu_perfil.xml" value="0.434375" />
         <entry key="..\:/ANDROID/Github/RubsRubs/HuertAPP2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3" />
         <entry key="..\:/ANDROID/Github/RubsRubs/HuertAPP2/app/src/main/res/drawable/background_mis_huertos.xml" value="0.3" />
         <entry key="..\:/ANDROID/Github/RubsRubs/HuertAPP2/app/src/main/res/font/roboto_slab.xml" value="0.46458333333333335" />

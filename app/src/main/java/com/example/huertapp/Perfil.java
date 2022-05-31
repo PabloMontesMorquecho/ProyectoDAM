@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.example.huertapp.databinding.ActivityMisHuertosBinding;
 import com.example.huertapp.databinding.ActivityPerfilBinding;
 import com.example.huertapp.databinding.ActivityRegistroBinding;
+import com.example.huertapp.modelo.Huerto;
+import com.example.huertapp.modelo.Planta;
 import com.example.huertapp.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,12 +31,15 @@ public class Perfil extends AppCompatActivity {
 
     ActivityPerfilBinding binding;
 
-    FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
-
+    FirebaseAuth firebaseAuth;
+    FirebaseUser usuarioActual;
     String IdUsuario;
 
-    FirebaseUser usuarioActual;
+    Huerto huerto;
+    String keyHuerto;
+    Planta planta;
+    String keyPlanta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,16 @@ public class Perfil extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         IdUsuario = firebaseAuth.getCurrentUser().getUid();
         usuarioActual = FirebaseAuth.getInstance().getCurrentUser();
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            huerto = (Huerto) getIntent().getSerializableExtra("huerto");
+            keyHuerto = bundle.getString("idHuerto");
+            planta = (Planta) getIntent().getSerializableExtra("planta");
+            keyPlanta = bundle.getString("idPlanta");
+            System.out.println("yeah, keyPLANTA: "+keyPlanta);
+            System.out.println("yeah, keyHUERTO: "+keyHuerto);
+        }
     }
 
     @Override
@@ -85,8 +100,6 @@ public class Perfil extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(),
                                             "Cuenta de usuario borrada correctamente",
                                             Toast.LENGTH_LONG).show();
-//                                    FirebaseAuth.getInstance().signOut();
-//                                    Toast.makeText(getApplicationContext(), "Sesión finalizada", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -113,14 +126,28 @@ public class Perfil extends AppCompatActivity {
 
         switch (menuItem.getItemId()) {
 
-            case R.id.misHuertosID: {
+            case R.id.mnPerfilSubirFoto: {
+//                Intent intent = new Intent(getApplicationContext(), MisHuertos.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("idHuerto", keyHuerto);
+//                bundle.putSerializable("huerto", huerto);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+                break;
+            }
+
+            case R.id.mnPerfilGoToMisHuertos: {
                 Intent intent = new Intent(getApplicationContext(), MisHuertos.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("idHuerto", keyHuerto);
+                bundle.putSerializable("huerto", huerto);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 break;
             }
 
 
-            case R.id.logOutID: {
+            case R.id.mnPerfilLogout: {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(Perfil.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);

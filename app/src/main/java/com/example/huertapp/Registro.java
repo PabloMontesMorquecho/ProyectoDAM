@@ -55,7 +55,7 @@ public class Registro extends AppCompatActivity {
             public void onClick(View view) {
                 binding.pbCargando.setVisibility(View.VISIBLE);
 
-                if (awesomeValidation.validate() && coincidenPassw() && !campoUser()) { //si email y password tienen el formato correcto y las dos contraseñas coinciden y el campoUser esta rellenado
+                if (awesomeValidation.validate() && bothPasswordsAreEqual() && !isUserEmpty()) { //si email y password tienen el formato correcto y las dos contraseñas coinciden y el campoUser esta rellenado
 
                     firebaseAuth.createUserWithEmailAndPassword(binding.etRegistroEmail.getText().toString(), binding.etRegistroPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -68,11 +68,11 @@ public class Registro extends AppCompatActivity {
                                 databaseReference.child("usuarios").child(id).setValue(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Toast.makeText(getApplicationContext(), "Datos de usuario guardados en Realtime DB correctamente", Toast.LENGTH_LONG).show();
-                                        } else {
-                                            Toast.makeText(getApplicationContext(), "!!! No se pudieron guardar los datos en Realtime DB ;(", Toast.LENGTH_LONG).show();
-                                        }
+//                                        if (task.isSuccessful()) {
+//                                            Toast.makeText(getApplicationContext(), "Datos de usuario guardados en Realtime DB correctamente", Toast.LENGTH_LONG).show();
+//                                        } else {
+//                                            Toast.makeText(getApplicationContext(), "!!! No se pudieron guardar los datos en Realtime DB ;(", Toast.LENGTH_LONG).show();
+//                                        }
                                     }
                                 });
 
@@ -85,6 +85,7 @@ public class Registro extends AppCompatActivity {
                                     public void run() {
                                         binding.pbCargando.setVisibility(View.INVISIBLE);
                                         startActivity(intent);
+                                        finish();
                                     }
                                 }, 1000);
 
@@ -96,10 +97,10 @@ public class Registro extends AppCompatActivity {
                         }
                     });
 
-                } else if (campoUser()) {
+                } else if (isUserEmpty()) {
                     binding.pbCargando.setVisibility(View.INVISIBLE);
                     Toast.makeText(Registro.this, "Introduzca un usuario", Toast.LENGTH_SHORT).show();
-                } else if (!coincidenPassw()) {
+                } else if (!bothPasswordsAreEqual()) {
                     binding.pbCargando.setVisibility(View.INVISIBLE);
                     Toast.makeText(Registro.this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
                 }
@@ -187,11 +188,11 @@ public class Registro extends AppCompatActivity {
         }
     }
 
-    public boolean coincidenPassw() {
+    public boolean bothPasswordsAreEqual() {
         return (binding.etRegistroPassword.getText().toString().equals(binding.etRegistroPasswordMatch.getText().toString()));
     }
 
-    public boolean campoUser() {
+    public boolean isUserEmpty() {
         return (binding.etRegistroNombre.getText().toString().isEmpty());
     }
 }
