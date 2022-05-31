@@ -18,7 +18,7 @@
             android:id="@+id/toolbarTitleProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PERFIL DE USUARIO"
+            android:text="Perfil Usuario"
             android:textSize="24dp"
             android:textColor="@color/accent_dark" />
 

@@ -17,7 +17,7 @@
             android:id="@+id/toolbarTitleMisHuertos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MIS HUERTOS"
+            android:text="Mis Huertos"
             android:textSize="24dp"
             android:textColor="@color/accent_dark" />
 

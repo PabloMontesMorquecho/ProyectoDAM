@@ -17,7 +17,7 @@
             android:id="@+id/toolbarTitleActividadPlanta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DETALLES DE LA PLANTA"
+            android:text="Detalles Planta"
             android:textSize="24dp"
             android:textColor="@color/accent_dark" />
 

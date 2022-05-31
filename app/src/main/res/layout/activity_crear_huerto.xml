@@ -16,7 +16,7 @@
             android:id="@+id/toolbarTitleCrearHuerto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CREAR HUERTO"
+            android:text="Crear Huerto"
             android:textSize="24dp"
             android:textColor="@color/accent_dark" />
 

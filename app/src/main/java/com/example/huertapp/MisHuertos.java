@@ -44,6 +44,7 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
         setContentView(view);
 
         setSupportActionBar(binding.toolbarMisHuertos);
+        binding.toolbarMisHuertos.setTitle("Mis Huertos");
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }

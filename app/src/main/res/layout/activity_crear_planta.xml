@@ -16,7 +16,7 @@
             android:id="@+id/toolbarTitleCrearPlanta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CREAR PLANTA"
+            android:text="Crear Planta"
             android:textSize="24dp"
             android:textColor="@color/accent_dark" />
 
