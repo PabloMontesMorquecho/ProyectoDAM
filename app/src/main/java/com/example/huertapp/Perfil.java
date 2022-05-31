@@ -44,7 +44,7 @@ public class Perfil extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        setSupportActionBar(binding.toolbarID);
+        setSupportActionBar(binding.toolbarProfile);
 
         firebaseAuth = FirebaseAuth.getInstance();
         IdUsuario = firebaseAuth.getCurrentUser().getUid();

@@ -26,13 +26,13 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto_slab"
                         android:text="Riego"
-                        android:textSize="42sp" />
+                        android:textSize="34sp" />
 
                     <TextView
                         android:id="@+id/tvActividadFecha"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_weight="1"
                         android:fontFamily="@font/roboto_slab"
                         android:textAlignment="textEnd"
                         android:text="15/04/22"

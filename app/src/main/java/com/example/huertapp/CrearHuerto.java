@@ -39,7 +39,7 @@ public class CrearHuerto extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        setSupportActionBar(binding.toolbarID);
+        setSupportActionBar(binding.toolbarCrearHuerto);
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }

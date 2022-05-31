@@ -8,9 +8,17 @@
     tools:context=".MisPlantas">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/MisPlantasToolbaroolbar"
+        android:id="@+id/toolbarMispPlantas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/toolbarTitleMisPlantas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mis Plantas"
+            android:textSize="24dp"
+            android:textColor="@color/accent_dark" />
 
     </androidx.appcompat.widget.Toolbar>
 

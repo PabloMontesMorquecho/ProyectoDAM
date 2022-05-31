@@ -43,7 +43,7 @@ public class MisPlantas extends AppCompatActivity implements ItemClickListener {
         View view = binding.getRoot();
         setContentView(view);
 
-        setSupportActionBar(binding.MisPlantasToolbaroolbar);
+        setSupportActionBar(binding.toolbarMispPlantas);
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         Bundle bundle = getIntent().getExtras();
