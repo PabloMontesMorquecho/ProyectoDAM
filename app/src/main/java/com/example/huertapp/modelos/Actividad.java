@@ -1,7 +1,6 @@
-package com.example.huertapp.modelo;
+package com.example.huertapp.modelos;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Actividad implements Serializable {
     String tipo, observaciones, fecha;

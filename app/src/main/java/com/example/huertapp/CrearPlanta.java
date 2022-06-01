@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.huertapp.databinding.ActivityCrearPlantaBinding;
-import com.example.huertapp.modelo.Huerto;
-import com.example.huertapp.modelo.Planta;
+import com.example.huertapp.modelos.Huerto;
+import com.example.huertapp.modelos.Planta;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,7 +39,6 @@ public class CrearPlanta extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        setSupportActionBar(binding.toolbarCrearPlanta);
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -95,7 +94,6 @@ public class CrearPlanta extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_crear_planta, menu);
-        binding.toolbarCrearPlanta.setTitle("Crear Planta");
         return super.onCreateOptionsMenu(menu);
     }
 

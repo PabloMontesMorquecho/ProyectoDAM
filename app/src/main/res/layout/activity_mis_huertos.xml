@@ -7,15 +7,33 @@
     android:orientation="vertical"
     tools:context=".MisHuertos">
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarMisHuertos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/toolbarTitleMisHuertos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mis Huertos"
+            android:paddingTop="4sp"
+            android:textColor="@color/accent_dark" />
+
     </androidx.appcompat.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/MisHuertosImg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleType="centerCrop"
+        android:src="@drawable/hortalizas" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMisHuertos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_weight="3"/>
+
 </LinearLayout>

@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.huertapp.databinding.ActivityCrearHuertoBinding;
-import com.example.huertapp.modelo.Huerto;
+import com.example.huertapp.modelos.Huerto;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,7 +37,6 @@ public class CrearHuerto extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        setSupportActionBar(binding.toolbarCrearHuerto);
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
@@ -89,7 +88,6 @@ public class CrearHuerto extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_crear_huerto, menu);
-        binding.toolbarCrearHuerto.setTitle("Crear Huerto");
         return super.onCreateOptionsMenu(menu);
     }
 

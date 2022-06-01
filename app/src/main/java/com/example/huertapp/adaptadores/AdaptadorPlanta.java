@@ -1,4 +1,4 @@
-package com.example.huertapp.adaptador;
+package com.example.huertapp.adaptadores;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.huertapp.ItemClickListener;
 import com.example.huertapp.R;
-import com.example.huertapp.modelo.Planta;
+import com.example.huertapp.modelos.Planta;
 
 import java.util.List;
 
