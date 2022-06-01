@@ -1,5 +1,6 @@
 package com.example.huertapp;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,9 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.huertapp.databinding.ActivityMisHuertosBinding;
 import com.example.huertapp.databinding.ActivityPerfilBinding;
-import com.example.huertapp.databinding.ActivityRegistroBinding;
 import com.example.huertapp.modelo.Huerto;
 import com.example.huertapp.modelo.Planta;
 import com.example.huertapp.modelo.Usuario;
@@ -27,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Perfil extends AppCompatActivity {
 
-    private static final String TAG = "PerfilActivity";
+    private static final String TAG = "Perfil Activity";
 
     ActivityPerfilBinding binding;
 
@@ -40,6 +39,8 @@ public class Perfil extends AppCompatActivity {
     String keyHuerto;
     Planta planta;
     String keyPlanta;
+
+    ActivityResultLauncher<String> mgetContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +101,7 @@ public class Perfil extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(),
                                             "Cuenta de usuario borrada correctamente",
                                             Toast.LENGTH_LONG).show();
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    Intent intent = new Intent(getApplicationContext(), Login.class);
                                     startActivity(intent);
                                     finish();
                                 } else {
@@ -133,6 +134,13 @@ public class Perfil extends AppCompatActivity {
 //                bundle.putSerializable("huerto", huerto);
 //                intent.putExtras(bundle);
 //                startActivity(intent);
+//                mgetContent.launch("image/*");
+//                mgetContent=registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+//                    @Override
+//                    public void onActivityResult(Uri result) {
+//                        mImage
+//                    }
+//                })
                 break;
             }
 
@@ -150,7 +158,7 @@ public class Perfil extends AppCompatActivity {
             case R.id.mnPerfilLogout: {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(Perfil.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), Login.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

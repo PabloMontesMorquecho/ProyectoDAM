@@ -28,7 +28,8 @@ import java.util.List;
 
 public class MisPlantas extends AppCompatActivity implements ItemClickListener {
 
-    private static final String TAG = "Mis Plantas Activity";
+    private static final String TAG = "MisPlantas Activity";
+
     ActivityMisPlantasBinding binding;
     DatabaseReference databaseReference;
     List<Planta> listaPlantas;
@@ -133,7 +134,7 @@ public class MisPlantas extends AppCompatActivity implements ItemClickListener {
             case R.id.mnMisPlantasLogout: {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(MisPlantas.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), Login.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

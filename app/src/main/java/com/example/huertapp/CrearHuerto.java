@@ -13,18 +13,16 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.huertapp.databinding.ActivityCrearHuertoBinding;
-import com.example.huertapp.databinding.ActivityMisHuertosBinding;
 import com.example.huertapp.modelo.Huerto;
-import com.example.huertapp.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
-
 public class CrearHuerto extends AppCompatActivity {
+
+    private static final String TAG = "CrearHuerto Activity";
 
     ActivityCrearHuertoBinding binding;
     FirebaseAuth firebaseAuth;
@@ -108,7 +106,7 @@ public class CrearHuerto extends AppCompatActivity {
             case R.id.mnCrearHuertoLogout: {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(CrearHuerto.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), Login.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

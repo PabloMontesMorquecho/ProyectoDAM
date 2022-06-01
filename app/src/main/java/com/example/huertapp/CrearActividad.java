@@ -26,6 +26,8 @@ import java.util.Date;
 
 public class CrearActividad extends AppCompatActivity {
 
+    private static final String TAG = "CrearActividad Activity";
+
     ActivityCrearActividadBinding binding;
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
@@ -123,7 +125,7 @@ public class CrearActividad extends AppCompatActivity {
 //            case R.id.logOutID: {
 //                FirebaseAuth.getInstance().signOut();
 //                Toast.makeText(CrearPlanta.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                Intent intent = new Intent(getApplicationContext(), Login.class);
 //                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);
 //                break;

@@ -27,7 +27,8 @@ import java.util.List;
 
 public class MisHuertos extends AppCompatActivity implements ItemClickListener {
 
-    private static final String TAG = "Mis Huertos Activity";
+    private static final String TAG = "MisHuertos Activity";
+
     ActivityMisHuertosBinding binding;
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
@@ -103,7 +104,7 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
             case R.id.mnMisHuertosLogout: {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(MisHuertos.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), Login.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

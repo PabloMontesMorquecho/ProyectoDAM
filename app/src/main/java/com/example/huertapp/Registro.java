@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
@@ -23,12 +24,14 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Registro extends AppCompatActivity {
 
+    private static final String TAG = "Registro Activity";
+
     ActivityRegistroBinding binding;
     AwesomeValidation awesomeValidation;
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
-    String emailError = "Por favor, ingrese un email válido";
-    String passwError = "Su contraseña tiene que tener al menos 6 caracteres";
+    String emailErrorMessage = "Por favor, ingrese un email válido";
+    String passwordErrorMessage = "Su contraseña tiene que tener al menos 6 caracteres";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +42,8 @@ public class Registro extends AppCompatActivity {
         setContentView(view);
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC); //utilizamos la versión básica de AwesomeValidation
-        awesomeValidation.addValidation(binding.etRegistroEmail, Patterns.EMAIL_ADDRESS, emailError); //si no se mete una dirección de correo válida salta el error
-        awesomeValidation.addValidation(binding.etRegistroPassword, ".{6,}", passwError); //si la contraseña no tiene al menos 6 caracteres salta el error
+        awesomeValidation.addValidation(binding.etRegistroEmail, Patterns.EMAIL_ADDRESS, emailErrorMessage); //si no se mete una dirección de correo válida salta el error
+        awesomeValidation.addValidation(binding.etRegistroPassword, ".{6,}", passwordErrorMessage); //si la contraseña no tiene al menos 6 caracteres salta el error
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -53,9 +56,9 @@ public class Registro extends AppCompatActivity {
         binding.btnRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.pbCargando.setVisibility(View.VISIBLE);
+                binding.pbRegistroCargando.setVisibility(View.VISIBLE);
 
-                if (awesomeValidation.validate() && bothPasswordsAreEqual() && !isUserEmpty()) { //si email y password tienen el formato correcto y las dos contraseñas coinciden y el campoUser esta rellenado
+                if (awesomeValidation.validate() && bothPasswordsAreEqual() && !isUserEmpty()) {
 
                     firebaseAuth.createUserWithEmailAndPassword(binding.etRegistroEmail.getText().toString(), binding.etRegistroPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -68,11 +71,8 @@ public class Registro extends AppCompatActivity {
                                 databaseReference.child("usuarios").child(id).setValue(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-//                                        if (task.isSuccessful()) {
-//                                            Toast.makeText(getApplicationContext(), "Datos de usuario guardados en Realtime DB correctamente", Toast.LENGTH_LONG).show();
-//                                        } else {
-//                                            Toast.makeText(getApplicationContext(), "!!! No se pudieron guardar los datos en Realtime DB ;(", Toast.LENGTH_LONG).show();
-//                                        }
+                                        if (!task.isSuccessful())
+                                            Log.w(TAG, "!!! No se pudo guardar el usuario en Realtime DB ;(.");
                                     }
                                 });
 
@@ -83,14 +83,14 @@ public class Registro extends AppCompatActivity {
                                 handler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        binding.pbCargando.setVisibility(View.INVISIBLE);
+                                        binding.pbRegistroCargando.setVisibility(View.INVISIBLE);
                                         startActivity(intent);
                                         finish();
                                     }
                                 }, 1000);
 
                             } else {
-                                binding.pbCargando.setVisibility(View.INVISIBLE);
+                                binding.pbRegistroCargando.setVisibility(View.INVISIBLE);
                                 String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
                                 errorToast(errorCode); // en caso de que hubiese algún otro tipo de error incluso después de haber introducido todos los campos correctamente
                             }
@@ -98,10 +98,10 @@ public class Registro extends AppCompatActivity {
                     });
 
                 } else if (isUserEmpty()) {
-                    binding.pbCargando.setVisibility(View.INVISIBLE);
+                    binding.pbRegistroCargando.setVisibility(View.INVISIBLE);
                     Toast.makeText(Registro.this, "Introduzca un usuario", Toast.LENGTH_SHORT).show();
                 } else if (!bothPasswordsAreEqual()) {
-                    binding.pbCargando.setVisibility(View.INVISIBLE);
+                    binding.pbRegistroCargando.setVisibility(View.INVISIBLE);
                     Toast.makeText(Registro.this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -109,7 +109,7 @@ public class Registro extends AppCompatActivity {
     }
 
     private void errorToast(String errorCode) {
-
+        binding.pbRegistroCargando.setVisibility(View.INVISIBLE);
         switch (errorCode) {
 
             case "ERROR_INVALID_CUSTOM_TOKEN":

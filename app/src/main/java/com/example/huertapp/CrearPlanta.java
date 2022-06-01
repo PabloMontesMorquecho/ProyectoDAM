@@ -2,8 +2,6 @@ package com.example.huertapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +10,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.huertapp.databinding.ActivityCrearHuertoBinding;
 import com.example.huertapp.databinding.ActivityCrearPlantaBinding;
 import com.example.huertapp.modelo.Huerto;
 import com.example.huertapp.modelo.Planta;
@@ -23,6 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class CrearPlanta extends AppCompatActivity {
+
+    private static final String TAG = "CrearPlanta Activity";
 
     ActivityCrearPlantaBinding binding;
     FirebaseAuth firebaseAuth;
@@ -113,7 +112,7 @@ public class CrearPlanta extends AppCompatActivity {
             case R.id.mnCrearPlantaLogout: {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(CrearPlanta.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), Login.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

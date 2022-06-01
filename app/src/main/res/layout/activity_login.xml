@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".MainActivity">
+    tools:context=".Login">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -17,7 +17,7 @@
         android:contentDescription="@string/app_logo" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvLoginTitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
@@ -29,7 +29,7 @@
         tools:ignore="TextContrastCheck" />
 
     <EditText
-        android:id="@+id/editEmailID"
+        android:id="@+id/etLoginEmail"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:hint="@string/Email"
@@ -38,7 +38,7 @@
         android:autofillHints="emailAddress" />
 
     <EditText
-        android:id="@+id/editPasswID"
+        android:id="@+id/etLoginPassword"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:hint="@string/Password"
@@ -47,7 +47,7 @@
         android:importantForAutofill="no" />
 
     <Button
-        android:id="@+id/botonAccederID"
+        android:id="@+id/btnLoginAcceder"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_marginBottom="24dp"
@@ -57,7 +57,7 @@
         />
 
     <TextView
-        android:id="@+id/registrarseID"
+        android:id="@+id/btnLoginRegistrarse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
