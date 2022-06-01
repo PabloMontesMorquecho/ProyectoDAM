@@ -10,7 +10,6 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarProfile"
-        android:fitsSystemWindows="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -18,8 +17,8 @@
             android:id="@+id/toolbarTitleProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mi Cuenta"
-            android:textSize="24dp"
+            android:text="Mis Plantas"
+            android:paddingTop="4sp"
             android:textColor="@color/accent_dark" />
 
     </androidx.appcompat.widget.Toolbar>
