@@ -81,7 +81,7 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_mis_huertos, menu);
-        binding.toolbarMisHuertos.setTitle("Mis Huertos");
+//        binding.toolbarMisHuertos.setTitle("Mis Huertos");
         return super.onCreateOptionsMenu(menu);
     }
 
