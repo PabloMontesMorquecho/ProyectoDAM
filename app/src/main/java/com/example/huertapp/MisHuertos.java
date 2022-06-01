@@ -65,7 +65,6 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
                 for (DataSnapshot ds :
                         snapshot.getChildren()) {
                     Huerto huerto = ds.getValue(Huerto.class);
-//                    huerto.setKey(snapshot.getKey());
                     if (huerto.getidUsuario().equals(firebaseAuth.getUid())) listaHuertos.add(huerto);
                 }
                 adaptadorHuerto.notifyDataSetChanged();
@@ -81,7 +80,6 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_mis_huertos, menu);
-//        binding.toolbarMisHuertos.setTitle("Mis Huertos");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -116,7 +114,7 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
     @Override
     public void onClick(View view, int position) {
         final Huerto huerto = listaHuertos.get(position);
-        Intent i = new Intent(this, MisPlantas.class);
+        Intent i = new Intent(this, DetalleHuerto.class);
         Bundle bundle = new Bundle();
         bundle.putString("idHuerto", huerto.getIdHuerto());
         bundle.putSerializable("huerto", huerto);

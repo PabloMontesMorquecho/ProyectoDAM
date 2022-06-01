@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.huertapp.adaptador.AdaptadorPlanta;
-import com.example.huertapp.databinding.ActivityMisPlantasBinding;
+import com.example.huertapp.databinding.ActivityDetalleHuertoBinding;
 import com.example.huertapp.modelo.Huerto;
 import com.example.huertapp.modelo.Planta;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,11 +26,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MisPlantas extends AppCompatActivity implements ItemClickListener {
+public class DetalleHuerto extends AppCompatActivity implements ItemClickListener {
 
-    private static final String TAG = "MisPlantas Activity";
+    private static final String TAG = "DetalleHuerto Activity";
 
-    ActivityMisPlantasBinding binding;
+    ActivityDetalleHuertoBinding binding;
     DatabaseReference databaseReference;
     List<Planta> listaPlantas;
     AdaptadorPlanta adaptadorPlanta;
@@ -41,11 +41,11 @@ public class MisPlantas extends AppCompatActivity implements ItemClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMisPlantasBinding.inflate(getLayoutInflater());
+        binding = ActivityDetalleHuertoBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
-        setSupportActionBar(binding.toolbarMisPlantas);
+        setSupportActionBar(binding.toolbarDetalleHuerto);
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         Bundle bundle = getIntent().getExtras();
@@ -62,11 +62,11 @@ public class MisPlantas extends AppCompatActivity implements ItemClickListener {
 
         // Preparo el Recycler View de Plantas
         // Con un adaptador vacío
-        binding.rvMisPlantas.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvDetalleHuerto.setLayoutManager(new LinearLayoutManager(this));
         listaPlantas = new ArrayList<>();
         adaptadorPlanta = new AdaptadorPlanta(listaPlantas);
         adaptadorPlanta.setClickListener(this);
-        binding.rvMisPlantas.setAdapter(adaptadorPlanta);
+        binding.rvDetalleHuerto.setAdapter(adaptadorPlanta);
 
         // Recorro FB Realtime DB
         // y actualizo el adaptador
@@ -94,7 +94,6 @@ public class MisPlantas extends AppCompatActivity implements ItemClickListener {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_mis_plantas, menu);
-//        binding.toolbarMisPlantas.setTitle("Mis Plantas");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -133,7 +132,7 @@ public class MisPlantas extends AppCompatActivity implements ItemClickListener {
 
             case R.id.mnMisPlantasLogout: {
                 FirebaseAuth.getInstance().signOut();
-                Toast.makeText(MisPlantas.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetalleHuerto.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), Login.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

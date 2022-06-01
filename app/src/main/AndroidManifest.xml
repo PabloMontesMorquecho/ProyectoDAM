@@ -16,7 +16,7 @@
             android:name=".DetallePlanta"
             android:exported="true" />
         <activity
-            android:name=".MisPlantas"
+            android:name=".DetalleHuerto"
             android:exported="true" />
         <activity
             android:name=".CrearHuerto"

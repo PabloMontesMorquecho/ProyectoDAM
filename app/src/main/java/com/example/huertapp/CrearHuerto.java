@@ -67,7 +67,7 @@ public class CrearHuerto extends AppCompatActivity {
                     }
                 });
 
-                Intent intent = new Intent(getApplicationContext(), MisPlantas.class);
+                Intent intent = new Intent(getApplicationContext(), DetalleHuerto.class);
 
                 final Handler handler = new Handler(Looper.getMainLooper());
                 handler.postDelayed(new Runnable() {

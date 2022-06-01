@@ -121,7 +121,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
             }
 
             case R.id.mnDetallePlantaGoToMisPlantas: {
-                Intent intent = new Intent(getApplicationContext(), MisPlantas.class);
+                Intent intent = new Intent(getApplicationContext(), DetalleHuerto.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("idHuerto", keyHuerto);
                 bundle.putSerializable("huerto", huerto);
@@ -173,7 +173,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
         Toast.makeText(getApplicationContext(),
                 "Planta borrado correctamente",
                 Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(getApplicationContext(), MisPlantas.class);
+        Intent intent = new Intent(getApplicationContext(), DetalleHuerto.class);
         Bundle bundle = new Bundle();
         bundle.putString("idHuerto", keyHuerto);
         bundle.putSerializable("huerto", huerto);

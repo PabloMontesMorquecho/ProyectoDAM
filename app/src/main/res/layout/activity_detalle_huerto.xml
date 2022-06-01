@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MisPlantas">
+    tools:context=".DetalleHuerto">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarMisPlantas"
+        android:id="@+id/toolbarDetalleHuerto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/toolbarTitleMisPlantas"
+            android:id="@+id/toolbarTitleDetalleHuerto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mis Plantas"
@@ -23,7 +23,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <ImageView
-        android:id="@+id/MisPlantasImg"
+        android:id="@+id/imgDetalleHuerto"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -31,7 +31,7 @@
         android:src="@drawable/hortalizas" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMisPlantas"
+        android:id="@+id/rvDetalleHuerto"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"/>
