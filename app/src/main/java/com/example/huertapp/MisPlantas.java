@@ -12,10 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.huertapp.adaptadores.AdaptadorPlanta;
+import com.example.huertapp.adaptador.AdaptadorPlanta;
 import com.example.huertapp.databinding.ActivityMisPlantasBinding;
-import com.example.huertapp.modelos.Huerto;
-import com.example.huertapp.modelos.Planta;
+import com.example.huertapp.modelo.Huerto;
+import com.example.huertapp.modelo.Planta;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -60,12 +60,17 @@ public class MisPlantas extends AppCompatActivity implements ItemClickListener {
     protected void onStart() {
         super.onStart();
 
+        // Preparo el Recycler View de Plantas
+        // Con un adaptador vacío
         binding.rvMisPlantas.setLayoutManager(new LinearLayoutManager(this));
         listaPlantas = new ArrayList<>();
         adaptadorPlanta = new AdaptadorPlanta(listaPlantas);
         adaptadorPlanta.setClickListener(this);
         binding.rvMisPlantas.setAdapter(adaptadorPlanta);
 
+        // Recorro FB Realtime DB
+        // y actualizo el adaptador
+        // del Recycler View de Plantas
         databaseReference.child("plantas").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

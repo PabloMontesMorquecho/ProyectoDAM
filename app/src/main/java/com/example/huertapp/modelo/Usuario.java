@@ -1,4 +1,4 @@
-package com.example.huertapp.modelos;
+package com.example.huertapp.modelo;
 
 import java.io.Serializable;
 

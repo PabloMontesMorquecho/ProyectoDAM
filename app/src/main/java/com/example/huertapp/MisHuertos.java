@@ -12,9 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.huertapp.adaptadores.AdaptadorHuerto;
+import com.example.huertapp.adaptador.AdaptadorHuerto;
 import com.example.huertapp.databinding.ActivityMisHuertosBinding;
-import com.example.huertapp.modelos.Huerto;
+import com.example.huertapp.modelo.Huerto;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -81,7 +81,7 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_mis_huertos, menu);
-//        binding.toolbarMisHuertos.setTitle("Mis Huertos");
+        binding.toolbarMisHuertos.setTitle("Mis Huertos");
         return super.onCreateOptionsMenu(menu);
     }
 

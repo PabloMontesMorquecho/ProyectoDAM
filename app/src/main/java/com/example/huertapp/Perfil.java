@@ -13,9 +13,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.huertapp.databinding.ActivityPerfilBinding;
-import com.example.huertapp.modelos.Huerto;
-import com.example.huertapp.modelos.Planta;
-import com.example.huertapp.modelos.Usuario;
+import com.example.huertapp.modelo.Huerto;
+import com.example.huertapp.modelo.Planta;
+import com.example.huertapp.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -120,7 +120,6 @@ public class Perfil extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_perfil, menu);
-        //        binding.toolbarActividadPlanta.setTitle("Mi Cuenta");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -128,7 +127,7 @@ public class Perfil extends AppCompatActivity {
 
         switch (menuItem.getItemId()) {
 
-            case R.id.mnPerfilSubirFoto: {
+//            case R.id.mnPerfilSubirFoto: {
 //                Intent intent = new Intent(getApplicationContext(), MisHuertos.class);
 //                Bundle bundle = new Bundle();
 //                bundle.putString("idHuerto", keyHuerto);
@@ -142,8 +141,8 @@ public class Perfil extends AppCompatActivity {
 //                        mImage
 //                    }
 //                })
-                break;
-            }
+//                break;
+//            }
 
             case R.id.mnPerfilGoToMisHuertos: {
                 Intent intent = new Intent(getApplicationContext(), MisHuertos.class);

@@ -12,11 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.huertapp.adaptadores.AdaptadorActividad;
+import com.example.huertapp.adaptador.AdaptadorActividad;
 import com.example.huertapp.databinding.ActivityDetallePlantaBinding;
-import com.example.huertapp.modelos.Actividad;
-import com.example.huertapp.modelos.Huerto;
-import com.example.huertapp.modelos.Planta;
+import com.example.huertapp.modelo.Actividad;
+import com.example.huertapp.modelo.Huerto;
+import com.example.huertapp.modelo.Planta;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -100,7 +100,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detalle_planta, menu);
-//        binding.toolbarActividadPlanta.setTitle("Detalle Planta");
+        binding.toolbarActividadPlanta.setTitle("Detalle Planta");
         return super.onCreateOptionsMenu(menu);
     }
 
