@@ -66,6 +66,11 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     protected void onStart() {
         super.onStart();
 
+        //Inserto en el título el nombre del huerto y de la planta
+        binding.toolbarActividadPlanta.setTitle(huerto.getNombre());
+        binding.toolbarActividadPlanta.setSubtitle(planta.getNombre());
+        binding.toolbarActividadPlanta.setSubtitle("Subtitulo de la Planta largo de cojones para ver como se comporta en el diseño la interfaz de usuario");
+
         // Preparo el Recycler View de Actividades
         // Con un adaptador vacío
         binding.rvActividades.setLayoutManager(new LinearLayoutManager(this));
@@ -100,7 +105,6 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detalle_planta, menu);
-        binding.toolbarActividadPlanta.setTitle("Detalle Planta");
         return super.onCreateOptionsMenu(menu);
     }
 

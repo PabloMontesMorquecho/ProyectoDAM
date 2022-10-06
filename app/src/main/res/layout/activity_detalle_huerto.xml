@@ -10,14 +10,15 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarDetalleHuerto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:title="Title">
 
         <TextView
             android:id="@+id/toolbarTitleDetalleHuerto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mis Plantas"
             android:paddingTop="4sp"
+            android:text="Mis Plantas"
             android:textColor="@color/accent_dark" />
 
     </androidx.appcompat.widget.Toolbar>

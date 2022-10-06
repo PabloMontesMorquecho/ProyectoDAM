@@ -60,6 +60,10 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     protected void onStart() {
         super.onStart();
 
+        //Inserto en el título el nombre del huerto
+        binding.toolbarDetalleHuerto.setTitle(huerto.getNombre());
+//        binding.toolbarTitleDetalleHuerto.setText(huerto.getDescripcion());
+
         // Preparo el Recycler View de Plantas
         // Con un adaptador vacío
         binding.rvDetalleHuerto.setLayoutManager(new LinearLayoutManager(this));

@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.huertapp.databinding.ActivityCrearHuertoBinding;
@@ -32,6 +33,7 @@ public class CrearHuerto extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         binding = ActivityCrearHuertoBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -89,7 +91,7 @@ public class CrearHuerto extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_crear_huerto, menu);
-        binding.toolbarCrearHuerto.setTitle("Crear Huerto");
+//        binding.toolbarCrearHuerto.setTitle("Crear Huerto");
         return super.onCreateOptionsMenu(menu);
     }
 

@@ -29,6 +29,7 @@ android {
     viewBinding {
         enabled = true;
     }
+
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.android.application'

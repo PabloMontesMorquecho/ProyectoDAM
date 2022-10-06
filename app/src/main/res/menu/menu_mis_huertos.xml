@@ -3,14 +3,14 @@
 
     <item
         android:id="@+id/mnMisHuertosCrearHuerto"
-        android:title="Crear"/>
+        android:title="Crear huerto"/>
 
     <item
         android:id="@+id/mnMisHuertosPerfil"
-        android:title="Perfil"/>
+        android:title="Perfil de usuario"/>
 
     <item
         android:id="@+id/mnMisHuertosLogout"
-        android:title="Log out"/>
+        android:title="Cerrar sesión"/>
 
 </menu>

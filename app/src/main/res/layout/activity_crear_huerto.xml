@@ -1,78 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CrearHuerto"
-    android:orientation="vertical">
+    android:background="@color/background_light"
+    tools:context=".CrearHuerto">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarCrearHuerto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </androidx.appcompat.widget.Toolbar>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="175dp"
-        android:layout_marginBottom="24dp"
-        android:src="@drawable/huer5"
-        android:scaleType="fitXY">
-    </ImageView>
-
-    <EditText
-        android:id="@+id/etCrearHuertoNombreHuerto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="24dp"
-        android:hint="Nombre del huerto"
-        android:inputType="text"
-        android:minHeight="48dp">
+        android:orientation="vertical"
+        android:background="@color/background_light"
+        >
 
-    </EditText>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarCrearHuerto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="">
+        </androidx.appcompat.widget.Toolbar>
 
-    <EditText
-        android:id="@+id/etCrearHuertoDescripcion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="24dp"
-        android:hint="Descripción"
-        android:inputType="text"
-        android:minHeight="48dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_slab"
+            android:text="CREAR\nHUERTO"
+            android:textSize="54sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary_dark"
+            android:paddingLeft="15dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"/>
 
-    </EditText>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:layout_marginBottom="-112dp"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/trees"
+            android:scaleType="fitEnd">
+        </ImageView>
 
-    <Button
-        android:id="@+id/btnCrearHuerto"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="24dp"
-        android:layout_gravity="center"
-        android:textSize="16sp"
-        android:textColor="@color/accent"
-        android:text="Crear huerto">
+        <EditText
+            android:id="@+id/etCrearHuertoNombreHuerto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="72dp"
+            android:hint="Nombre del huerto"
+            android:inputType="text"
+            android:minHeight="48dp">
 
-    </Button>
+        </EditText>
 
-    <ProgressBar
-        android:id="@+id/pbCrearHuertoCargando"
-        android:layout_width="146dp"
-        android:layout_height="146dp"
-        android:layout_gravity="center"
-        android:alpha="0.3"
-        android:clickable="false"
-        android:visibility="invisible">
+        <EditText
+            android:id="@+id/etCrearHuertoDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="24dp"
+            android:hint="Descripción"
+            android:inputType="textMultiLine"
+            android:minHeight="48dp">
 
-    </ProgressBar>
+        </EditText>
+
+        <Button
+            android:id="@+id/btnCrearHuerto"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="14dp"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/accent"
+            android:text="Crear huerto">
+
+        </Button>
+
+        <ProgressBar
+            android:id="@+id/pbCrearHuertoCargando"
+            android:layout_width="114dp"
+            android:layout_height="114dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="20dp"
+            android:alpha="0.3"
+            android:clickable="false"
+            android:visibility="invisible">
+
+        </ProgressBar>
 
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
