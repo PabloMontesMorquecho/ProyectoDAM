@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.example.huertapp.adaptador.AdaptadorHuerto;
+import com.example.huertapp.adaptador.AdaptadorMisHuertos;
 import com.example.huertapp.databinding.ActivityMisHuertosBinding;
 import com.example.huertapp.modelo.Huerto;
 import com.example.huertapp.modelo.Usuario;
@@ -38,7 +38,7 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
     List<Huerto> listaHuertos;
-    AdaptadorHuerto adaptadorHuerto;
+    AdaptadorMisHuertos adaptadorMisHuertos;
 
     String IdUsuario;
 
@@ -81,9 +81,9 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
 
         binding.rvMisHuertos.setLayoutManager(new LinearLayoutManager(this));
         listaHuertos = new ArrayList<>();
-        adaptadorHuerto = new AdaptadorHuerto(listaHuertos);
-        adaptadorHuerto.setClickListener(this);
-        binding.rvMisHuertos.setAdapter(adaptadorHuerto);
+        adaptadorMisHuertos = new AdaptadorMisHuertos(listaHuertos);
+        adaptadorMisHuertos.setClickListener(this);
+        binding.rvMisHuertos.setAdapter(adaptadorMisHuertos);
 
         databaseReference.child("huertos").addValueEventListener(new ValueEventListener() {
             @Override
@@ -94,7 +94,7 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
                     Huerto huerto = ds.getValue(Huerto.class);
                     if (huerto.getidUsuario().equals(firebaseAuth.getUid())) listaHuertos.add(huerto);
                 }
-                adaptadorHuerto.notifyDataSetChanged();
+                adaptadorMisHuertos.notifyDataSetChanged();
             }
 
             @Override

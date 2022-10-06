@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.huertapp.adaptador.AdaptadorPlanta;
+import com.example.huertapp.adaptador.AdaptadorDetalleHuerto;
 import com.example.huertapp.databinding.ActivityDetalleHuertoBinding;
 import com.example.huertapp.modelo.Huerto;
 import com.example.huertapp.modelo.Planta;
@@ -33,7 +33,7 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     ActivityDetalleHuertoBinding binding;
     DatabaseReference databaseReference;
     List<Planta> listaPlantas;
-    AdaptadorPlanta adaptadorPlanta;
+    AdaptadorDetalleHuerto adaptadorDetalleHuerto;
     Huerto huerto;
     String keyHuerto;
 
@@ -68,9 +68,9 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
         // Con un adaptador vacío
         binding.rvDetalleHuerto.setLayoutManager(new LinearLayoutManager(this));
         listaPlantas = new ArrayList<>();
-        adaptadorPlanta = new AdaptadorPlanta(listaPlantas);
-        adaptadorPlanta.setClickListener(this);
-        binding.rvDetalleHuerto.setAdapter(adaptadorPlanta);
+        adaptadorDetalleHuerto = new AdaptadorDetalleHuerto(listaPlantas);
+        adaptadorDetalleHuerto.setClickListener(this);
+        binding.rvDetalleHuerto.setAdapter(adaptadorDetalleHuerto);
 
         // Recorro FB Realtime DB
         // y actualizo el adaptador
@@ -84,7 +84,7 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
                     Planta planta = ds.getValue(Planta.class);
                     if (planta.getIdHuerto().equals(keyHuerto)) listaPlantas.add(planta);
                 }
-                adaptadorPlanta.notifyDataSetChanged();
+                adaptadorDetalleHuerto.notifyDataSetChanged();
             }
 
             @Override

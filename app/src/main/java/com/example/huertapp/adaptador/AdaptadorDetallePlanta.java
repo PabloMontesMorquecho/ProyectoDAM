@@ -11,29 +11,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.huertapp.ItemClickListener;
 import com.example.huertapp.R;
 import com.example.huertapp.modelo.Actividad;
-import com.example.huertapp.modelo.Planta;
 
 import java.util.List;
 
-public class AdaptadorActividad extends RecyclerView.Adapter<AdaptadorActividad.ActividadesViewHolder> {
+public class AdaptadorDetallePlanta extends RecyclerView.Adapter<AdaptadorDetallePlanta.ActividadesViewHolder> {
 
     List<Actividad> listaActividades;
     static ItemClickListener clickListener;
 
-    public AdaptadorActividad(List<Actividad> listaActividades) {
+    public AdaptadorDetallePlanta(List<Actividad> listaActividades) {
         this.listaActividades = listaActividades;
     }
 
     @NonNull
     @Override
-    public AdaptadorActividad.ActividadesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AdaptadorDetallePlanta.ActividadesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fila_actividad, parent, false);
-        AdaptadorActividad.ActividadesViewHolder holder = new AdaptadorActividad.ActividadesViewHolder(v);
+        AdaptadorDetallePlanta.ActividadesViewHolder holder = new AdaptadorDetallePlanta.ActividadesViewHolder(v);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdaptadorActividad.ActividadesViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AdaptadorDetallePlanta.ActividadesViewHolder holder, int position) {
         Actividad actividad = listaActividades.get(position);
         holder.nombreActividad.setText(actividad.getTipo());
         holder.fechaActividad.setText(actividad.getFecha().toString());

@@ -14,25 +14,25 @@ import com.example.huertapp.modelo.Planta;
 
 import java.util.List;
 
-public class AdaptadorPlanta extends RecyclerView.Adapter<AdaptadorPlanta.PlantasViewHolder> {
+public class AdaptadorDetalleHuerto extends RecyclerView.Adapter<AdaptadorDetalleHuerto.PlantasViewHolder> {
 
     List<Planta> listaPlantas;
     static ItemClickListener clickListener;
 
-    public AdaptadorPlanta(List<Planta> listaPlantas) {
+    public AdaptadorDetalleHuerto(List<Planta> listaPlantas) {
         this.listaPlantas = listaPlantas;
     }
 
     @NonNull
     @Override
-    public AdaptadorPlanta.PlantasViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AdaptadorDetalleHuerto.PlantasViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fila_planta, parent, false);
-        AdaptadorPlanta.PlantasViewHolder holder = new AdaptadorPlanta.PlantasViewHolder(v);
+        AdaptadorDetalleHuerto.PlantasViewHolder holder = new AdaptadorDetalleHuerto.PlantasViewHolder(v);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdaptadorPlanta.PlantasViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AdaptadorDetalleHuerto.PlantasViewHolder holder, int position) {
         Planta planta = listaPlantas.get(position);
         holder.nombrePlanta.setText(planta.getNombre());
         holder.descripcionPlanta.setText(planta.getDescripcion());

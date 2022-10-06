@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.huertapp.adaptador.AdaptadorActividad;
+import com.example.huertapp.adaptador.AdaptadorDetallePlanta;
 import com.example.huertapp.databinding.ActivityDetallePlantaBinding;
 import com.example.huertapp.modelo.Actividad;
 import com.example.huertapp.modelo.Huerto;
@@ -34,7 +34,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     ActivityDetallePlantaBinding binding;
     DatabaseReference databaseReference;
     List<Actividad> listaActividades;
-    AdaptadorActividad adaptadorActividad;
+    AdaptadorDetallePlanta adaptadorDetallePlanta;
     Huerto huerto;
     String keyHuerto;
     Planta planta;
@@ -48,7 +48,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
         View view = binding.getRoot();
         setContentView(view);
 
-        setSupportActionBar(binding.toolbarActividadPlanta);
+        setSupportActionBar(binding.toolbarDetallePlanta);
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         Bundle bundle = getIntent().getExtras();
@@ -73,11 +73,11 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
 
         // Preparo el Recycler View de Actividades
         // Con un adaptador vacío
-        binding.rvActividades.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvDetallePlanta.setLayoutManager(new LinearLayoutManager(this));
         listaActividades = new ArrayList<>();
-        adaptadorActividad = new AdaptadorActividad(listaActividades);
-        adaptadorActividad.setClickListener(this);
-        binding.rvActividades.setAdapter(adaptadorActividad);
+        adaptadorDetallePlanta = new AdaptadorDetallePlanta(listaActividades);
+        adaptadorDetallePlanta.setClickListener(this);
+        binding.rvDetallePlanta.setAdapter(adaptadorDetallePlanta);
 
         // Recorro FB Realtime DB
         // y actualizo el adaptador
@@ -91,7 +91,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
                     Actividad actividad = ds.getValue(Actividad.class);
                     if (actividad.getIdPlanta().equals(keyPlanta)) listaActividades.add(actividad);
                 }
-                adaptadorActividad.notifyDataSetChanged();
+                adaptadorDetallePlanta.notifyDataSetChanged();
             }
 
             @Override
