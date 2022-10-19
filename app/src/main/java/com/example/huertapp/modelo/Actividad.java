@@ -6,16 +6,22 @@ import java.util.Date;
 public class Actividad implements Serializable {
     String tipo, observaciones, fecha;
     String idActividad, idPlanta;
+    String idUsuario;
 
     public Actividad() {}
 
-    public Actividad(String tipo, String observaciones, String fecha, String idActividad, String idPlanta) {
+    public Actividad(String tipo, String observaciones, String fecha, String idActividad, String idPlanta, String idUsuario) {
         this.tipo = tipo;
         this.observaciones = observaciones;
         this.fecha = fecha;
         this.idActividad = idActividad;
         this.idPlanta = idPlanta;
+        this.idUsuario = idUsuario;
     }
+
+    public String getIdUsuario() { return idUsuario; }
+
+    public void setIdUsuario(String idUsuario) { this.idUsuario = idUsuario; }
 
     public String getTipo() {
         return tipo;

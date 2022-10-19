@@ -31,6 +31,8 @@ public class Login extends AppCompatActivity {
     String emailErrorMessage = "Por favor, ingrese un email válido";
     String passwordErrorMessage = "Su contraseña tiene que tener al menos 6 caracteres";
 
+    String IdUsuario;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +54,7 @@ public class Login extends AppCompatActivity {
 
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if(currentUser != null){ // Si el usuario está ya logueado es dirigido a sus huertos
-            startActivity(new Intent(Login.this, MisHuertos.class));
-            finish();
+            goToMisHuertos();
         }
 
         binding.btnLoginAcceder.setOnClickListener(new View.OnClickListener() {
@@ -65,9 +66,7 @@ public class Login extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Intent intent = new Intent(getApplicationContext(), MisHuertos.class);
-                                startActivity(intent);
-                                finish();
+                                goToMisHuertos();
                             } else {
                                 String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
                                 errorToast(errorCode); // en caso de que hubiese algún otro tipo de error incluso después de haber introducido todos los campos correctamente
@@ -85,6 +84,16 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void goToMisHuertos() {
+        Intent intent = new Intent(Login.this, MisHuertos.class);
+        IdUsuario = firebaseAuth.getCurrentUser().getUid();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("idUsuario", IdUsuario);
+        intent.putExtras(bundle);
+        startActivity(intent);
+        finish();
     }
 
     private void errorToast(String errorCode) {

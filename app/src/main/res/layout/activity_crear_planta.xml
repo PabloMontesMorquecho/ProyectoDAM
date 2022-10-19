@@ -1,78 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CrearPlanta"
-    android:orientation="vertical">
+    android:background="@color/background_light"
+    tools:context=".CrearPlanta">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarCrearPlanta"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </androidx.appcompat.widget.Toolbar>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="175dp"
-        android:layout_marginBottom="24dp"
-        android:src="@drawable/huer5"
-        android:scaleType="fitXY">
-    </ImageView>
-
-    <EditText
-        android:id="@+id/etCrearPlantaNombreHuerto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="24dp"
-        android:hint="Nombre de la planta"
-        android:inputType="text"
-        android:minHeight="48dp">
+        android:orientation="vertical"
+        android:background="@color/background_light"
+        >
 
-    </EditText>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarCrearPlanta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="Crear Planta">
+        </androidx.appcompat.widget.Toolbar>
 
-    <EditText
-        android:id="@+id/etCrearPlantaDescripcion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="24dp"
-        android:hint="Descripción"
-        android:inputType="text"
-        android:minHeight="48dp">
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardCrearPlantaImagen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            app:cardElevation="1dp">
 
-    </EditText>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="4dp">
 
-    <Button
-        android:id="@+id/btnCrearPlanta"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="24dp"
-        android:layout_gravity="center"
-        android:textSize="16sp"
-        android:textColor="@color/accent"
-        android:text="Crear planta">
+                <!-- Media -->
+                <ImageView
+                    android:id="@+id/imgPlanta"
+                    android:layout_width="match_parent"
+                    android:layout_height="194dp"
+                    android:contentDescription="Imagen de la planta"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/subir_foto" />
 
-    </Button>
+            </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/pbCrearPlantaCargando"
-        android:layout_width="146dp"
-        android:layout_height="146dp"
-        android:layout_gravity="center"
-        android:alpha="0.3"
-        android:clickable="false"
-        android:visibility="invisible">
+        </com.google.android.material.card.MaterialCardView>
 
-    </ProgressBar>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Fecha">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCrearPlantaFecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:focusable="false"
+                android:clickable="true"
+                android:text=" "/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Nombre">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCrearPlantaNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" "/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Descripción">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCrearPlantaDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" "/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnCrearPlanta"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="14dp"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/accent"
+            android:text="Crear planta"/>
+
+        <ProgressBar
+            android:id="@+id/pbCrearPlantaCargando"
+            android:layout_width="114dp"
+            android:layout_height="114dp"
+            android:layout_marginTop="-278dp"
+            android:layout_gravity="center"
+            android:alpha="0.3"
+            android:clickable="false"
+            android:visibility="invisible"/>
 
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

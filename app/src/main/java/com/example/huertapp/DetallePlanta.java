@@ -3,26 +3,34 @@ package com.example.huertapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.huertapp.adaptador.AdaptadorDetallePlanta;
 import com.example.huertapp.databinding.ActivityDetallePlantaBinding;
 import com.example.huertapp.modelo.Actividad;
 import com.example.huertapp.modelo.Huerto;
 import com.example.huertapp.modelo.Planta;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,17 +47,34 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     String keyHuerto;
     Planta planta;
     String keyPlanta;
+    RecyclerView recyclerView;
+
+    private FirebaseStorage storage;
+    private ImageView imagenPlanta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         binding = ActivityDetallePlantaBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
         setSupportActionBar(binding.toolbarDetallePlanta);
+
+        recyclerView = findViewById(R.id.rvDetallePlanta);
+        imagenPlanta = findViewById(R.id.imgDetallePlanta);
+
         databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        storage = FirebaseStorage.getInstance();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -60,29 +85,35 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
             System.out.println("yeah, keyHUERTO: "+keyHuerto);
             System.out.println("yeah, keyPLANTA: "+keyPlanta);
         }
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+        //Inserto en el título el nombre de la planta
+        binding.toolbarDetallePlanta.setTitle(planta.getNombre());
 
-        //Inserto en el título el nombre del huerto y de la planta
-        binding.toolbarActividadPlanta.setTitle(huerto.getNombre());
-        binding.toolbarActividadPlanta.setSubtitle(planta.getNombre());
-        binding.toolbarActividadPlanta.setSubtitle("Subtitulo de la Planta largo de cojones para ver como se comporta en el diseño la interfaz de usuario");
+        binding.tvPlantaFechaDetallePlanta.setText(planta.getFecha());
+        binding.tvPlantaDescripcionDetallePlanta.setText(planta.getDescripcion());
+
+        // Create a reference to a file from a Google Cloud Storage URI
+        StorageReference
+                srReference = storage.getReferenceFromUrl(planta.getFoto());
+        Glide.with(this)
+             .load(srReference)
+             .into(imagenPlanta);
 
         // Preparo el Recycler View de Actividades
         // Con un adaptador vacío
-        binding.rvDetallePlanta.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(layoutManager);
         listaActividades = new ArrayList<>();
         adaptadorDetallePlanta = new AdaptadorDetallePlanta(listaActividades);
         adaptadorDetallePlanta.setClickListener(this);
-        binding.rvDetallePlanta.setAdapter(adaptadorDetallePlanta);
+        recyclerView.setAdapter(adaptadorDetallePlanta);
 
         // Recorro FB Realtime DB
         // y actualizo el adaptador
         // del Recycler View de Actividades
-        databaseReference.child("actividades").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("actividades").orderByChild("fecha").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listaActividades.removeAll(listaActividades);
@@ -91,7 +122,27 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
                     Actividad actividad = ds.getValue(Actividad.class);
                     if (actividad.getIdPlanta().equals(keyPlanta)) listaActividades.add(actividad);
                 }
-                adaptadorDetallePlanta.notifyDataSetChanged();
+                if (listaActividades.isEmpty()) {
+                    binding.llSinDetalles.setVisibility(View.VISIBLE);
+                    binding.scrollViewDetallePlanta.setVisibility(View.GONE);
+                    binding.btnCrearPrimeraAnotacion.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("idHuerto", keyHuerto);
+                            bundle.putSerializable("huerto", huerto);
+                            bundle.putString("idPlanta", keyPlanta);
+                            bundle.putSerializable("planta", planta);
+                            Intent intent = new Intent(getApplicationContext(), CrearActividad.class);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+                    });
+                } else {
+                    binding.llSinDetalles.setVisibility(View.GONE);
+                    binding.scrollViewDetallePlanta.setVisibility(View.VISIBLE);
+                    adaptadorDetallePlanta.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -112,29 +163,29 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
 
         switch (menuItem.getItemId()) {
 
-            case R.id.mnDetallePlantaGoToMisHuertos: {
-                Intent intent = new Intent(getApplicationContext(), MisHuertos.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("idHuerto", keyHuerto);
-                bundle.putSerializable("huerto", huerto);
-                bundle.putString("idPlanta", keyPlanta);
-                bundle.putSerializable("planta", planta);
-                intent.putExtras(bundle);
-                startActivity(intent);
-                break;
-            }
-
-            case R.id.mnDetallePlantaGoToMisPlantas: {
-                Intent intent = new Intent(getApplicationContext(), DetalleHuerto.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("idHuerto", keyHuerto);
-                bundle.putSerializable("huerto", huerto);
-                bundle.putString("idPlanta", keyPlanta);
-                bundle.putSerializable("planta", planta);
-                intent.putExtras(bundle);
-                startActivity(intent);
-                break;
-            }
+//            case R.id.mnDetallePlantaGoToMisHuertos: {
+//                Intent intent = new Intent(getApplicationContext(), MisHuertos.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("idHuerto", keyHuerto);
+//                bundle.putSerializable("huerto", huerto);
+//                bundle.putString("idPlanta", keyPlanta);
+//                bundle.putSerializable("planta", planta);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+//                break;
+//            }
+//
+//            case R.id.mnDetallePlantaGoToMisPlantas: {
+//                Intent intent = new Intent(getApplicationContext(), DetalleHuerto.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("idHuerto", keyHuerto);
+//                bundle.putSerializable("huerto", huerto);
+//                bundle.putString("idPlanta", keyPlanta);
+//                bundle.putSerializable("planta", planta);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+//                break;
+//            }
 
             case R.id.mnDetallePlantaCrearActividad: {
                 Intent intent = new Intent(getApplicationContext(), CrearActividad.class);
@@ -149,12 +200,12 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
             }
 
             case R.id.mnDetallePlantaBorrarPlanta: {
-                borrarPlanta(keyPlanta);
+                confirmarBorrado(keyPlanta);
                 break;
             }
 
             case R.id.mnDetallePlantaPerfil: {
-                Intent intent = new Intent(getApplicationContext(), Perfil.class);
+                Intent intent = new Intent(getApplicationContext(), UserProfile.class);
                 startActivity(intent);
                 break;
             }
@@ -183,6 +234,26 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
         bundle.putSerializable("huerto", huerto);
         startActivity(intent);
         finish();
+    }
+
+    private void confirmarBorrado(String keyPlanta) {
+//        new MaterialAlertDialogBuilder(DetallePlanta.this, R.style.AlertDialogTheme)
+        new MaterialAlertDialogBuilder(DetallePlanta.this)
+                .setTitle("Atención")
+                .setMessage("Si continuas, no podras recuperar los datos borrados.")
+                .setPositiveButton("BORRAR PLANTA", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        borrarPlanta(keyPlanta);
+                    }
+                })
+                .setNeutralButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .show();
     }
 
     /**

@@ -5,16 +5,22 @@ import java.io.Serializable;
 public class Huerto implements Serializable {
     String nombre, descripcion, foto;
     String idHuerto, idUsuario;
+    String fecha;
 
     public Huerto() {}
 
-    public Huerto(String nombre, String descripcion, String foto, String idHuerto, String idUsuario) {
+    public Huerto(String nombre, String descripcion, String foto, String idHuerto, String idUsuario, String fecha) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.foto = foto;
         this.idHuerto = idHuerto;
         this.idUsuario = idUsuario;
+        this.fecha = fecha;
     }
+
+    public String getFecha() { return fecha; }
+
+    public void setFecha(String fecha) { this.fecha = fecha; }
 
     public String getidUsuario() {
         return idUsuario;

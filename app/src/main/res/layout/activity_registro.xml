@@ -6,15 +6,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
+    android:background="@color/background_light"
     tools:context=".Registro">
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/icon_plant"
-        android:layout_marginTop="42dp"
-        android:contentDescription="@string/app_logo" />
+        android:src="@drawable/icon_plant_accent"
+        android:layout_marginTop="24dp"
+        android:contentDescription="@string/app_logo"/>
 
     <TextView
         android:id="@+id/tvRegistroTitulo"
@@ -24,81 +25,99 @@
         android:fontFamily="@font/roboto_slab"
         android:text="@string/huertapp"
         android:textAlignment="center"
-        android:textColor="@color/accent"
+        android:textColor="@color/primary"
         android:textSize="48sp"
-        tools:ignore="TextContrastCheck" />
+        tools:ignore="TextContrastCheck"/>
 
-    <EditText
-        android:id="@+id/etRegistroEmail"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="24dp"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:minHeight="48dp">
+        android:layout_height="wrap_content">
 
-    </EditText>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/etRegistroNombre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="24dp"
-        android:hint="Usuario"
-        android:inputType="text"
-        android:minHeight="48dp">
 
-    </EditText>
 
-    <EditText
-        android:id="@+id/etRegistroPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="24dp"
-        android:hint="Contraseña"
-        android:inputType="textPassword"
-        android:minHeight="48dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-    </EditText>
+                <EditText
+                    android:id="@+id/etRegistroEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="24dp"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress">
 
-    <EditText
-        android:id="@+id/etRegistroPasswordMatch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="24dp"
-        android:hint="Confirmar contraseña"
-        android:inputType="textPassword"
-        android:minHeight="48dp">
+                </EditText>
 
-    </EditText>
+                <EditText
+                    android:id="@+id/etRegistroNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="24dp"
+                    android:hint="Usuario"
+                    android:inputType="text">
 
-    <Button
-        android:id="@+id/btnRegistro"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="24dp"
-        android:textSize="16sp"
-        android:textColor="@color/accent"
-        android:text="Crear cuenta">
+                </EditText>
 
-    </Button>
+                <EditText
+                    android:id="@+id/etRegistroPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="24dp"
+                    android:hint="Contraseña"
+                    android:inputType="textPassword">
 
-    <ProgressBar
-        android:id="@+id/pbRegistroCargando"
-        android:layout_width="146dp"
-        android:layout_height="146dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="-260dp"
-        android:alpha="0.3"
-        android:clickable="false"
-        android:visibility="invisible">
+                </EditText>
 
-    </ProgressBar>
+                <EditText
+                    android:id="@+id/etRegistroPasswordMatch"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="24dp"
+                    android:hint="Confirmar contraseña"
+                    android:inputType="textPassword">
 
+                </EditText>
+
+                <Button
+                    android:id="@+id/btnRegistro"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="24dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/accent"
+                    android:text="Crear cuenta">
+
+                </Button>
+
+                <ProgressBar
+                    android:id="@+id/pbRegistroCargando"
+                    android:layout_width="146dp"
+                    android:layout_height="146dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="-290dp"
+                    android:alpha="0.3"
+                    android:clickable="false"
+                    android:visibility="invisible">
+
+                </ProgressBar>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

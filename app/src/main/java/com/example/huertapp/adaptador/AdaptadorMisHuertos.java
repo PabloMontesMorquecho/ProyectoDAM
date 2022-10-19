@@ -1,32 +1,41 @@
 package com.example.huertapp.adaptador;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.huertapp.ItemClickListener;
 import com.example.huertapp.R;
 import com.example.huertapp.modelo.Huerto;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
 public class AdaptadorMisHuertos extends RecyclerView.Adapter<AdaptadorMisHuertos.HuertosViewHolder> {
 
-    List<Huerto> listaHuertos;
+    private List<Huerto> listaHuertos;
+    private Context context;
+    private FirebaseStorage storage;
     static ItemClickListener clickListener;
 
-    public AdaptadorMisHuertos(List<Huerto> listaHuertos) {
+    public AdaptadorMisHuertos(Context context, List<Huerto> listaHuertos) {
+        this.context = context;
         this.listaHuertos = listaHuertos;
+        this.storage = FirebaseStorage.getInstance();
     }
 
     @NonNull
     @Override
     public AdaptadorMisHuertos.HuertosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fila_huerto, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fila_huerto_card, parent, false);
         HuertosViewHolder holder = new HuertosViewHolder(v);
         return holder;
     }
@@ -34,8 +43,16 @@ public class AdaptadorMisHuertos extends RecyclerView.Adapter<AdaptadorMisHuerto
     @Override
     public void onBindViewHolder(@NonNull AdaptadorMisHuertos.HuertosViewHolder holder, int position) {
         Huerto huerto = listaHuertos.get(position);
-        holder.nombreHuerto.setText(huerto.getNombre());
-
+        holder.nombreHuerto.setText(huerto.getNombre().trim());
+        holder.descripcionHuerto.setText(huerto.getDescripcion().trim());
+        holder.fechaHuerto.setText(huerto.getFecha());
+        // Create a reference to a file from a Google Cloud Storage URI
+        StorageReference
+                srReference = storage.getReferenceFromUrl(huerto.getFoto());
+        Glide.with(context)
+             .load(srReference)
+             .into(holder.imagenHuerto);
+//        Glide.with(context).load(listaHuertos.get(position).getFoto()).into(holder.imagenHuerto);
     }
 
     @Override
@@ -49,10 +66,14 @@ public class AdaptadorMisHuertos extends RecyclerView.Adapter<AdaptadorMisHuerto
 
     public static class HuertosViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView nombreHuerto, descripcionHuerto;
+        ImageView imagenHuerto;
+        TextView nombreHuerto, descripcionHuerto, fechaHuerto;
         public HuertosViewHolder(@NonNull View itemView) {
             super(itemView);
+            imagenHuerto = itemView.findViewById(R.id.imgHuerto);
             nombreHuerto = itemView.findViewById(R.id.tvHuertoNombre);
+            descripcionHuerto = itemView.findViewById(R.id.tvHuertoDescripcion);
+            fechaHuerto = itemView.findViewById(R.id.tvHuertoFechaCreacion);
             itemView.setOnClickListener(this); // bind the listener
         }
 

@@ -3,14 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/mnDetallePlantaGoToMisHuertos"
-        android:title="Mis huertos" />
-    <item
-        android:id="@+id/mnDetallePlantaGoToMisPlantas"
-        android:title="Mis plantas" />
-    <item
         android:id="@+id/mnDetallePlantaCrearActividad"
-        android:title="Añadir actividad"/>
+        android:title="Registrar actividad"/>
 
     <item
         android:id="@+id/mnDetallePlantaBorrarPlanta"
@@ -18,10 +12,10 @@
 
     <item
         android:id="@+id/mnDetallePlantaPerfil"
-        android:title="Perfil"/>
+        android:title="Perfil de usuario"/>
 
     <item
         android:id="@+id/mnDetallePlantaLogout"
-        android:title="Log out"/>
+        android:title="Cerrar sesión"/>
 
 </menu>

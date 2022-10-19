@@ -10,6 +10,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HuertAPP">
         <activity
+            android:name=".CrearColaborador"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".CrearHuertoNuevo"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".UserProfile"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".DetalleActividad"
             android:exported="false" />
         <activity
@@ -26,9 +47,6 @@
             android:exported="true" />
         <activity
             android:name=".CrearPlanta"
-            android:exported="true" />
-        <activity
-            android:name=".Perfil"
             android:exported="true" />
         <activity
             android:name=".MisHuertos"

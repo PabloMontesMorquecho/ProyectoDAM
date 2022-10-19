@@ -4,8 +4,8 @@
 
 
     <item
-        android:id="@+id/mnMisPlantasGoToMisHuertos"
-        android:title="Mis huertos" />
+        android:id="@+id/mnMisPlantasAddColaborador"
+        android:title="Añadir colaborador" />
 
     <item
         android:id="@+id/mnMisPlantasAddPlanta"
@@ -21,13 +21,13 @@
 
     <item
         android:id="@+id/mnMisPlantasPerfil"
-        android:title="Perfil">
+        android:title="Perfil de usuario">
 
     </item>
 
     <item
         android:id="@+id/mnMisPlantasLogout"
-        android:title="Log out">
+        android:title="Cerrar sesión">
     </item>
 
 </menu>

@@ -67,10 +67,12 @@ public class Registro extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if (task.isSuccessful()) {
-                                Usuario usuario = new Usuario(binding.etRegistroEmail.getText().toString(), binding.etRegistroNombre.getText().toString());
-
-                                String id = firebaseAuth.getCurrentUser().getUid();
-                                databaseReference.child("usuarios").child(id).setValue(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                String idUsuario = firebaseAuth.getCurrentUser().getUid();
+                                String nombre  = binding.etRegistroNombre.getText().toString();
+                                String email  = binding.etRegistroEmail.getText().toString();
+                                String password  = binding.etRegistroPassword.getText().toString();
+                                Usuario usuario = new Usuario(idUsuario, nombre, email, password);
+                                databaseReference.child("usuarios").child(idUsuario).setValue(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (!task.isSuccessful())

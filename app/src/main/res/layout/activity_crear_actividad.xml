@@ -1,74 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CrearActividad"
-    android:orientation="vertical">
+    android:background="@color/background_light"
+    tools:context=".CrearActividad">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="175dp"
-        android:layout_marginBottom="24dp"
-        android:src="@drawable/huer5"
-        android:scaleType="fitXY"/>
-
-    <EditText
-        android:id="@+id/etCrearActividadTipoActividad"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="24dp"
-        android:hint="Riego / Poda / Abono / Etc."
-        android:inputType="text"
-        android:minHeight="48dp"/>
+        android:orientation="vertical"
+        android:background="@color/background_light"
+        >
 
-    <EditText
-        android:id="@+id/etCrearActividadDescripcion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="24dp"
-        android:hint="Descripción"
-        android:inputType="text"
-        android:minHeight="48dp"/>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarCrearActividad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="Registrar Actividad">
+        </androidx.appcompat.widget.Toolbar>
 
-    <EditText
-        android:id="@+id/etCrearActividadFecha"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="24dp"
-        android:hint="Fecha"
-        android:inputType="date"
-        android:minHeight="48dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="15dp">
 
-    <Button
-        android:id="@+id/btnAddActividad"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="24dp"
-        android:layout_gravity="center"
-        android:textSize="16sp"
-        android:textColor="@color/accent"
-        android:text="Añadir actividad"/>
+                <!-- Media -->
+                <ImageView
+                    android:id="@+id/imgCrearActividad"
+                    android:layout_width="match_parent"
+                    android:layout_height="194dp"
+                    android:contentDescription="Imagen de la planta"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/subir_foto" />
 
-    <ProgressBar
-        android:id="@+id/pbCrearActividadCargando"
-        android:layout_width="146dp"
-        android:layout_height="146dp"
-        android:layout_gravity="center"
-        android:alpha="0.3"
-        android:clickable="false"
-        android:visibility="invisible"/>
+            </LinearLayout>
 
-</LinearLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Fecha">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCrearActividadFecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:focusable="false"
+                android:clickable="true"
+                android:text=" "/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Riego / Abono / Poda / Etc.">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCrearActividadTipoActividad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" "/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Observaciones">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCrearActividadDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" "/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnCrearActividad"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="14dp"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/accent"
+            android:text="REGISTRAR ACTIVIDAD"/>
+
+        <ProgressBar
+            android:id="@+id/pbCrearActividadCargando"
+            android:layout_width="114dp"
+            android:layout_height="114dp"
+            android:layout_marginTop="-278dp"
+            android:layout_gravity="center"
+            android:alpha="0.3"
+            android:clickable="false"
+            android:visibility="invisible"/>
+
+
+    </LinearLayout>
+</ScrollView>

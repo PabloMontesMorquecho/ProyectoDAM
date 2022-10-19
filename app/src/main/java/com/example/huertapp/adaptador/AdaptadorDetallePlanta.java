@@ -34,8 +34,8 @@ public class AdaptadorDetallePlanta extends RecyclerView.Adapter<AdaptadorDetall
     @Override
     public void onBindViewHolder(@NonNull AdaptadorDetallePlanta.ActividadesViewHolder holder, int position) {
         Actividad actividad = listaActividades.get(position);
-        holder.nombreActividad.setText(actividad.getTipo());
-        holder.fechaActividad.setText(actividad.getFecha().toString());
+        holder.tipoActividad.setText(actividad.getTipo());
+        holder.fechaActividad.setText(actividad.getFecha());
         holder.detalleActividad.setText(actividad.getObservaciones());
     }
 
@@ -50,11 +50,11 @@ public class AdaptadorDetallePlanta extends RecyclerView.Adapter<AdaptadorDetall
 
     public static class ActividadesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView nombreActividad, fechaActividad, detalleActividad;
+        TextView tipoActividad, fechaActividad, detalleActividad;
         public ActividadesViewHolder(@NonNull View itemView) {
             super(itemView);
-            nombreActividad = itemView.findViewById(R.id.tvActividadNombre);
-            fechaActividad = itemView.findViewById(R.id.tvActividadFecha);
+            tipoActividad = itemView.findViewById(R.id.tvActividadTipo);
+            fechaActividad = itemView.findViewById(R.id.tvActividadFechaCreacion);
             detalleActividad = itemView.findViewById(R.id.tvActividadDescripcion);
             itemView.setOnClickListener(this); // bind the listener
         }

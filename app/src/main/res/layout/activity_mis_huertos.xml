@@ -1,56 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/background_light"
     tools:context=".MisHuertos">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarMisHuertos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Mis Huertos">
+
+    </androidx.appcompat.widget.Toolbar>
+
     <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/llSinHuertos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="@drawable/sin_huerto_light"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarMisHuertos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title="">
-
-            <TextView
-                android:id="@+id/toolbarTitleMisHuertos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="4sp"
-                android:text=""
-                android:textColor="@color/accent_dark" />
-
-        </androidx.appcompat.widget.Toolbar>
-
+        <!-- Title, secondary and supporting text -->
         <TextView
+            android:id="@+id/tvPlantaNombre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Sin huertos"
+            android:textAppearance="?attr/textAppearanceHeadline6"
             android:fontFamily="@font/roboto_slab"
-            android:text="MIS\nHUERTOS"
-            android:textSize="54sp"
-            android:textStyle="bold"
-            android:textColor="@color/primary_dark"
-            android:paddingLeft="15dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="-24dp"/>
+            android:textSize="18sp"
+            android:textColor="@color/primary"
+            />
+        <TextView
+            android:id="@+id/tvPlantaDescripcion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="14dp"
+            android:textAlignment="center"
+            android:text="Esto parece un solar,\ncomienza creando tu primer huerto"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="?android:attr/textColorSecondary"
+            android:fontFamily="@font/roboto"
+            android:lineHeight="20sp"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            />
 
-        <ImageView
-            android:id="@+id/imgMisHuertos"
+        <Button
+            android:id="@+id/btnCrearPrimerHuerto"
             android:layout_width="match_parent"
-            android:layout_height="320dp"
-            android:scaleType="fitStart"
-            android:src="@drawable/mis_huertos_top"/>
+            android:layout_height="64dp"
+            android:text="CREAR HUERTO"
+            style="?attr/colorButtonNormal"
+            />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvMisHuertos"
-            android:layout_width="match_parent"
-            android:layout_height="440dp"
-            android:orientation="horizontal" />
     </LinearLayout>
-</ScrollView>
+
+    <ScrollView
+        android:visibility="gone"
+        android:id="@+id/scrollViewMisHuertos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_slab"
+                android:text="MIS\nHUERTOS"
+                android:textSize="54sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_dark"
+                android:paddingLeft="15dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="-24dp"/>
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/imgMisHuertos"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/mis_huertos_top"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMisHuertos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

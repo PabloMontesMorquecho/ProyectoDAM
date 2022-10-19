@@ -3,14 +3,20 @@ package com.example.huertapp.modelo;
 import java.io.Serializable;
 
 public class Usuario implements Serializable {
-    String email, nombre;
+    String idUsuario, email, nombre, password;
 
     public Usuario() {
     }
-    public Usuario(String email, String nombre) {
+    public Usuario(String idUsuario, String email, String nombre, String password) {
+        this.idUsuario = idUsuario;
         this.email = email;
         this.nombre = nombre;
+        this.password = password;
     }
+
+    public String getIdUsuario() { return idUsuario; }
+
+    public void setIdUsuario(String idUsuario) { this.idUsuario = idUsuario; }
 
     public String getEmail() {
         return email;

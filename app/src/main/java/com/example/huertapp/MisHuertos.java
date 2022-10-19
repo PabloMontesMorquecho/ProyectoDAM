@@ -1,16 +1,22 @@
 package com.example.huertapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.example.huertapp.adaptador.AdaptadorMisHuertos;
@@ -18,7 +24,10 @@ import com.example.huertapp.databinding.ActivityMisHuertosBinding;
 import com.example.huertapp.modelo.Huerto;
 import com.example.huertapp.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +35,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +51,7 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
     DatabaseReference databaseReference;
     List<Huerto> listaHuertos;
     AdaptadorMisHuertos adaptadorMisHuertos;
+    RecyclerView recyclerView;
 
     String IdUsuario;
 
@@ -52,6 +65,9 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
         setContentView(view);
 
         setSupportActionBar(binding.toolbarMisHuertos);
+
+        recyclerView = findViewById(R.id.rvMisHuertos);
+
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -79,13 +95,17 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
     protected void onStart() {
         super.onStart();
 
-        binding.rvMisHuertos.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(layoutManager);
+//        binding.rvMisHuertos.setLayoutManager(new LinearLayoutManager(this));
         listaHuertos = new ArrayList<>();
-        adaptadorMisHuertos = new AdaptadorMisHuertos(listaHuertos);
+        adaptadorMisHuertos = new AdaptadorMisHuertos(getApplicationContext(), listaHuertos);
         adaptadorMisHuertos.setClickListener(this);
-        binding.rvMisHuertos.setAdapter(adaptadorMisHuertos);
+        recyclerView.setAdapter(adaptadorMisHuertos);
 
-        databaseReference.child("huertos").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("huertos").orderByChild("fecha").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listaHuertos.removeAll(listaHuertos);
@@ -93,8 +113,26 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
                         snapshot.getChildren()) {
                     Huerto huerto = ds.getValue(Huerto.class);
                     if (huerto.getidUsuario().equals(firebaseAuth.getUid())) listaHuertos.add(huerto);
+                    else if (ds.child("miembros/" + IdUsuario).exists()) {
+                        listaHuertos.add(huerto);
+                        Log.i(TAG, "Miembro: "+ ds.child("miembros/" + IdUsuario + "").getValue().toString());
+                    }
                 }
-                adaptadorMisHuertos.notifyDataSetChanged();
+                if (listaHuertos.isEmpty()) {
+                    binding.llSinHuertos.setVisibility(View.VISIBLE);
+                    binding.scrollViewMisHuertos.setVisibility(View.GONE);
+                    binding.btnCrearPrimerHuerto.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getApplicationContext(), CrearHuerto.class);
+                            startActivity(intent);
+                        }
+                    });
+                } else {
+                    binding.llSinHuertos.setVisibility(View.GONE);
+                    binding.scrollViewMisHuertos.setVisibility(View.VISIBLE);
+                    adaptadorMisHuertos.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -121,7 +159,7 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
             }
 
             case R.id.mnMisHuertosPerfil: {
-                Intent intent = new Intent(getApplicationContext(), Perfil.class);
+                Intent intent = new Intent(getApplicationContext(), UserProfile.class);
                 startActivity(intent);
                 break;
             }
@@ -149,4 +187,5 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
         Log.i(TAG, "Nombre del huerto: "+ huerto.getNombre() + " · Descripción: " + huerto.getDescripcion() + " · KEY:" + huerto.getIdHuerto());
         startActivity(i);
     }
+
 }

@@ -18,30 +18,104 @@
             android:id="@+id/toolbarCrearHuerto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="">
+            app:title="Crear Huerto">
         </androidx.appcompat.widget.Toolbar>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardCrearHuertoImagen"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_slab"
-            android:text="CREAR\nHUERTO"
-            android:textSize="54sp"
-            android:textStyle="bold"
-            android:textColor="@color/primary_dark"
-            android:paddingLeft="15dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"/>
+            android:layout_margin="15dp"
+            app:cardElevation="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="4dp">
+
+                <!-- Media -->
+                <ImageView
+                    android:id="@+id/imgHuerto"
+                    android:layout_width="match_parent"
+                    android:layout_height="194dp"
+                    android:contentDescription="Imagen del huerto"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/subir_foto" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Nombre">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCrearHuertoNombreHuerto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" "/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Fecha">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCrearHuertoFecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:focusable="false"
+                android:clickable="true"
+                android:text=" "/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Descripción">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCrearHuertoDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" "/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <ImageView
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="175dp"
+            android:layout_marginTop="-319dp"
             android:layout_marginBottom="-112dp"
             android:layout_marginRight="14dp"
             android:src="@drawable/trees"
-            android:scaleType="fitEnd">
-        </ImageView>
+            android:scaleType="fitEnd"/>
 
+        <!--
         <EditText
             android:id="@+id/etCrearHuertoNombreHuerto"
             android:layout_width="match_parent"
@@ -50,7 +124,6 @@
             android:layout_marginRight="20dp"
             android:layout_gravity="center"
             android:layout_marginBottom="24dp"
-            android:layout_marginTop="72dp"
             android:hint="Nombre del huerto"
             android:inputType="text"
             android:minHeight="48dp">
@@ -70,32 +143,29 @@
             android:minHeight="48dp">
 
         </EditText>
-
+        -->
         <Button
             android:id="@+id/btnCrearHuerto"
             android:layout_width="match_parent"
             android:layout_height="64dp"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="14dp"
             android:layout_gravity="center"
             android:textSize="16sp"
             android:textColor="@color/accent"
-            android:text="Crear huerto">
-
-        </Button>
+            android:text="Crear huerto"/>
 
         <ProgressBar
             android:id="@+id/pbCrearHuertoCargando"
             android:layout_width="114dp"
             android:layout_height="114dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="20dp"
+            android:layout_marginTop="-240dp"
+            android:layout_gravity="center"
             android:alpha="0.3"
             android:clickable="false"
-            android:visibility="invisible">
-
-        </ProgressBar>
+            android:visibility="invisible"/>
 
 
     </LinearLayout>
