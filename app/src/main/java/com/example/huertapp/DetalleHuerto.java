@@ -20,6 +20,7 @@ import com.example.huertapp.adaptador.AdaptadorDetalleHuerto;
 import com.example.huertapp.databinding.ActivityDetalleHuertoBinding;
 import com.example.huertapp.modelo.Huerto;
 import com.example.huertapp.modelo.Planta;
+import com.example.huertapp.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,12 +43,14 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     DatabaseReference databaseReference;
     List<Planta> listaPlantas;
     AdaptadorDetalleHuerto adaptadorDetalleHuerto;
-    Huerto huerto;
+    Huerto huerto, huertoActual;
     String idUsuario, keyHuerto;
     RecyclerView recyclerView;
 
     private FirebaseStorage storage;
     private ImageView imagenHuerto;
+
+    String nombreUsuarioCreador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,8 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     @Override
     protected void onStart() {
         super.onStart();
+
+        cargaNombreCreadorHuerto();
 
         //
         Bundle bundle = getIntent().getExtras();
@@ -161,6 +166,29 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
             }
         });
 
+    }
+
+    private void cargaNombreCreadorHuerto() {
+        databaseReference.child("usuarios").orderByChild("idUsuario").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Usuario usuario = ds.getValue(Usuario.class);
+                    if (usuario.getIdUsuario().equals(huerto.getidUsuario())) {
+                        nombreUsuarioCreador = ds.child("nombre").getValue().toString();
+                        Log.i(TAG, "ID     : "+ ds.child("idUsuario").getValue().toString());
+                        Log.i(TAG, "NOMBRE : "+ ds.child("nombre").getValue().toString());
+                        Log.i(TAG, "EMAIL  : "+ ds.child("email").getValue().toString());
+                        binding.tvHuertoNombreUsuarioCreador.setText(nombreUsuarioCreador);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override

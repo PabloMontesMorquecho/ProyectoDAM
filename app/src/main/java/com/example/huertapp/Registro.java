@@ -71,7 +71,7 @@ public class Registro extends AppCompatActivity {
                                 String nombre  = binding.etRegistroNombre.getText().toString();
                                 String email  = binding.etRegistroEmail.getText().toString();
                                 String password  = binding.etRegistroPassword.getText().toString();
-                                Usuario usuario = new Usuario(idUsuario, nombre, email, password);
+                                Usuario usuario = new Usuario(idUsuario, email, nombre, password);
                                 databaseReference.child("usuarios").child(idUsuario).setValue(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {

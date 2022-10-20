@@ -1,33 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UserProfile">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarUserProfile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary_dark"
-        app:titleTextColor="@color/white"
-        app:title="">
-
-        <TextView
-            android:id="@+id/toolbarTitleUserProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="4sp"
-            android:text=""
-            android:textColor="@color/accent_dark" />
-
-    </androidx.appcompat.widget.Toolbar>
-
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    tools:context=".ActualizarPerfil">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,10 +15,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="320dp"
+            android:layout_marginTop="0dp"
             android:background="@color/primary_dark"
-            android:padding="0dp"
-            android:layout_marginTop="0dp">
+            android:minHeight="320dp"
+            android:padding="0dp">
 
             <ImageView
                 android:id="@+id/imgPerfil"
@@ -50,10 +28,10 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="14dp"
                 android:src="@drawable/icon_plant_accent"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
             <TextView
-                android:id="@+id/tvUserProfileNombre"
+                android:id="@+id/tvActualizarPerfilNombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imgPerfil"
@@ -67,19 +45,19 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/tvUserProfileEmail"
+                android:id="@+id/tvActualizarPerfilEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvUserProfileNombre"
+                android:layout_below="@id/tvActualizarPerfilNombre"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="10dp"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
                 android:layout_marginBottom="86dp"
-                android:textAlignment="center"
                 android:fontFamily="@font/roboto"
                 android:includeFontPadding="false"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
                 android:text="pablo@garcia.es"
+                android:textAlignment="center"
                 android:textColor="@color/primary_light"
                 android:textSize="14sp" />
 
@@ -90,9 +68,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="-100dp"
             android:paddingLeft="10dp"
+            android:paddingTop="20dp"
             android:paddingRight="10dp"
-            android:paddingBottom="10dp"
-            android:paddingTop="20dp">
+            android:paddingBottom="10dp">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
@@ -114,7 +92,7 @@
                         android:src="@drawable/icon_plant_accent" />
 
                     <TextView
-                        android:id="@+id/tvUserProfileCantidadHuertos"
+                        android:id="@+id/cantidad_huertos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -127,7 +105,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tvUserProfileCantidadHuertos"
+                        android:layout_below="@id/cantidad_huertos"
                         android:layout_centerInParent="true"
                         android:fontFamily="@font/roboto_slab"
                         android:includeFontPadding="false"
@@ -159,26 +137,26 @@
                         android:src="@drawable/icon_plant_accent" />
 
                     <TextView
-                        android:id="@+id/tvUserProfileCantidadPlantas"
+                        android:id="@+id/cantidad_plantas"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:fontFamily="@font/roboto_slab"
                         android:includeFontPadding="false"
                         android:text="14"
-                        android:textSize="20sp"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tvUserProfileCantidadPlantas"
+                        android:layout_below="@id/cantidad_plantas"
                         android:layout_centerHorizontal="true"
                         android:fontFamily="@font/roboto_slab"
                         android:includeFontPadding="false"
                         android:text="Plantas"
-                        android:textSize="14sp"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -191,34 +169,93 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="20dp"
+            android:paddingTop="10dp"
             android:paddingRight="20dp"
-            android:paddingBottom="20dp"
-            android:paddingTop="10dp">
+            android:paddingBottom="20dp">
 
-            <Button
-                android:id="@+id/btnModificarPerfil"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="14dp"
-                android:text="MODIFICAR PERFIL"
-                android:textColor="@color/accent"
-                android:textSize="16sp" />
-
-            <Button
-                android:id="@+id/btnEliminarCuenta"
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:layout_gravity="center"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:text="ELIMINAR CUENTA"
+                android:hint="Nombre"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etActualizarPerfilNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:text=" " />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:hint="Email"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etActualizarPerfilEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:text=" " />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:hint="Contraseña"
+                app:helperText="* Mínimo 6 caracteres"
+                app:endIconMode="password_toggle"
+                app:counterEnabled="true"
+                app:helperTextTextColor="@color/accent_dark"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etActualizarPerfilPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:text=" " />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnActualizarPerfil"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="14dp"
+                android:text="ACTUALIZAR DATOS"
                 android:textColor="@color/accent"
                 android:textSize="16sp" />
+
+            <ProgressBar
+                android:id="@+id/pbActualizarPerfilCargando"
+                android:layout_width="114dp"
+                android:layout_height="114dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="-278dp"
+                android:alpha="0.3"
+                android:clickable="false"
+                android:visibility="invisible" />
+
 
         </LinearLayout>
 
     </LinearLayout>
 
 </ScrollView>
-
-</LinearLayout>

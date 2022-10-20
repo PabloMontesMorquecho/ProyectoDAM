@@ -11,27 +11,34 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.huertapp.databinding.ActivityUserProfileBinding;
+import com.example.huertapp.modelo.Huerto;
+import com.example.huertapp.modelo.Planta;
 import com.example.huertapp.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserProfile extends AppCompatActivity {
+
+    private static final String TAG = "UserProfile Activity";
+
     ActivityUserProfileBinding binding;
 
     String IdUsuario;
-    private ImageView profilePic;
+    List<Huerto> listaHuertos;
+    List<Planta> listaPlantas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +51,32 @@ public class UserProfile extends AppCompatActivity {
         setSupportActionBar(binding.toolbarUserProfile);
         binding.toolbarUserProfile.getOverflowIcon().setColorFilter(Color.WHITE , PorterDuff.Mode.SRC_ATOP);
 
-        profilePic = findViewById(R.id.circular_image_view);
+        listaHuertos = new ArrayList<>();
+        listaPlantas = new ArrayList<>();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         loadUserData();
+
+        binding.btnModificarPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ActualizarPerfil.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnEliminarCuenta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eliminarCuenta();
+            }
+        });
+
     }
 
     private void loadUserData() {
@@ -61,9 +92,7 @@ public class UserProfile extends AppCompatActivity {
                 else {
                     DataSnapshot dataSnapshot = task.getResult();
                     Usuario usuario = dataSnapshot.getValue(Usuario.class);
-                    binding.userProfileNombre.setText(usuario.getNombre());
                     binding.tvUserProfileNombre.setText(usuario.getNombre());
-                    binding.userProfileEmail.setText(usuario.getEmail());
                     binding.tvUserProfileEmail.setText(usuario.getEmail());
                     Log.d("Firebase GET Usuario", String.valueOf(task.getResult().getValue()));
                 }
@@ -76,6 +105,76 @@ public class UserProfile extends AppCompatActivity {
 //                .load(srReference)
 //                .into(profilePic);
 
+        DatabaseReference dbHuertos = FirebaseDatabase.getInstance().getReference("huertos");
+        dbHuertos.orderByChild("fecha").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listaHuertos.removeAll(listaHuertos);
+                for (DataSnapshot ds :
+                        snapshot.getChildren()) {
+                    Huerto huerto = ds.getValue(Huerto.class);
+                    if (huerto.getidUsuario().equals(IdUsuario)) listaHuertos.add(huerto);
+                    else if (ds.child("miembros/" + IdUsuario).exists()) {
+                        listaHuertos.add(huerto);
+                    }
+                }
+                int nHuertos = listaHuertos.size();
+                Log.d(TAG, "HUERTOS : " + nHuertos);
+                binding.tvUserProfileCantidadHuertos.setText(String.valueOf(nHuertos));
+
+                DatabaseReference dbPlantas = FirebaseDatabase.getInstance().getReference("plantas");
+                listaPlantas.removeAll(listaPlantas);
+                    dbPlantas.orderByChild("fecha").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (Huerto miHuerto : listaHuertos) {
+                                for (DataSnapshot ds :
+                                        snapshot.getChildren()) {
+                                    Planta planta = ds.getValue(Planta.class);
+                                    if (planta.getIdHuerto().equals(miHuerto.getIdHuerto())) listaPlantas.add(planta);
+                                    Log.d(TAG, "ID HUERTO : " + miHuerto.getIdHuerto());
+                                }
+                            }
+                            int nPlantas = listaPlantas.size();
+                            Log.d(TAG, "PLANTAS : " + nPlantas);
+                            binding.tvUserProfileCantidadPlantas.setText(String.valueOf(nPlantas));
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private void eliminarCuenta() {
+        // Esto la elimina de Firebase Authentication
+        // FALTA eliminar usuario de Firebase Realtime Database
+        // Y Recolectar basura
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user.delete()
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "User account deleted.");
+                        FirebaseAuth.getInstance().signOut();
+                        Toast.makeText(UserProfile.this, "Cuenta de usuario borrada", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), Login.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                }
+            });
     }
 
     @Override
@@ -94,7 +193,7 @@ public class UserProfile extends AppCompatActivity {
                 break;
             }
 
-            case R.id.mnMisHuertosLogout: {
+            case R.id.mnPerfilLogout: {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(UserProfile.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), Login.class);
