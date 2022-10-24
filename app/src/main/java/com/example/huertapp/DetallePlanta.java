@@ -22,6 +22,7 @@ import com.example.huertapp.databinding.ActivityDetallePlantaBinding;
 import com.example.huertapp.modelo.Actividad;
 import com.example.huertapp.modelo.Huerto;
 import com.example.huertapp.modelo.Planta;
+import com.example.huertapp.modelo.Usuario;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -52,6 +53,8 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     private FirebaseStorage storage;
     private ImageView imagenPlanta;
 
+    String nombreUsuarioCreador;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,26 +73,29 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
 
         storage = FirebaseStorage.getInstance();
 
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            huerto = (Huerto) getIntent().getSerializableExtra("huerto");
+            keyHuerto = huerto.getIdHuerto();
+            planta = (Planta) getIntent().getSerializableExtra("planta");
+            keyPlanta = planta.getIdPlanta();
+        }
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            huerto = (Huerto) getIntent().getSerializableExtra("huerto");
-            keyHuerto = bundle.getString("idHuerto");
-            planta = (Planta) getIntent().getSerializableExtra("planta");
-            keyPlanta = bundle.getString("idPlanta");
-            System.out.println("yeah, keyHUERTO: "+keyHuerto);
-            System.out.println("yeah, keyPLANTA: "+keyPlanta);
-        }
+        cargaNombreCreadorPlanta();
 
         //Inserto en el título el nombre de la planta
         binding.toolbarDetallePlanta.setTitle(planta.getNombre());
 
         binding.tvPlantaFechaDetallePlanta.setText(planta.getFecha());
+        if (planta.getDescripcion().isEmpty()) {
+            binding.tvPlantaDescripcionDetallePlanta.setHeight(0);
+        }
         binding.tvPlantaDescripcionDetallePlanta.setText(planta.getDescripcion());
 
         // Create a reference to a file from a Google Cloud Storage URI
@@ -106,7 +112,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
         layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
         listaActividades = new ArrayList<>();
-        adaptadorDetallePlanta = new AdaptadorDetallePlanta(listaActividades);
+        adaptadorDetallePlanta = new AdaptadorDetallePlanta(getApplicationContext(), listaActividades);
         adaptadorDetallePlanta.setClickListener(this);
         recyclerView.setAdapter(adaptadorDetallePlanta);
 
@@ -151,6 +157,29 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
             }
         });
 
+    }
+
+    private void cargaNombreCreadorPlanta() {
+        databaseReference.child("usuarios").orderByChild("idUsuario").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Usuario usuario = ds.getValue(Usuario.class);
+                    if (usuario.getIdUsuario().equals(planta.getIdUsuario())) {
+                        nombreUsuarioCreador = ds.child("nombre").getValue().toString();
+                        Log.i(TAG, "ID     : "+ ds.child("idUsuario").getValue().toString());
+                        Log.i(TAG, "NOMBRE : "+ ds.child("nombre").getValue().toString());
+                        Log.i(TAG, "EMAIL  : "+ ds.child("email").getValue().toString());
+                        binding.tvPlantaNombreUsuarioCreador.setText(nombreUsuarioCreador);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
@@ -266,13 +295,14 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
      */
     @Override
     public void onClick(View view, int position) {
-//        final Actividad actividad = listaActividades.get(position);
-//        Intent i = new Intent(this, DetallePlanta.class);
-//        Bundle bundle = new Bundle();
-//        bundle.putString("idPlanta", planta.getIdPlanta());
-//        bundle.putSerializable("planta", planta);
-//        i.putExtras(bundle);
+        final Actividad actividad = listaActividades.get(position);
+        Intent i = new Intent(this, DetalleActividad.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("huerto", huerto);
+        bundle.putSerializable("planta", planta);
+        bundle.putSerializable("actividad", actividad);
+        i.putExtras(bundle);
         Log.i("Nombre de la planta: ", planta.getNombre() + " · Descripción: " + planta.getDescripcion() + " · KEY: " + planta.getIdPlanta());
-//        startActivity(i);
+        startActivity(i);
     }
 }

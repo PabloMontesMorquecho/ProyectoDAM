@@ -25,7 +25,7 @@
     </style>
 
     <style name="miBoton" parent="Widget.AppCompat.Button">
-        <item name="android:width"></item>
+<!--        <item name="android:width"></item>-->
     </style>
     
 </resources>

@@ -202,7 +202,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="14dp"
                 android:text="MODIFICAR PERFIL"
-                android:textColor="@color/accent"
+                style="?attr/colorButtonNormal"
                 android:textSize="16sp" />
 
             <Button
@@ -212,7 +212,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="24dp"
                 android:text="ELIMINAR CUENTA"
-                android:textColor="@color/accent"
+                style="?attr/colorButtonNormal"
                 android:textSize="16sp" />
 
         </LinearLayout>

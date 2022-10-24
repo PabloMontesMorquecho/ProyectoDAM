@@ -35,6 +35,7 @@
 
                 <!-- Title, secondary and supporting text -->
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tvPlantaFechaCreacion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

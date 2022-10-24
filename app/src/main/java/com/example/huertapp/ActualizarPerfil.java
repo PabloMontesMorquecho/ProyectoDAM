@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.huertapp.databinding.ActivityActualizarPerfilBinding;
+import com.example.huertapp.modelo.Huerto;
 import com.example.huertapp.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,6 +29,7 @@ public class ActualizarPerfil extends AppCompatActivity {
     DatabaseReference dbUsuarios;
 
     String _dbNombre, _dbEmail, _dbPassword;
+    String numeroHuertos, numeroPlantas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,15 @@ public class ActualizarPerfil extends AppCompatActivity {
         setContentView(view);
 
         dbUsuarios = FirebaseDatabase.getInstance().getReference("usuarios");
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            numeroHuertos = bundle.getString("nHuertos");
+            binding.tvActualizarPerfilCantidadHuertos.setText(numeroHuertos);
+            numeroPlantas = bundle.getString("nPlantas");
+            binding.tvActualizarPerfilCantidadPlantas.setText(numeroPlantas);
+        }
+
 
     }
 

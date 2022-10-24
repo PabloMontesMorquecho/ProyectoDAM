@@ -40,10 +40,10 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     private static final String TAG = "DetalleHuerto Activity";
 
     ActivityDetalleHuertoBinding binding;
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReference, dbHuertoActual;
     List<Planta> listaPlantas;
     AdaptadorDetalleHuerto adaptadorDetalleHuerto;
-    Huerto huerto, huertoActual;
+    Huerto huerto;
     String idUsuario, keyHuerto;
     RecyclerView recyclerView;
 
@@ -68,26 +68,13 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
 
         idUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-
         storage = FirebaseStorage.getInstance();
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        cargaNombreCreadorHuerto();
-
-        //
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             huerto = (Huerto) getIntent().getSerializableExtra("huerto");
             keyHuerto = bundle.getString("idHuerto");
-            System.out.println("yeah, keyHUERTO: " + keyHuerto);
-            System.out.println("yeah, idUsuario creador del huerto: " + huerto.getidUsuario());
-//            System.out.println("yeah, Nombre creador del huerto: "+databaseReference.child("usuarios/" + huerto
-//            .getidUsuario()).child("nombre").get());
+
             databaseReference.child("usuarios").child(huerto.getidUsuario()).get()
                              .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                  @Override
@@ -98,6 +85,7 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
                                          Log.d("firebase", String.valueOf(task.getResult().getValue()));
                                          Log.d("nombre", String.valueOf(task.getResult().child("nombre").getValue()));
                                          Log.d("email", String.valueOf(task.getResult().child("email").getValue()));
+                                         binding.tvHuertoNombreUsuarioCreador.setText(String.valueOf(task.getResult().child("nombre").getValue()));
                                      }
                                  }
                              });
@@ -114,7 +102,17 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
                  .load(srReference)
                  .into(imagenHuerto);
         }
-        //
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        dbHuertoActual = FirebaseDatabase.getInstance().getReference().child("huertos").child(huerto.getIdHuerto());
+//        cargaNombreCreadorHuerto();
+        // Carga el numero total de miembros y actualiza el texto N Colaboradores;
+        addHuertoEventListener(dbHuertoActual);
 
         // Preparo el Recycler View de Plantas
         // Con un adaptador vacío
@@ -189,6 +187,42 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
 
             }
         });
+    }
+
+    private void addHuertoEventListener(DatabaseReference dbHuertoReference) {
+        // [START huerto_value_event_listener]
+        ValueEventListener huertosListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Huerto object and use the values to update the UI
+                Huerto huerto = dataSnapshot.getValue(Huerto.class);
+
+                if (huerto.miembros.size() != 0) {
+                    Log.w(TAG, "cantidad de miembros : " + huerto.miembros.size());
+                    binding.tvHuertoNumeroColaboradores.setText(huerto.miembros.size() + " Colaboradores");
+                } else {
+                    // Sin miembros
+//                    binding.tvHuertoNumeroColaboradores.setVisibility(View.GONE);
+                    binding.tvHuertoNumeroColaboradores.setText("0 Colaboradores");
+                }
+                if (huerto.getDescripcion().trim().isEmpty()) {
+                    Log.d(TAG, "DESCRIPCIÓN VACIA ! : " + huerto.getDescripcion().trim());
+                    binding.tvHuertoDescripcionDetalleHuerto.setVisibility(View.GONE);
+                    binding.tvHuertoNumeroColaboradores.setHeight(104);
+                } else {
+                    Log.d(TAG, "DESCRIPCIÓN : " + huerto.getDescripcion().trim());
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        dbHuertoReference.addValueEventListener(huertosListener);
+        // [END huerto_value_event_listener]
     }
 
     @Override

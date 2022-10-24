@@ -99,7 +99,6 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
-//        binding.rvMisHuertos.setLayoutManager(new LinearLayoutManager(this));
         listaHuertos = new ArrayList<>();
         adaptadorMisHuertos = new AdaptadorMisHuertos(getApplicationContext(), listaHuertos);
         adaptadorMisHuertos.setClickListener(this);

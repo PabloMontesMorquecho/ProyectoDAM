@@ -44,7 +44,11 @@ public class AdaptadorMisHuertos extends RecyclerView.Adapter<AdaptadorMisHuerto
     public void onBindViewHolder(@NonNull AdaptadorMisHuertos.HuertosViewHolder holder, int position) {
         Huerto huerto = listaHuertos.get(position);
         holder.nombreHuerto.setText(huerto.getNombre().trim());
-        holder.descripcionHuerto.setText(huerto.getDescripcion().trim());
+        if (huerto.getDescripcion().trim().isEmpty()) {
+            holder.descripcionHuerto.setVisibility(View.GONE);
+        } else {
+            holder.descripcionHuerto.setText(huerto.getDescripcion().trim());
+        }
         holder.fechaHuerto.setText(huerto.getFecha());
         // Create a reference to a file from a Google Cloud Storage URI
         StorageReference

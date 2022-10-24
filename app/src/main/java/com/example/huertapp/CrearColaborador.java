@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ public class CrearColaborador extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         binding = ActivityCrearColaboradorBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -144,18 +146,18 @@ public class CrearColaborador extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), "Colaborador asociado correctamente",
                                                        Toast.LENGTH_LONG).show();
 
-                                        Intent intent = new Intent(getApplicationContext(), DetalleHuerto.class);
+//                                        Intent intent = new Intent(getApplicationContext(), DetalleHuerto.class);
 
                                         final Handler handler = new Handler(Looper.getMainLooper());
                                         handler.postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
                                                 binding.pbCrearColaboradorCargando.setVisibility(View.INVISIBLE);
-                                                Bundle bundle = new Bundle();
-                                                bundle.putString("idHuerto", keyHuerto);
-                                                bundle.putSerializable("huerto", huerto);
-                                                intent.putExtras(bundle);
-                                                startActivity(intent);
+//                                                Bundle bundle = new Bundle();
+//                                                bundle.putString("idHuerto", keyHuerto);
+//                                                bundle.putSerializable("huerto", huerto);
+//                                                intent.putExtras(bundle);
+//                                                startActivity(intent);
                                                 finish();
                                             }
                                         }, 1000);

@@ -5,63 +5,71 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_light"
-    tools:context=".CrearActividad">
+    tools:context=".DetalleActividad">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarCrearActividad"
+        <ImageView
+            android:id="@+id/imgDetalleActividad"
+            android:layout_width="match_parent"
+            android:layout_height="194dp"
+            android:contentDescription="Imagen de la planta"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sin_foto" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="194dp"
+            android:layout_marginTop="-194dp"
+            android:alpha="0.5"
+            android:background="@drawable/gradient_black" />
+
+        <TextView
+            android:id="@+id/tvDetalleActividadNombreUsuarioCreador"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="Registrar Actividad"/>
+            android:layout_marginTop="-54dp"
+            android:layout_marginRight="15dp"
+            android:text="Ruben Serrano"
+            android:textAlignment="textEnd"
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:textColor="@color/white" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardRegistrarActividadImagen"
+        <TextView
+            android:id="@+id/tvDetalleActividadFechaCreacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            app:cardElevation="1dp">
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="18dp"
+            android:fontFamily="@font/roboto_slab"
+            android:text="22 / 10 / 01"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="4dp">
-
-                <!-- Media -->
-                <ImageView
-                    android:id="@+id/imgCrearActividad"
-                    android:layout_width="match_parent"
-                    android:layout_height="194dp"
-                    android:contentDescription="Imagen de la planta"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/subir_foto" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
+        <!-- Title, secondary and supporting text -->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
             android:layout_margin="15dp"
             android:layout_marginBottom="10dp"
-            android:hint="Fecha">
+            android:hint="Fecha"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCrearActividadFecha"
+                android:id="@+id/etDetalleActividadFecha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="date"
                 android:clickable="true"
                 android:focusable="false"
-                android:text=" "/>
+                android:inputType="date"
+                android:text=" " />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,17 +77,17 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
             android:layout_margin="15dp"
             android:layout_marginBottom="10dp"
-            android:hint="Riego / Abono / Poda / Etc.">
+            android:hint="Actividad"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCrearActividadTipoActividad"
+                android:id="@+id/etDetalleActividadTipoActividad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=" "/>
+                android:text=" " />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -87,42 +95,42 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
             android:layout_margin="15dp"
             android:layout_marginBottom="10dp"
-            android:hint="Observaciones">
+            android:hint="Observaciones"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCrearActividadDescripcion"
+                android:id="@+id/etDetalleActividadDescripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=" "/>
+                android:text=" " />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/btnCrearActividad"
+            android:id="@+id/btnActualizarActividad"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="14dp"
-            android:layout_gravity="center"
-            android:textSize="16sp"
+            android:text="MODIFICAR ACTIVIDAD"
             android:textColor="@color/white"
-            android:text="REGISTRAR ACTIVIDAD"/>
+            android:textSize="16sp" />
 
         <ProgressBar
-            android:id="@+id/pbCrearActividadCargando"
+            android:id="@+id/pbDetalleActividadCargando"
             android:layout_width="114dp"
             android:layout_height="114dp"
-            android:layout_marginTop="-278dp"
             android:layout_gravity="center"
+            android:layout_marginTop="-278dp"
             android:alpha="0.3"
             android:clickable="false"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
 
     </LinearLayout>
 </ScrollView>

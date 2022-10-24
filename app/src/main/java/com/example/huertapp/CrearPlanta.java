@@ -43,7 +43,6 @@ public class CrearPlanta extends AppCompatActivity {
     private static final String TAG = "CrearPlanta Activity";
 
     ActivityCrearPlantaBinding binding;
-    FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
     Huerto huerto;
     String keyHuerto;
@@ -57,6 +56,7 @@ public class CrearPlanta extends AppCompatActivity {
 
     private boolean imagenElegida = false;
     private String imageName, fecha, direccionFoto;
+    String idUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class CrearPlanta extends AppCompatActivity {
         setContentView(view);
 
         setSupportActionBar(binding.toolbarCrearPlanta);
-        firebaseAuth = FirebaseAuth.getInstance();
+        idUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         plantaImage = findViewById(R.id.imgPlanta);
@@ -79,8 +79,6 @@ public class CrearPlanta extends AppCompatActivity {
             keyHuerto = bundle.getString("idHuerto");
             planta = (Planta) getIntent().getSerializableExtra("planta");
             keyPlanta = bundle.getString("idPlanta");
-            System.out.println("yeah, keyHUERTO: "+keyHuerto);
-            System.out.println("yeah, keyPLANTA: "+keyPlanta);
         }
     }
 
@@ -123,20 +121,21 @@ public class CrearPlanta extends AppCompatActivity {
                 String descripcionPlanta = binding.etCrearPlantaDescripcion.getText().toString().trim();
 //                String keyPlanta = databaseReference.child("plantas").push().getKey();
                 Planta planta = new Planta(nombrePlanta, descripcionPlanta, direccionFoto, keyPlanta, keyHuerto,
-                                           fecha);
+                                           fecha, idUsuario);
 
                 databaseReference.child("plantas").child(keyPlanta).setValue(planta).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            binding.pbCrearPlantaCargando.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), "Planta creada correctamente", Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(getApplicationContext(), DetallePlanta.class);
 
                             final Handler handler = new Handler(Looper.getMainLooper());
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Intent intent = new Intent(getApplicationContext(), DetallePlanta.class);
+                                    binding.pbCrearPlantaCargando.setVisibility(View.INVISIBLE);
                                     Bundle bundle = new Bundle();
                                     bundle.putString("idHuerto", keyHuerto);
                                     bundle.putSerializable("huerto", huerto);
@@ -146,7 +145,7 @@ public class CrearPlanta extends AppCompatActivity {
                                     startActivity(intent);
                                     finish();
                                 }
-                            }, 1000);
+                            }, 3000);
 
                         } else {
                             binding.pbCrearPlantaCargando.setVisibility(View.INVISIBLE);
@@ -157,6 +156,7 @@ public class CrearPlanta extends AppCompatActivity {
             }
         });
     }
+
 
 
     private void elegirFoto() {
@@ -217,47 +217,16 @@ public class CrearPlanta extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 // +1 because January is zero
-//                final String selectedDate = day + " / " + (month+1) + " / " + year;
                 final String selectedDate = twoDigits(year) + " / " + twoDigits(month+1) + " / " + twoDigits(day);
                 fecha = selectedDate;
                 binding.etCrearPlantaFecha.setText(selectedDate);
             }
         });
-
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
     private String twoDigits(int n) {
         return (n<=9) ? ("0"+n) : String.valueOf(n);
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_crear_planta, menu);
-//        binding.toolbarCrearPlanta.setTitle("Crear Planta");
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    public boolean onOptionsItemSelected(MenuItem menuItem) {
-//
-//        switch (menuItem.getItemId()) {
-//
-//            case R.id.mnCrearPlantaPerfil: {
-//                Intent intent = new Intent(getApplicationContext(), UserProfile.class);
-//                startActivity(intent);
-//                break;
-//            }
-//
-//            case R.id.mnCrearPlantaLogout: {
-//                FirebaseAuth.getInstance().signOut();
-//                Toast.makeText(CrearPlanta.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(getApplicationContext(), Login.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                break;
-//            }
-//        }
-//        return true;
-//    }
 
 }

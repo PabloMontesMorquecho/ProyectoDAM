@@ -6,17 +6,24 @@ public class Planta implements Serializable {
     String nombre, descripcion, foto;
     String idPlanta, idHuerto;
     String fecha;
+    String idUsuario;
 
     public Planta() {}
 
-    public Planta(String nombre, String descripcion, String foto, String idPlanta, String idHuerto, String fecha) {
+    public Planta(String nombre, String descripcion, String foto, String idPlanta, String idHuerto, String fecha,
+                  String idUsuario) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.foto = foto;
         this.idPlanta = idPlanta;
         this.idHuerto = idHuerto;
         this.fecha = fecha;
+        this.idUsuario = idUsuario;
     }
+
+    public String getIdUsuario() { return idUsuario; }
+
+    public void setIdUsuario(String idUsuario) { this.idUsuario = idUsuario; }
 
     public String getFecha() { return fecha; }
 

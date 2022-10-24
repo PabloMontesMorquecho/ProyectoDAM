@@ -135,9 +135,10 @@ public class CrearHuerto extends AppCompatActivity {
                                     startActivity(intent);
                                     finish();
                                 }
-                            }, 1000);
+                            }, 3000);
 
                         } else {
+                            binding.pbCrearHuertoCargando.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), "!!! No se ha podido crear el huerto, intentelo de nuevo más tarde ;(", Toast.LENGTH_LONG).show();
                         }
                     }
@@ -205,13 +206,11 @@ public class CrearHuerto extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 // +1 because January is zero
-//                final String selectedDate = day + " / " + (month+1) + " / " + year;
                 final String selectedDate = twoDigits(year) + " / " + twoDigits(month+1) + " / " + twoDigits(day);
                 fecha = selectedDate;
                 binding.etCrearHuertoFecha.setText(selectedDate);
             }
         });
-
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
@@ -219,32 +218,4 @@ public class CrearHuerto extends AppCompatActivity {
         return (n<=9) ? ("0"+n) : String.valueOf(n);
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_crear_huerto, menu);
-////        binding.toolbarCrearHuerto.setTitle("Crear Huerto");
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    public boolean onOptionsItemSelected(MenuItem menuItem) {
-//
-//        switch (menuItem.getItemId()) {
-//
-//            case R.id.mnCrearHuertoPerfil: {
-//                Intent intent = new Intent(getApplicationContext(), UserProfile.class);
-//                startActivity(intent);
-//                break;
-//            }
-//
-//            case R.id.mnCrearHuertoLogout: {
-//                FirebaseAuth.getInstance().signOut();
-//                Toast.makeText(CrearHuerto.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(getApplicationContext(), Login.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                break;
-//            }
-//        }
-//        return true;
-//    }
 }

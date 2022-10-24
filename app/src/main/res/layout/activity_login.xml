@@ -1,94 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp"
+    android:background="@color/background_light"
     tools:context=".Login">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:layout_marginTop="24dp"
+            android:contentDescription="@string/app_logo"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_plant_accent"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvLoginTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:fontFamily="@font/roboto_slab"
+            android:text="@string/huertapp"
+            android:textAlignment="center"
+            android:textColor="@color/primary"
+            android:textSize="48sp"
+            android:visibility="visible"
+            tools:ignore="TextContrastCheck" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="250dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/icon_plant_accent"
-                android:layout_marginTop="24dp"
-                android:contentDescription="@string/app_logo"
-                android:visibility="visible"/>
-
-            <TextView
-                android:id="@+id/tvLoginTitulo"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:fontFamily="@font/roboto_slab"
-                android:text="@string/huertapp"
-                android:textAlignment="center"
-                android:textColor="@color/primary"
-                android:textSize="48sp"
-                tools:ignore="TextContrastCheck"
-                android:visibility="visible"/>
+                android:hint="Email"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etLoginEmail"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:hint="@string/Email"
+                    android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:layout_marginBottom="24dp"
-                    android:autofillHints="emailAddress" />
+                    android:text="" />
 
-                <EditText
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:hint="Contraseña"
+                app:endIconMode="password_toggle">
+
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etLoginPassword"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:hint="@string/Password"
-                    android:inputType="textPassword"
-                    android:layout_marginBottom="24dp"
-                    android:importantForAutofill="no" />
-
-                <Button
-                    android:id="@+id/btnLoginAcceder"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_marginBottom="24dp"
-                    android:text="@string/Acceder"
-                    android:textSize="16sp"
-                    android:textColor="@color/accent"
-                    />
-
-                <TextView
-                    android:id="@+id/btnLoginRegistrarse"
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="@string/RegistrateAqui"
-                    android:textColor="@color/primary"
-                    android:textSize="20sp">
+                    android:inputType="textPassword"
+                    android:text="" />
 
-                </TextView>
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--
+            <EditText
+                android:id="@+id/etLoginEmail"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="24dp"
+                android:autofillHints="emailAddress"
+                android:hint="@string/Email"
+                android:inputType="textEmailAddress" />
 
-            </LinearLayout>
+            <EditText
+                android:id="@+id/etLoginPassword"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="24dp"
+                android:hint="@string/Password"
+                android:importantForAutofill="no"
+                android:inputType="textPassword" />
+            -->
+            <Button
+                android:id="@+id/btnLoginAcceder"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/Acceder"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/btnLoginRegistrarse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/RegistrateAqui"
+                android:textAlignment="center"
+                android:textColor="@color/primary"
+                android:textSize="16sp">
+
+            </TextView>
 
         </LinearLayout>
 
-    </ScrollView>
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

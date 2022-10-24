@@ -5,19 +5,25 @@ import java.util.Date;
 
 public class Actividad implements Serializable {
     String tipo, observaciones, fecha;
-    String idActividad, idPlanta;
-    String idUsuario;
+    String idActividad, idPlanta, idUsuario;
+    String foto;
 
     public Actividad() {}
 
-    public Actividad(String tipo, String observaciones, String fecha, String idActividad, String idPlanta, String idUsuario) {
+    public Actividad(String tipo, String observaciones, String fecha, String idActividad, String idPlanta,
+                     String idUsuario, String foto) {
         this.tipo = tipo;
         this.observaciones = observaciones;
         this.fecha = fecha;
         this.idActividad = idActividad;
         this.idPlanta = idPlanta;
         this.idUsuario = idUsuario;
+        this.foto = foto;
     }
+
+    public String getFoto() { return foto; }
+
+    public void setFoto(String foto) { this.foto = foto; }
 
     public String getIdUsuario() { return idUsuario; }
 

@@ -64,7 +64,7 @@
     </LinearLayout>
 
     <ScrollView
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/scrollViewPlantas"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -123,6 +123,7 @@
                 android:textColor="@color/primary_text" />
 
             <TextView
+                android:visibility="visible"
                 android:id="@+id/tvHuertoDescripcionDetalleHuerto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,13 +1,22 @@
 package com.example.huertapp.modelo;
 
-import java.io.Serializable;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+@IgnoreExtraProperties
 public class Huerto implements Serializable {
     String nombre, descripcion, foto;
     String idHuerto, idUsuario;
     String fecha;
+    public Map<String, Boolean> miembros = new HashMap<>();
 
-    public Huerto() {}
+    public Huerto() {
+        // Default constructor required for calls to DataSnapshot.getValue(Post.class)
+    }
 
     public Huerto(String nombre, String descripcion, String foto, String idHuerto, String idUsuario, String fecha) {
         this.nombre = nombre;
@@ -57,4 +66,18 @@ public class Huerto implements Serializable {
     public String getIdHuerto() { return idHuerto; }
 
     public void setIdHuerto(String idHuerto) { this.idHuerto = idHuerto; }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("fecha", fecha);
+        result.put("idHuerto", idHuerto);
+        result.put("idUsuario", idUsuario);
+        result.put("nombre", nombre);
+        result.put("descripcion", descripcion);
+        result.put("foto", foto);
+        result.put("miembros", miembros);
+
+        return result;
+    }
 }

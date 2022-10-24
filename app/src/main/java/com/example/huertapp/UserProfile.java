@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.huertapp.databinding.ActivityUserProfileBinding;
@@ -39,10 +40,12 @@ public class UserProfile extends AppCompatActivity {
     String IdUsuario;
     List<Huerto> listaHuertos;
     List<Planta> listaPlantas;
+    String numeroHuertos, numeroPlantas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         binding = ActivityUserProfileBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -66,6 +69,10 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ActualizarPerfil.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("nHuertos", numeroHuertos);
+                bundle.putString("nPlantas", numeroPlantas);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -118,9 +125,8 @@ public class UserProfile extends AppCompatActivity {
                         listaHuertos.add(huerto);
                     }
                 }
-                int nHuertos = listaHuertos.size();
-                Log.d(TAG, "HUERTOS : " + nHuertos);
-                binding.tvUserProfileCantidadHuertos.setText(String.valueOf(nHuertos));
+                numeroHuertos = String.valueOf(listaHuertos.size());
+                binding.tvUserProfileCantidadHuertos.setText(numeroHuertos);
 
                 DatabaseReference dbPlantas = FirebaseDatabase.getInstance().getReference("plantas");
                 listaPlantas.removeAll(listaPlantas);
@@ -135,9 +141,8 @@ public class UserProfile extends AppCompatActivity {
                                     Log.d(TAG, "ID HUERTO : " + miHuerto.getIdHuerto());
                                 }
                             }
-                            int nPlantas = listaPlantas.size();
-                            Log.d(TAG, "PLANTAS : " + nPlantas);
-                            binding.tvUserProfileCantidadPlantas.setText(String.valueOf(nPlantas));
+                            numeroPlantas = String.valueOf(listaPlantas.size());
+                            binding.tvUserProfileCantidadPlantas.setText(numeroPlantas);
                         }
 
                         @Override
