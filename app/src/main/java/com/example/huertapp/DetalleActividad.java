@@ -2,16 +2,21 @@ package com.example.huertapp;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -23,13 +28,18 @@ import com.example.huertapp.modelo.Huerto;
 import com.example.huertapp.modelo.Planta;
 import com.example.huertapp.modelo.Usuario;
 import com.example.huertapp.ui.dialog.DatePickerFragment;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class DetalleActividad extends AppCompatActivity {
 
@@ -42,9 +52,12 @@ public class DetalleActividad extends AppCompatActivity {
     Actividad actividad;
 
     DatabaseReference databaseReference;
-
     private FirebaseStorage storage;
+    private StorageReference storageReference;
     private ImageView imagenActividad;
+    public Uri imageUri;
+    private boolean imagenElegida = false;
+    String nombreImagenNueva, direccionFoto;
 
     String nombreUsuarioCreador;
     String _dbFechaActividad, _dbTipoActividad, _dbDetallesActividad, _dbFotoActividad;
@@ -74,25 +87,34 @@ public class DetalleActividad extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference();
         storage = FirebaseStorage.getInstance();
         imagenActividad = findViewById(R.id.imgDetalleActividad);
+
+        // Primera carga onCreate
+        StorageReference srReference = storage.getReferenceFromUrl(actividad.getFoto());
+        Glide.with(this)
+             .load(srReference)
+             .into(imagenActividad);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        // Create a reference to a file from a Google Cloud Storage URI
-        StorageReference
-                srReference = storage.getReferenceFromUrl(actividad.getFoto());
-        Glide.with(this)
-             .load(srReference)
-             .into(imagenActividad);
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
-        binding.tvDetalleActividadFechaCreacion.setText(actividad.getFecha());
-        binding.etDetalleActividadFecha.setText(actividad.getFecha());
-        binding.etDetalleActividadTipoActividad.setText(actividad.getTipo());
-        binding.etDetalleActividadDescripcion.setText(actividad.getObservaciones());
+            binding.tvDetalleActividadFechaCreacion.setText(actividad.getFecha());
+            binding.etDetalleActividadFecha.setText(actividad.getFecha());
+            binding.etDetalleActividadTipoActividad.setText(actividad.getTipo());
+            binding.etDetalleActividadDescripcion.setText(actividad.getObservaciones());
 
-        cargaNombreCreadorActividad();
+            cargaNombreCreadorActividad();
+
+        imagenActividad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                elegirFoto();
+            }
+        });
 
         binding.etDetalleActividadFecha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +144,23 @@ public class DetalleActividad extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void elegirFoto() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data.getData() != null) {
+            imageUri = data.getData();
+            imagenActividad.setImageURI(imageUri);
+            imagenElegida = true;
+        }
     }
 
     private void cargaNombreCreadorActividad() {
@@ -165,7 +204,7 @@ public class DetalleActividad extends AppCompatActivity {
 
 
     private boolean validarCampos() {
-        if (isTypeChanged() || isDetailsChanged() || isDateChanged()) {
+        if (imagenElegida || isTypeChanged() || isDetailsChanged() || isDateChanged()) {
             return true;
         } else {
             Toast.makeText(this, "No hay datos que modificar", Toast.LENGTH_LONG).show();
@@ -195,20 +234,71 @@ public class DetalleActividad extends AppCompatActivity {
     }
 
     private void actualizarDatosActividad() {
-        databaseReference.child("actividades").child(actividad.getIdActividad()).child("fecha").setValue(binding.etDetalleActividadFecha.getText().toString());
-        _dbFechaActividad = binding.etDetalleActividadFecha.getText().toString();
-        binding.tvDetalleActividadFechaCreacion.setText(binding.etDetalleActividadFecha.getText().toString());
-        Log.d(TAG, "Fecha actividad actualizada. : " + _dbFechaActividad);
-
-        databaseReference.child("actividades").child(actividad.getIdActividad()).child("tipo").setValue(binding.etDetalleActividadTipoActividad.getText().toString());
-        _dbTipoActividad = binding.etDetalleActividadTipoActividad.getText().toString();
-        Log.d(TAG, "Tipo actividad actualizada. : " + _dbTipoActividad);
-
-        databaseReference.child("actividades").child(actividad.getIdActividad()).child("observaciones").setValue(binding.etDetalleActividadDescripcion.getText().toString());
-        _dbDetallesActividad = binding.etDetalleActividadDescripcion.getText().toString();
-        Log.d(TAG, "Detalles de la actividad actualizados. : " + _dbDetallesActividad);
-
+        if (imagenElegida) {
+           // Actualizar foto en F.Storage y Realtime Database
+            subirFoto(imageUri);
+            direccionFoto = "gs://huertapp-db.appspot.com/fotos/actividad/" + nombreImagenNueva;
+            databaseReference.child("actividades").child(actividad.getIdActividad()).child("foto").setValue(direccionFoto);
+            Log.d(TAG, "Foto de la actividad actualizada. : " + direccionFoto);
+        }
+        if (isDateChanged()) {
+            databaseReference.child("actividades").child(actividad.getIdActividad()).child("fecha").setValue(binding.etDetalleActividadFecha.getText().toString());
+            _dbFechaActividad = binding.etDetalleActividadFecha.getText().toString();
+            binding.tvDetalleActividadFechaCreacion.setText(binding.etDetalleActividadFecha.getText().toString());
+            Log.d(TAG, "Fecha actividad actualizada. : " + _dbFechaActividad);
+        }
+        if (isTypeChanged()) {
+            databaseReference.child("actividades").child(actividad.getIdActividad()).child("tipo").setValue(binding.etDetalleActividadTipoActividad.getText().toString());
+            _dbTipoActividad = binding.etDetalleActividadTipoActividad.getText().toString();
+            Log.d(TAG, "Tipo actividad actualizada. : " + _dbTipoActividad);
+        }
+        if (isDetailsChanged()) {
+            databaseReference.child("actividades").child(actividad.getIdActividad()).child("observaciones").setValue(binding.etDetalleActividadDescripcion.getText().toString());
+            _dbDetallesActividad = binding.etDetalleActividadDescripcion.getText().toString();
+            Log.d(TAG, "Detalles de la actividad actualizados. : " + _dbDetallesActividad);
+        }
         Toast.makeText(this, "Datos actualizados correctamente", Toast.LENGTH_LONG).show();
     }
+
+    private void subirFoto(Uri uri) {
+//        final ProgressDialog pd = new ProgressDialog(this);
+//        pd.setTitle("Actualizando imagen...");
+//        pd.show();
+        Long tsLong = System.currentTimeMillis()/1000;
+        String ts = tsLong.toString();
+        nombreImagenNueva = actividad.getIdActividad() + ts + "." + getFileExtension(uri);
+        StorageReference plantaFotoRef = storageReference.child("fotos/actividad/" + nombreImagenNueva);
+        plantaFotoRef.putFile(uri)
+                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                         @Override
+                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                             pd.dismiss();
+                             Snackbar.make(findViewById(android.R.id.content), "Imagen actualizada correctamente",
+                                           Snackbar.LENGTH_LONG).show();
+                         }
+                     })
+                     .addOnFailureListener(new OnFailureListener() {
+                         @Override
+                         public void onFailure(@NonNull Exception e) {
+//                             pd.dismiss();
+                             Toast.makeText(getApplicationContext(), "Error en la actualización, inténtelo de nuevo " +
+                                                                     "más tarde", Toast.LENGTH_LONG).show();
+                         }
+                     })
+                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                         @Override
+                         public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                             double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+//                             pd.setMessage("Porcentaje: " + (int) progressPercent + "%");
+                         }
+                     });
+    }
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cr.getType(uri));
+    }
+
 
 }

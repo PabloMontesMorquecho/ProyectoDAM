@@ -89,21 +89,21 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
 
         cargaNombreCreadorPlanta();
 
-        //Inserto en el título el nombre de la planta
-        binding.toolbarDetallePlanta.setTitle(planta.getNombre());
+            //Inserto en el título el nombre de la planta
+            binding.toolbarDetallePlanta.setTitle(planta.getNombre());
 
-        binding.tvPlantaFechaDetallePlanta.setText(planta.getFecha());
-        if (planta.getDescripcion().isEmpty()) {
-            binding.tvPlantaDescripcionDetallePlanta.setHeight(0);
-        }
-        binding.tvPlantaDescripcionDetallePlanta.setText(planta.getDescripcion());
+            binding.tvPlantaFechaDetallePlanta.setText(planta.getFecha());
+            if (planta.getDescripcion().isEmpty()) {
+                binding.tvPlantaDescripcionDetallePlanta.setHeight(0);
+            }
+            binding.tvPlantaDescripcionDetallePlanta.setText(planta.getDescripcion());
 
-        // Create a reference to a file from a Google Cloud Storage URI
-        StorageReference
-                srReference = storage.getReferenceFromUrl(planta.getFoto());
-        Glide.with(this)
-             .load(srReference)
-             .into(imagenPlanta);
+            // Create a reference to a file from a Google Cloud Storage URI
+            StorageReference
+                    srReference = storage.getReferenceFromUrl(planta.getFoto());
+            Glide.with(this)
+                 .load(srReference)
+                 .into(imagenPlanta);
 
         // Preparo el Recycler View de Actividades
         // Con un adaptador vacío
@@ -302,7 +302,6 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
         bundle.putSerializable("planta", planta);
         bundle.putSerializable("actividad", actividad);
         i.putExtras(bundle);
-        Log.i("Nombre de la planta: ", planta.getNombre() + " · Descripción: " + planta.getDescripcion() + " · KEY: " + planta.getIdPlanta());
         startActivity(i);
     }
 }
