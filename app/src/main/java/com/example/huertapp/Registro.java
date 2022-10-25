@@ -107,6 +107,8 @@ public class Registro extends AppCompatActivity {
                 } else if (!bothPasswordsAreEqual()) {
                     binding.pbRegistroCargando.setVisibility(View.INVISIBLE);
                     Toast.makeText(Registro.this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
+                } else {
+                    binding.pbRegistroCargando.setVisibility(View.INVISIBLE);
                 }
             }
         });
