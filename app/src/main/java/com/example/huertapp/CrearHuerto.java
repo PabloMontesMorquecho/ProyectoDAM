@@ -119,8 +119,9 @@ public class CrearHuerto extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Huerto creado correctamente", Toast.LENGTH_LONG).show();
-//
+//                            Toast.makeText(getApplicationContext(), "Huerto creado correctamente", Toast.LENGTH_LONG).show();
+                            Snackbar.make(findViewById(android.R.id.content), "Huerto creado correctamente", Snackbar.LENGTH_LONG).show();
+
                             Intent intent = new Intent(getApplicationContext(), DetalleHuerto.class);
 
                             final Handler handler = new Handler(Looper.getMainLooper());

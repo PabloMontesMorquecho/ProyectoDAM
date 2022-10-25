@@ -116,9 +116,8 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
         adaptadorDetallePlanta.setClickListener(this);
         recyclerView.setAdapter(adaptadorDetallePlanta);
 
-        // Recorro FB Realtime DB
-        // y actualizo el adaptador
-        // del Recycler View de Actividades
+        // Recorro nodo Actividades y añado a una lista las que son de esta planta (keyPlanta)
+        // Y actualizo el adaptador del Recycler View de con las Actividades
         databaseReference.child("actividades").orderByChild("fecha").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -167,9 +166,6 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
                     Usuario usuario = ds.getValue(Usuario.class);
                     if (usuario.getIdUsuario().equals(planta.getIdUsuario())) {
                         nombreUsuarioCreador = ds.child("nombre").getValue().toString();
-                        Log.i(TAG, "ID     : "+ ds.child("idUsuario").getValue().toString());
-                        Log.i(TAG, "NOMBRE : "+ ds.child("nombre").getValue().toString());
-                        Log.i(TAG, "EMAIL  : "+ ds.child("email").getValue().toString());
                         binding.tvPlantaNombreUsuarioCreador.setText(nombreUsuarioCreador);
                     }
                 }
@@ -189,33 +185,16 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     }
 
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-
         switch (menuItem.getItemId()) {
-
-//            case R.id.mnDetallePlantaGoToMisHuertos: {
-//                Intent intent = new Intent(getApplicationContext(), MisHuertos.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("idHuerto", keyHuerto);
-//                bundle.putSerializable("huerto", huerto);
-//                bundle.putString("idPlanta", keyPlanta);
-//                bundle.putSerializable("planta", planta);
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-//                break;
-//            }
-//
-//            case R.id.mnDetallePlantaGoToMisPlantas: {
-//                Intent intent = new Intent(getApplicationContext(), DetalleHuerto.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("idHuerto", keyHuerto);
-//                bundle.putSerializable("huerto", huerto);
-//                bundle.putString("idPlanta", keyPlanta);
-//                bundle.putSerializable("planta", planta);
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-//                break;
-//            }
-
+            case R.id.mnDetallePlantaActualizarPlanta: {
+                Intent intent = new Intent(getApplicationContext(), ActualizarPlanta.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("huerto", huerto);
+                bundle.putSerializable("planta", planta);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                break;
+            }
             case R.id.mnDetallePlantaCrearActividad: {
                 Intent intent = new Intent(getApplicationContext(), CrearActividad.class);
                 Bundle bundle = new Bundle();
@@ -227,18 +206,15 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
                 startActivity(intent);
                 break;
             }
-
             case R.id.mnDetallePlantaBorrarPlanta: {
                 confirmarBorrado(keyPlanta);
                 break;
             }
-
             case R.id.mnDetallePlantaPerfil: {
                 Intent intent = new Intent(getApplicationContext(), UserProfile.class);
                 startActivity(intent);
                 break;
             }
-
             case R.id.mnDetallePlantaLogout: {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(DetallePlanta.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
@@ -255,8 +231,8 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
         databaseReference.child("plantas").child(keyPlanta).removeValue();
         Log.d(TAG, "Planta borrada.");
         Toast.makeText(getApplicationContext(),
-                "Planta borrado correctamente",
-                Toast.LENGTH_LONG).show();
+                       "Planta borrado correctamente",
+                       Toast.LENGTH_LONG).show();
         Intent intent = new Intent(getApplicationContext(), DetalleHuerto.class);
         Bundle bundle = new Bundle();
         bundle.putString("idHuerto", keyHuerto);
