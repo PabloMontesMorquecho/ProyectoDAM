@@ -88,6 +88,10 @@ public class Registro extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         binding.pbRegistroCargando.setVisibility(View.INVISIBLE);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable("idUsuario", idUsuario);
+                                        intent.putExtras(bundle);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();
                                     }

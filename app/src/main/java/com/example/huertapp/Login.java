@@ -92,6 +92,7 @@ public class Login extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable("idUsuario", IdUsuario);
         intent.putExtras(bundle);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
