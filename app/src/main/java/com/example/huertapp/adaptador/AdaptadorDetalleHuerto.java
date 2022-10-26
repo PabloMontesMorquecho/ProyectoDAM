@@ -1,6 +1,7 @@
 package com.example.huertapp.adaptador;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,10 @@ import com.bumptech.glide.Glide;
 import com.example.huertapp.ItemClickListener;
 import com.example.huertapp.R;
 import com.example.huertapp.modelo.Planta;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -50,6 +55,20 @@ public class AdaptadorDetalleHuerto extends RecyclerView.Adapter<AdaptadorDetall
         }
         holder.descripcionPlanta.setText(planta.getDescripcion().trim());
         holder.fechaPlanta.setText(planta.getFecha());
+        FirebaseDatabase.getInstance().getReference().child("usuarios").child(planta.getIdUsuario()).get()
+                        .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                if (!task.isSuccessful()) {
+                                    Log.e("AdpDetHuerto FIREBASE", "Error getting data from user id :" + planta.getIdUsuario(),
+                                          task.getException());
+                                } else {
+                                    Log.i("AdpDetHuerto FIREBASE",
+                                          "Datos del usuario obtenidos mediante su Id" + String.valueOf(task.getResult().getValue()));
+                                    holder.creadorPlanta.setText(String.valueOf(task.getResult().child("nombre").getValue()));
+                                }
+                            }
+                        });
         // Create a reference to a file from a Google Cloud Storage URI
         StorageReference
                 srReference = storage.getReferenceFromUrl(planta.getFoto());
@@ -70,13 +89,14 @@ public class AdaptadorDetalleHuerto extends RecyclerView.Adapter<AdaptadorDetall
     public static class PlantasViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView imagenPlanta;
-        TextView nombrePlanta, descripcionPlanta, fechaPlanta;
+        TextView nombrePlanta, descripcionPlanta, fechaPlanta, creadorPlanta;
         public PlantasViewHolder(@NonNull View itemView) {
             super(itemView);
             imagenPlanta = itemView.findViewById(R.id.imgPlanta);
             nombrePlanta = itemView.findViewById(R.id.tvPlantaNombre);
             descripcionPlanta = itemView.findViewById(R.id.tvPlantaDescripcion);
             fechaPlanta = itemView.findViewById(R.id.tvPlantaFechaCreacion);
+            creadorPlanta = itemView.findViewById(R.id.tvPlantaUsuarioCreacion);
             itemView.setOnClickListener(this); // bind the listener
         }
 
