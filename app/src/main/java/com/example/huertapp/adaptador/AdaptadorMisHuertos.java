@@ -1,6 +1,7 @@
 package com.example.huertapp.adaptador;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,10 @@ import com.bumptech.glide.Glide;
 import com.example.huertapp.ItemClickListener;
 import com.example.huertapp.R;
 import com.example.huertapp.modelo.Huerto;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -49,6 +54,20 @@ public class AdaptadorMisHuertos extends RecyclerView.Adapter<AdaptadorMisHuerto
         } else {
             holder.descripcionHuerto.setText(huerto.getDescripcion().trim());
         }
+        FirebaseDatabase.getInstance().getReference().child("usuarios").child(huerto.getidUsuario()).get()
+                        .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                if (!task.isSuccessful()) {
+                                    Log.e("AdpMisHuertos FIREBASE",
+                                          "Error getting data from user id :" + huerto.getidUsuario(),
+                                          task.getException());
+                                } else {
+                                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                                    holder.creadorHuerto.setText(String.valueOf(task.getResult().child("nombre").getValue()));
+                                }
+                            }
+                        });
         holder.fechaHuerto.setText(huerto.getFecha());
         // Create a reference to a file from a Google Cloud Storage URI
         StorageReference
@@ -71,13 +90,14 @@ public class AdaptadorMisHuertos extends RecyclerView.Adapter<AdaptadorMisHuerto
     public static class HuertosViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView imagenHuerto;
-        TextView nombreHuerto, descripcionHuerto, fechaHuerto;
+        TextView nombreHuerto, descripcionHuerto, fechaHuerto, creadorHuerto;
         public HuertosViewHolder(@NonNull View itemView) {
             super(itemView);
             imagenHuerto = itemView.findViewById(R.id.imgHuerto);
             nombreHuerto = itemView.findViewById(R.id.tvHuertoNombre);
             descripcionHuerto = itemView.findViewById(R.id.tvHuertoDescripcion);
             fechaHuerto = itemView.findViewById(R.id.tvHuertoFechaCreacion);
+            creadorHuerto = itemView.findViewById(R.id.tvHuertoUsuarioCreacion);
             itemView.setOnClickListener(this); // bind the listener
         }
 
