@@ -198,17 +198,22 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
                 Huerto huerto = dataSnapshot.getValue(Huerto.class);
 
                 if (huerto.miembros.size() != 0) {
-                    Log.w(TAG, "cantidad de miembros : " + huerto.miembros.size());
-                    binding.tvHuertoNumeroColaboradores.setText(huerto.miembros.size() + " Colaboradores");
+                    if (huerto.miembros.size() == 1) {
+                        binding.tvHuertoNumeroColaboradores.setText("1 Colaborador");
+                    } else {
+                        binding.tvHuertoNumeroColaboradores.setText(huerto.miembros.size() + " Colaboradores");
+                    }
                 } else {
                     // Sin miembros
 //                    binding.tvHuertoNumeroColaboradores.setVisibility(View.GONE);
+//                    binding.tvHuertoNumeroColaboradores.setHeight(0);
                     binding.tvHuertoNumeroColaboradores.setText("0 Colaboradores");
                 }
                 if (huerto.getDescripcion().trim().isEmpty()) {
                     Log.d(TAG, "DESCRIPCIÓN VACIA ! : " + huerto.getDescripcion().trim());
                     binding.tvHuertoDescripcionDetalleHuerto.setVisibility(View.GONE);
-                    binding.tvHuertoNumeroColaboradores.setHeight(104);
+                    binding.tvHuertoNumeroColaboradores.setHeight(54);
+//                    binding.tvHuertoNumeroColaboradores.setHeight(104);
                 } else {
                     Log.d(TAG, "DESCRIPCIÓN : " + huerto.getDescripcion().trim());
                 }
