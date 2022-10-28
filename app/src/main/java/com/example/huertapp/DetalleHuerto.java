@@ -55,6 +55,7 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "ON CREATE DetalleHuerto");
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         binding = ActivityDetalleHuertoBinding.inflate(getLayoutInflater());
@@ -76,6 +77,7 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
             keyHuerto = bundle.getString("idHuerto");
 
             // Cargo nombre del creador del huerto y lo inserto en la vista
+            Log.i(TAG, "ON CREATE DetalleHuerto : Nombre del creador con .get()");
             databaseReference.child("usuarios").child(huerto.getidUsuario()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                  @Override
                  public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -103,10 +105,24 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
 
     }
 
+    /**
+     * https://developer.android.com/guide/components/activities/activity-lifecycle?hl=es-419#alc
+     * User nivigates to the Activity from onStop()
+     *
+     * Cuándo vuelve a la Actividad desde la siguiente
+     * la que la puso en onStop(), Perfil o DetallePlanta
+     *
+     * */
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i(TAG, "ON RESTART DetalleHuerto");
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-
+        Log.i(TAG, "ON START DetalleHuerto");
         // Carga el numero total de miembros y actualiza el texto N Colaboradores;
         dbHuertoActual = FirebaseDatabase.getInstance().getReference().child("huertos").child(huerto.getIdHuerto());
         addHuertoEventListener(dbHuertoActual);
@@ -163,14 +179,59 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
 
     }
 
+    /**
+     * User returns to the Activity from onPause()
+     *
+     * */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "ON RESUME DetalleHuerto");
+        Log.i(TAG, "ON RESUME : Activity Running until other Activity comes into foreground");
+    }
+
+    /**
+     * Another Activity comes into the foreground
+     * De onResume() viene a onPause()
+     * mientras muestra la nueva Avtivity
+     *
+     * */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(TAG, "ON PAUSE DetalleHuerto");
+    }
+
+    /**
+     * The Activity is no longer visible
+     * De onPause() viene a onStop()
+     *
+     * */
     @Override
     protected void onStop() {
         super.onStop();
+        Log.i(TAG, "ON STOP DetalleHuerto");
         // Remove huerto value event listener
         if (mHuertoListener != null) {
             dbHuertoActual.removeEventListener(mHuertoListener);
-            Log.i(TAG, "ONSTOP DetalleHuerto : Huerto Listener REMOVED!");
+            Log.i(TAG, "ON STOP DetalleHuerto : Huerto Listener REMOVED!");
         }
+    }
+
+    /**
+     * The Activity is finishing
+     * or being destroyed by the system
+     *
+     * De onStop() viene a onDestroy()
+     *
+     * Sólo ocurre cuando va atrás a la Actividad que genera el onCreate
+     * cuando va a MisHuertos...que hace el intent a DetalleHuerto
+     *
+     * */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "ON DESTROY DetalleHuerto");
     }
 
     private void cargaNombreCreadorHuerto() {
