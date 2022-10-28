@@ -20,6 +20,8 @@ import com.example.huertapp.modelo.Planta;
 import com.example.huertapp.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -41,6 +43,8 @@ public class UserProfile extends AppCompatActivity {
     List<Huerto> listaHuertos;
     List<Planta> listaPlantas;
     String numeroHuertos, numeroPlantas;
+
+    String userEmail, userPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,7 @@ public class UserProfile extends AppCompatActivity {
                 bundle.putString("nPlantas", numeroPlantas);
                 intent.putExtras(bundle);
                 startActivity(intent);
+//                reauthenticate();
             }
         });
 
@@ -102,6 +107,8 @@ public class UserProfile extends AppCompatActivity {
                     binding.tvUserProfileNombre.setText(usuario.getNombre());
                     binding.tvUserProfileEmail.setText(usuario.getEmail());
                     Log.d("Firebase GET Usuario", String.valueOf(task.getResult().getValue()));
+                    userEmail = usuario.getEmail();
+                    userPass = usuario.getPassword();
                 }
             }
         });
@@ -180,6 +187,27 @@ public class UserProfile extends AppCompatActivity {
                     }
                 }
             });
+    }
+
+    public void reauthenticate() {
+        // [START reauthenticate]
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        // Get auth credentials from the user for re-authentication. The example below shows
+        // email and password credentials but there are multiple possible providers,
+        // such as GoogleAuthProvider or FacebookAuthProvider.
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(userEmail, userPass);
+
+        // Prompt the user to re-provide their sign-in credentials
+        user.reauthenticate(credential)
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Log.d(TAG, "User re-authenticated.");
+                }
+            });
+        // [END reauthenticate]
     }
 
     @Override

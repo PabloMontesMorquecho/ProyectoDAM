@@ -192,30 +192,6 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
 
         switch (menuItem.getItemId()) {
 
-//            case R.id.mnDetallePlantaGoToMisHuertos: {
-//                Intent intent = new Intent(getApplicationContext(), MisHuertos.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("idHuerto", keyHuerto);
-//                bundle.putSerializable("huerto", huerto);
-//                bundle.putString("idPlanta", keyPlanta);
-//                bundle.putSerializable("planta", planta);
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-//                break;
-//            }
-//
-//            case R.id.mnDetallePlantaGoToMisPlantas: {
-//                Intent intent = new Intent(getApplicationContext(), DetalleHuerto.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("idHuerto", keyHuerto);
-//                bundle.putSerializable("huerto", huerto);
-//                bundle.putString("idPlanta", keyPlanta);
-//                bundle.putSerializable("planta", planta);
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-//                break;
-//            }
-
             case R.id.mnDetallePlantaCrearActividad: {
                 Intent intent = new Intent(getApplicationContext(), CrearActividad.class);
                 Bundle bundle = new Bundle();

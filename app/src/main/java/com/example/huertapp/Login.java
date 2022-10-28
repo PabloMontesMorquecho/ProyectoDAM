@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,10 +15,16 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.example.huertapp.databinding.ActivityLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity {
@@ -43,9 +50,10 @@ public class Login extends AppCompatActivity {
         setContentView(view);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC); //utilizamos la versión básica de AwesomeValidation
-        awesomeValidation.addValidation(binding.etLoginEmail, Patterns.EMAIL_ADDRESS, emailErrorMessage); //si no se mete una dirección de correo válida salta el error
-        awesomeValidation.addValidation(binding.etLoginPassword, ".{6,}", passwordErrorMessage); //si la contraseña no tiene al menos 6 caracteres salta el error
+        // AwesomeValidation
+//        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC); //utilizamos la versión básica de
+//        awesomeValidation.addValidation(binding.etLoginEmail, Patterns.EMAIL_ADDRESS, emailErrorMessage); //si no se mete una dirección de correo válida salta el error
+//        awesomeValidation.addValidation(binding.etLoginPassword, ".{6,}", passwordErrorMessage); //si la contraseña no tiene al menos 6 caracteres salta el error
     }
 
     @Override
@@ -61,18 +69,54 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (awesomeValidation.validate()) {
-                    firebaseAuth.signInWithEmailAndPassword(binding.etLoginEmail.getText().toString(), binding.etLoginPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                goToMisHuertos();
-                            } else {
-                                String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
-                                errorToast(errorCode); // en caso de que hubiese algún otro tipo de error incluso después de haber introducido todos los campos correctamente
-                            }
-                        }
-                    });
+                if (!binding.etLoginEmail.getText().toString().trim().isEmpty() && !binding.etLoginPassword.getText().toString().isEmpty()) {
+//                    if (awesomeValidation.validate()) {
+                        firebaseAuth.signInWithEmailAndPassword(binding.etLoginEmail.getText().toString(),
+                                                                binding.etLoginPassword.getText().toString())
+                                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            if (task.isSuccessful()) {
+                                                goToMisHuertos();
+                                            } else {
+//                                                String errorCode =
+//                                                        ((FirebaseAuthException) task.getException()).getErrorCode();
+//                                                errorToast(errorCode);
+                                                Toast.makeText(Login.this, "Error",
+                                                               Toast.LENGTH_SHORT).show();
+                                                Log.w(TAG, "signInWithEmailAndPassword TASK EXCEPTION : " + task.getException());
+                                                // en caso de que hubiese algún otro tipo de error incluso después de haber introducido todos los campos correctamente
+                                            }
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            if (e instanceof FirebaseTooManyRequestsException) {
+                                                Snackbar.make(findViewById(android.R.id.content), "Demasiados " +
+                                                                                                  "intentos seguidos." +
+                                                                                                  " Cierre la " +
+                                                                                                  "aplicación e " +
+                                                                                                  "inténtelo de nuevo" +
+                                                                                                  " en unos 5 minutos" +
+                                                                                                  "...",
+                                                              Snackbar.LENGTH_LONG).show();
+                                            }
+                                            if( e instanceof FirebaseAuthInvalidUserException){
+                                                Toast.makeText(Login.this, "This User Not Found , Create A New Account",
+                                                               Toast.LENGTH_SHORT).show();
+                                            }
+                                            if( e instanceof FirebaseAuthInvalidCredentialsException){
+                                                Toast.makeText(Login.this, "The Password Is Invalid, Please Try Valid Password", Toast.LENGTH_SHORT).show();
+                                            }
+                                            if(e instanceof FirebaseNetworkException){
+                                                Toast.makeText(Login.this, "Please Check Your Connection", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });;
+//                    }
+                } else {
+                    Snackbar.make(findViewById(android.R.id.content), "Los campos no pueden estar vacios...",
+                                  Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -100,7 +144,35 @@ public class Login extends AppCompatActivity {
     private void errorToast(String errorCode) {
 
         switch (errorCode) {
+            case "ERROR_INVALID_EMAIL":
+                Snackbar.make(findViewById(android.R.id.content), "La dirección de correo electrónico está mal formateada.",
+                              Snackbar.LENGTH_LONG).show();
+//                Toast.makeText(Login.this, "La dirección de correo electrónico está mal formateada.", Toast.LENGTH_LONG).show();
 
+//                binding.etLoginEmail.setError("La dirección de correo electrónico está mal formateada.");
+//                binding.etLoginEmail.requestFocus();
+                break;
+
+            case "ERROR_USER_NOT_FOUND":
+                Snackbar.make(findViewById(android.R.id.content), "Este email no esta registrado en HuertAPP",
+                              Snackbar.LENGTH_LONG).show();
+//                Toast.makeText(Login.this, "Este email no esta registrado en HuertAPP", Toast.LENGTH_LONG).show();
+                break;
+
+            case "ERROR_WRONG_PASSWORD":
+                Snackbar.make(findViewById(android.R.id.content), "La contraseña no es válida",
+                              Snackbar.LENGTH_LONG).show();
+//                Toast.makeText(Login.this, "La contraseña no es válida", Toast.LENGTH_LONG).show();
+//                binding.etLoginPassword.setError("la contraseña es incorrecta ");
+//                binding.etLoginPassword.requestFocus();
+                break;
+
+            case "ERROR_TOO_MANY_REQUESTS":
+                Snackbar.make(findViewById(android.R.id.content), "Demasiados intentos ya. Inténtalo de nuevo más tarde",
+                              Snackbar.LENGTH_LONG).show();
+                break;
+
+            // A partir de aquí son errores para el Log del administrador
             case "ERROR_INVALID_CUSTOM_TOKEN":
                 Toast.makeText(Login.this, "El formato del token personalizado es incorrecto. Por favor revise la documentación", Toast.LENGTH_LONG).show();
                 break;
@@ -111,19 +183,6 @@ public class Login extends AppCompatActivity {
 
             case "ERROR_INVALID_CREDENTIAL":
                 Toast.makeText(Login.this, "La credencial de autenticación proporcionada tiene un formato incorrecto o ha caducado.", Toast.LENGTH_LONG).show();
-                break;
-
-            case "ERROR_INVALID_EMAIL":
-                Toast.makeText(Login.this, "La dirección de correo electrónico está mal formateada.", Toast.LENGTH_LONG).show();
-                binding.etLoginEmail.setError("La dirección de correo electrónico está mal formateada.");
-                binding.etLoginEmail.requestFocus();
-                break;
-
-            case "ERROR_WRONG_PASSWORD":
-                Toast.makeText(Login.this, "La contraseña no es válida o el usuario no tiene contraseña.", Toast.LENGTH_LONG).show();
-                binding.etLoginPassword.setError("la contraseña es incorrecta ");
-                binding.etLoginPassword.requestFocus();
-                binding.etLoginPassword.setText("");
                 break;
 
             case "ERROR_USER_MISMATCH":
@@ -156,10 +215,6 @@ public class Login extends AppCompatActivity {
                 Toast.makeText(Login.this, "La credencial del usuario ya no es válida. El usuario debe iniciar sesión nuevamente.", Toast.LENGTH_LONG).show();
                 break;
 
-            case "ERROR_USER_NOT_FOUND":
-                Toast.makeText(Login.this, "No hay ningún registro de usuario que corresponda a este identificador. Es posible que se haya eliminado al usuario.", Toast.LENGTH_LONG).show();
-                break;
-
             case "ERROR_INVALID_USER_TOKEN":
                 Toast.makeText(Login.this, "La credencial del usuario ya no es válida. El usuario debe iniciar sesión nuevamente.", Toast.LENGTH_LONG).show();
                 break;
@@ -167,14 +222,8 @@ public class Login extends AppCompatActivity {
             case "ERROR_OPERATION_NOT_ALLOWED":
                 Toast.makeText(Login.this, "Esta operación no está permitida. Debes habilitar este servicio en la consola.", Toast.LENGTH_LONG).show();
                 break;
-
-            case "ERROR_WEAK_PASSWORD":
-                Toast.makeText(Login.this, "La contraseña proporcionada no es válida..", Toast.LENGTH_LONG).show();
-                binding.etLoginPassword.setError("La contraseña no es válida, debe tener al menos 6 caracteres");
-                binding.etLoginPassword.requestFocus();
-                break;
-
         }
+
     }
 
 }

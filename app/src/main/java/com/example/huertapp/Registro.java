@@ -61,6 +61,7 @@ public class Registro extends AppCompatActivity {
                 binding.pbRegistroCargando.setVisibility(View.VISIBLE);
 
                 if (awesomeValidation.validate() && bothPasswordsAreEqual() && !isUserEmpty()) {
+                    binding.etRegistroNombreLayout.setErrorEnabled(false);
 
                     firebaseAuth.createUserWithEmailAndPassword(binding.etRegistroEmail.getText().toString(), binding.etRegistroPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -107,7 +108,8 @@ public class Registro extends AppCompatActivity {
 
                 } else if (isUserEmpty()) {
                     binding.pbRegistroCargando.setVisibility(View.INVISIBLE);
-                    Toast.makeText(Registro.this, "Introduzca un usuario", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(Registro.this, "Introduzca un usuario", Toast.LENGTH_SHORT).show();
+                    binding.etRegistroNombreLayout.setError("Este dato es obligatorio");
                 } else if (!bothPasswordsAreEqual()) {
                     binding.pbRegistroCargando.setVisibility(View.INVISIBLE);
                     Toast.makeText(Registro.this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();

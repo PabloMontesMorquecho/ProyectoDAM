@@ -85,10 +85,11 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="4dp"
                 android:hint="Email"
                 android:paddingLeft="3dp"
-                android:paddingRight="3dp">
+                android:paddingRight="3dp"
+                app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etRegistroEmail"
@@ -100,13 +101,16 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etRegistroNombreLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="4dp"
                 android:hint="Nombre"
                 android:paddingLeft="3dp"
-                android:paddingRight="3dp">
+                android:paddingRight="3dp"
+                app:errorEnabled="true"
+                app:errorTextColor="@color/design_default_color_error">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etRegistroNombre"
@@ -121,11 +125,12 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="4dp"
                 android:paddingLeft="3dp"
                 android:paddingRight="3dp"
                 android:hint="Contraseña"
-                app:endIconMode="password_toggle">
+                app:endIconMode="password_toggle"
+                app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etRegistroPassword"
@@ -140,11 +145,12 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="28dp"
+                android:layout_marginBottom="8dp"
                 android:paddingLeft="3dp"
                 android:paddingRight="3dp"
                 android:hint="Confrimar contraseña"
-                app:endIconMode="password_toggle">
+                app:endIconMode="password_toggle"
+                app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etRegistroPasswordMatch"
