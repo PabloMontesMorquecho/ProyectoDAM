@@ -50,6 +50,8 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     private FirebaseStorage storage;
     private ImageView imagenHuerto;
 
+    private ValueEventListener mHuertoListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,6 +163,16 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Remove huerto value event listener
+        if (mHuertoListener != null) {
+            dbHuertoActual.removeEventListener(mHuertoListener);
+            Log.i(TAG, "ONSTOP DetalleHuerto : Huerto Listener REMOVED!");
+        }
+    }
+
     private void cargaNombreCreadorHuerto() {
         databaseReference.child("usuarios").child(huerto.getidUsuario()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -176,6 +188,7 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     }
 
     private void addHuertoEventListener(DatabaseReference dbHuertoReference) {
+        Log.i(TAG, "ONSTART DetalleHuerto : Huerto Listener ATTACHED!");
         // [START huerto_value_event_listener]
         ValueEventListener huertosListener = new ValueEventListener() {
             @Override
@@ -208,6 +221,8 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
         };
         dbHuertoReference.addValueEventListener(huertosListener);
         // [END huerto_value_event_listener]
+        // Keep copy of post listener so we can remove it when app stops
+        mHuertoListener = huertosListener;
     }
 
     @Override
