@@ -50,8 +50,6 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     private FirebaseStorage storage;
     private ImageView imagenHuerto;
 
-    String nombreUsuarioCreador;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,29 +73,27 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
             huerto = (Huerto) getIntent().getSerializableExtra("huerto");
             keyHuerto = bundle.getString("idHuerto");
 
-            databaseReference.child("usuarios").child(huerto.getidUsuario()).get()
-                             .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                 @Override
-                                 public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                     if (!task.isSuccessful()) {
-                                         Log.e("firebase", "Error getting data", task.getException());
-                                     } else {
-                                         Log.d("firebase", String.valueOf(task.getResult().getValue()));
-                                         Log.d("nombre", String.valueOf(task.getResult().child("nombre").getValue()));
-                                         Log.d("email", String.valueOf(task.getResult().child("email").getValue()));
-                                         binding.tvHuertoNombreUsuarioCreador.setText(String.valueOf(task.getResult().child("nombre").getValue()));
-                                     }
-                                 }
-                             });
-            //Inserto en el título el nombre del huerto
-            binding.toolbarDetalleHuerto.setTitle(huerto.getNombre());
+            // Cargo nombre del creador del huerto y lo inserto en la vista
+            databaseReference.child("usuarios").child(huerto.getidUsuario()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                 @Override
+                 public void onComplete(@NonNull Task<DataSnapshot> task) {
+                     if (!task.isSuccessful()) {
+                         Log.e("Firebase ERROR", "Error Obteniendo Usuario", task.getException());
+                     } else {
+//                         Log.d("Firebase SUCCESSFUL", String.valueOf(task.getResult().getValue()));
+                         binding.tvHuertoNombreUsuarioCreador.setText(String.valueOf(task.getResult().child("nombre").getValue()));
+                     }
+                 }
+             });
 
+            // Inserto el nombre, la fecha de creación y la descripción del huerto en la vista
+            binding.toolbarDetalleHuerto.setTitle(huerto.getNombre());
             binding.tvHuertoFechaDetalleHuerto.setText(huerto.getFecha());
             binding.tvHuertoDescripcionDetalleHuerto.setText(huerto.getDescripcion());
 
-            // Create a reference to a file from a Google Cloud Storage URI
-            StorageReference
-                    srReference = storage.getReferenceFromUrl(huerto.getFoto());
+            // Creo una referencia de archivo usando una Google Cloud Storage URI
+            StorageReference srReference = storage.getReferenceFromUrl(huerto.getFoto());
+            // Inserto la imagen en la vista
             Glide.with(this)
                  .load(srReference)
                  .into(imagenHuerto);
@@ -109,13 +105,11 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     protected void onStart() {
         super.onStart();
 
-        dbHuertoActual = FirebaseDatabase.getInstance().getReference().child("huertos").child(huerto.getIdHuerto());
-//        cargaNombreCreadorHuerto();
         // Carga el numero total de miembros y actualiza el texto N Colaboradores;
+        dbHuertoActual = FirebaseDatabase.getInstance().getReference().child("huertos").child(huerto.getIdHuerto());
         addHuertoEventListener(dbHuertoActual);
 
-        // Preparo el Recycler View de Plantas
-        // Con un adaptador vacío
+        // Preparo el RecyclerView de Plantas con un adaptador vacío
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
@@ -125,19 +119,19 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
         adaptadorDetalleHuerto.setClickListener(this);
         recyclerView.setAdapter(adaptadorDetalleHuerto);
 
-        // Recorro FB Realtime DB
-        // y actualizo el adaptador
-        // del Recycler View de Plantas
+        // Obtengo todas las plantas ordenadas por fecha
+        // y actualizo el adaptador del RecyclerView de Plantas
+        // Además muestro un layout para crear la primera planta si no hay plantas
         databaseReference.child("plantas").orderByChild("fecha").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listaPlantas.removeAll(listaPlantas);
-                for (DataSnapshot ds :
-                        snapshot.getChildren()) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     Planta planta = ds.getValue(Planta.class);
                     if (planta.getIdHuerto().equals(keyHuerto)) listaPlantas.add(planta);
                 }
                 if (listaPlantas.isEmpty()) {
+                    // Si no hay plantas, escondo el recyclerView y muestro layout para crear la primera
                     binding.llSinPlantas.setVisibility(View.VISIBLE);
                     binding.scrollViewPlantas.setVisibility(View.GONE);
                     binding.btnCrearPrimeraPlanta.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +146,7 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
                         }
                     });
                 } else {
+                    // Si hay plantas, muestro el recyclerView y actualizao su adaptador
                     binding.llSinPlantas.setVisibility(View.GONE);
                     binding.scrollViewPlantas.setVisibility(View.VISIBLE);
                     adaptadorDetalleHuerto.notifyDataSetChanged();
@@ -160,31 +155,22 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.e(TAG, "DatabaseError Obteniendo el Listado de Plantas: " + error.getMessage());
             }
         });
 
     }
 
     private void cargaNombreCreadorHuerto() {
-        databaseReference.child("usuarios").orderByChild("idUsuario").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("usuarios").child(huerto.getidUsuario()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    Usuario usuario = ds.getValue(Usuario.class);
-                    if (usuario.getIdUsuario().equals(huerto.getidUsuario())) {
-                        nombreUsuarioCreador = ds.child("nombre").getValue().toString();
-                        Log.i(TAG, "ID     : "+ ds.child("idUsuario").getValue().toString());
-                        Log.i(TAG, "NOMBRE : "+ ds.child("nombre").getValue().toString());
-                        Log.i(TAG, "EMAIL  : "+ ds.child("email").getValue().toString());
-                        binding.tvHuertoNombreUsuarioCreador.setText(nombreUsuarioCreador);
-                    }
-                }
+                binding.tvHuertoNombreUsuarioCreador.setText(snapshot.child("nombre").getValue().toString());
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.e(TAG, "DatabaseError Obteniendo el Ususario Creador del Huerto: " + error.getMessage());
             }
         });
     }
@@ -204,26 +190,20 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
                         binding.tvHuertoNumeroColaboradores.setText(huerto.miembros.size() + " Colaboradores");
                     }
                 } else {
-                    // Sin miembros
-//                    binding.tvHuertoNumeroColaboradores.setVisibility(View.GONE);
-//                    binding.tvHuertoNumeroColaboradores.setHeight(0);
                     binding.tvHuertoNumeroColaboradores.setText("0 Colaboradores");
                 }
+
                 if (huerto.getDescripcion().trim().isEmpty()) {
-                    Log.d(TAG, "DESCRIPCIÓN VACIA ! : " + huerto.getDescripcion().trim());
                     binding.tvHuertoDescripcionDetalleHuerto.setVisibility(View.GONE);
-                    binding.tvHuertoNumeroColaboradores.setHeight(54);
-//                    binding.tvHuertoNumeroColaboradores.setHeight(104);
-                } else {
-                    Log.d(TAG, "DESCRIPCIÓN : " + huerto.getDescripcion().trim());
+                    binding.tvHuertoNumeroColaboradores.setHeight(104);
                 }
 
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // Getting Huerto failed, log a message
+                Log.w(TAG, "loadHuerto:onCancelled", databaseError.toException());
             }
         };
         dbHuertoReference.addValueEventListener(huertosListener);
