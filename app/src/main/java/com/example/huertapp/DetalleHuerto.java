@@ -151,7 +151,8 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
                 if (listaPlantas.isEmpty()) {
                     // Si no hay plantas, escondo el recyclerView y muestro layout para crear la primera
                     binding.llSinPlantas.setVisibility(View.VISIBLE);
-                    binding.scrollViewPlantas.setVisibility(View.GONE);
+//                    binding.scrollViewPlantas.setVisibility(View.GONE);
+                    binding.rvDetalleHuerto.setVisibility(View.GONE);
                     binding.btnCrearPrimeraPlanta.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -166,7 +167,9 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
                 } else {
                     // Si hay plantas, muestro el recyclerView y actualizao su adaptador
                     binding.llSinPlantas.setVisibility(View.GONE);
-                    binding.scrollViewPlantas.setVisibility(View.VISIBLE);
+//                    binding.scrollViewPlantas.setVisibility(View.VISIBLE);
+                    binding.scrollViewDetallePlanta.setBackground(null);
+                    binding.rvDetalleHuerto.setVisibility(View.VISIBLE);
                     adaptadorDetalleHuerto.notifyDataSetChanged();
                 }
             }
@@ -336,7 +339,10 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
                 Toast.makeText(DetalleHuerto.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), Login.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
                 break;
             }
         }

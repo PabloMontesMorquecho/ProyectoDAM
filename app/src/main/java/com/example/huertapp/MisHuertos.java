@@ -168,7 +168,10 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
                 Toast.makeText(MisHuertos.this, "Sesión finalizada", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), Login.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
                 break;
             }
         }
