@@ -54,6 +54,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     private ImageView imagenPlanta;
 
     String nombreUsuarioCreador;
+    String idUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,8 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
 
         recyclerView = findViewById(R.id.rvDetallePlanta);
         imagenPlanta = findViewById(R.id.imgDetallePlanta);
+
+        idUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -275,12 +278,18 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     @Override
     public void onClick(View view, int position) {
         final Actividad actividad = listaActividades.get(position);
-        Intent i = new Intent(this, DetalleActividad.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("huerto", huerto);
-        bundle.putSerializable("planta", planta);
-        bundle.putSerializable("actividad", actividad);
-        i.putExtras(bundle);
-        startActivity(i);
+        if (actividad.getIdUsuario().equals(idUsuario)) {
+            Log.i(TAG, "Usuario activo es creador");
+            Intent i = new Intent(this, DetalleActividad.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("huerto", huerto);
+            bundle.putSerializable("planta", planta);
+            bundle.putSerializable("actividad", actividad);
+            i.putExtras(bundle);
+            startActivity(i);
+        } else {
+            Log.i(TAG, "Usuario activo no es el creador");
+            Toast.makeText(this, "Sólo el usuario creador puede modificar los datos", Toast.LENGTH_LONG).show();
+        }
     }
 }

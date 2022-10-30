@@ -1,13 +1,12 @@
 package com.example.huertapp;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,7 +29,7 @@ import com.example.huertapp.modelo.Usuario;
 import com.example.huertapp.ui.dialog.DatePickerFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -141,6 +140,13 @@ public class DetalleActividad extends AppCompatActivity {
                     }, 300);
                 }
                 binding.pbDetalleActividadCargando.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        binding.btnBorrarActividad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmarBorrado();
             }
         });
 
@@ -273,8 +279,8 @@ public class DetalleActividad extends AppCompatActivity {
                          @Override
                          public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 //                             pd.dismiss();
-                             Snackbar.make(findViewById(android.R.id.content), "Imagen actualizada correctamente",
-                                           Snackbar.LENGTH_LONG).show();
+//                             Snackbar.make(findViewById(android.R.id.content), "Imagen actualizada correctamente",
+//                                           Snackbar.LENGTH_LONG).show();
                          }
                      })
                      .addOnFailureListener(new OnFailureListener() {
@@ -298,6 +304,38 @@ public class DetalleActividad extends AppCompatActivity {
         ContentResolver cr = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cr.getType(uri));
+    }
+
+    private void confirmarBorrado() {
+        new MaterialAlertDialogBuilder(DetalleActividad.this)
+                .setTitle("Atención")
+                .setMessage("Si continuas, no podras recuperar los datos borrados.")
+                .setPositiveButton("BORRAR REGISTRO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        borrarRegistro();
+                    }
+                })
+                .setNeutralButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .show();
+    }
+
+    private void borrarRegistro() {
+        databaseReference.child("actividades").child(actividad.getIdActividad()).removeValue();
+        Log.i(TAG, "Registro borrado.");
+        Toast.makeText(getApplicationContext(), "Registro borrado correctamente",
+                       Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(getApplicationContext(), DetallePlanta.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("huerto", huerto);
+        bundle.putSerializable("planta", planta);
+        startActivity(intent);
+        finish();
     }
 
 

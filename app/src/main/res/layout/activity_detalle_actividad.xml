@@ -115,11 +115,25 @@
             android:layout_height="64dp"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="0dp"
+            android:text="ACTUALIZAR REGISTRO"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <Button
+            style="@style/Widget.AppCompat.ActionButton"
+            android:id="@+id/btnBorrarActividad"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="0dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="14dp"
-            android:text="MODIFICAR ACTIVIDAD"
-            android:textColor="@color/white"
+            android:text="ELIMINAR REGISTRO"
+            android:textColor="@color/primary_dark"
             android:textSize="16sp" />
 
         <ProgressBar
