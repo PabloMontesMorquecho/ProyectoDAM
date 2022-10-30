@@ -52,6 +52,8 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
 
     private ValueEventListener mHuertoListener;
 
+    private MenuItem mnItemColaborador;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -292,6 +294,10 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detalle_huerto, menu);
+        if (!huerto.getidUsuario().equals(idUsuario)) {
+            mnItemColaborador = menu.findItem(R.id.mnMisPlantasAddColaborador);
+            mnItemColaborador.setVisible(false);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -300,12 +306,18 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
         switch (menuItem.getItemId()) {
 
             case R.id.mnMisPlantasAddColaborador: {
-                Intent intent = new Intent(getApplicationContext(), CrearColaborador.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("idHuerto", keyHuerto);
-                bundle.putSerializable("huerto", huerto);
-                intent.putExtras(bundle);
-                startActivity(intent);
+//                if (huerto.getidUsuario().equals(idUsuario)) {
+//                    Log.i(TAG, "Usuario activo es creador");
+                    Intent intent = new Intent(getApplicationContext(), CrearColaborador.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("idHuerto", keyHuerto);
+                    bundle.putSerializable("huerto", huerto);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+//                } else {
+//                    Log.i(TAG, "Usuario activo no es el creador");
+//                    Toast.makeText(this, "Sólo el usuario creador puede añadir colaboradores", Toast.LENGTH_LONG).show();
+//                }
                 break;
             }
 
