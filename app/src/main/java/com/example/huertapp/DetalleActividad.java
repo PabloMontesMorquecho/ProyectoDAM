@@ -334,6 +334,7 @@ public class DetalleActividad extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable("huerto", huerto);
         bundle.putSerializable("planta", planta);
+        intent.putExtras(bundle);
         startActivity(intent);
         finish();
     }
