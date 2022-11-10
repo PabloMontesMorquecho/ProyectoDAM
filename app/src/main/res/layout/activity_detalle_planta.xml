@@ -57,7 +57,7 @@
             android:id="@+id/btnCrearPrimeraAnotacion"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:text="CREAR ANOTACIÓN"
+            android:text="REGISTRAR ACTIVIDAD"
             style="?attr/colorButtonNormal"
             />
 

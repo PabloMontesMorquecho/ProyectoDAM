@@ -261,7 +261,7 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Huerto object and use the values to update the UI
                 Huerto huerto = dataSnapshot.getValue(Huerto.class);
-
+                if (huerto == null) return; // Para evitar error al escuchar que borro el huerto y cambian los datos
                 if (huerto.miembros.size() != 0) {
                     if (huerto.miembros.size() == 1) {
                         binding.tvHuertoNumeroColaboradores.setText("1 Colaborador");
