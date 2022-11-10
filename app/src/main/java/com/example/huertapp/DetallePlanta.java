@@ -243,6 +243,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
         Bundle bundle = new Bundle();
         bundle.putString("idHuerto", keyHuerto);
         bundle.putSerializable("huerto", huerto);
+        intent.putExtras(bundle);
         startActivity(intent);
         finish();
     }
