@@ -144,6 +144,10 @@
                 android:paddingLeft="3dp"
                 android:paddingRight="3dp"
                 android:hint="Confrimar contraseña"
+                app:helperText="* Mínimo 6 caracteres"
+                app:helperTextTextColor="@color/accent_dark"
+                app:counterTextColor="@color/accent_dark"
+                app:counterEnabled="true"
                 app:endIconMode="password_toggle">
 
                 <com.google.android.material.textfield.TextInputEditText

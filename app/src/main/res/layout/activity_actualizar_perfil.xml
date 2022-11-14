@@ -218,9 +218,10 @@
                 android:paddingRight="3dp"
                 android:hint="Contraseña"
                 app:helperText="* Mínimo 6 caracteres"
-                app:endIconMode="password_toggle"
-                app:counterEnabled="true"
                 app:helperTextTextColor="@color/accent_dark"
+                app:counterEnabled="true"
+                app:counterTextColor="@color/accent_dark"
+                app:endIconMode="password_toggle"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
