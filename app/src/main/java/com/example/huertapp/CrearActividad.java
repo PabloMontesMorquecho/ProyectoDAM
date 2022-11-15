@@ -185,31 +185,31 @@ public class CrearActividad extends AppCompatActivity {
     }
 
     private void subirFoto(Uri uri) {
-        final ProgressDialog pd = new ProgressDialog(this);
-        pd.setTitle("Subiendo imagen...");
-        pd.show();
+//        final ProgressDialog pd = new ProgressDialog(this);
+//        pd.setTitle("Subiendo imagen...");
+//        pd.show();
         imageName = keyActividad + "." + getFileExtension(uri);
         StorageReference plantaFotoRef = storageReference.child("fotos/actividad/" + imageName);
         plantaFotoRef.putFile(imageUri)
                      .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                          @Override
                          public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                             pd.dismiss();
-                             Snackbar.make(findViewById(android.R.id.content), "Imagen subida correctamente", Snackbar.LENGTH_LONG).show();
+//                             pd.dismiss();
+//                             Snackbar.make(findViewById(android.R.id.content), "Imagen subida correctamente", Snackbar.LENGTH_LONG).show();
                          }
                      })
                      .addOnFailureListener(new OnFailureListener() {
                          @Override
                          public void onFailure(@NonNull Exception e) {
-                             pd.dismiss();
+//                             pd.dismiss();
                              Toast.makeText(getApplicationContext(), "Error en la subida, inténtelo de nuevo más tarde", Toast.LENGTH_LONG).show();
                          }
                      })
                      .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                          @Override
                          public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                             double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                             pd.setMessage("Porcentaje: " + (int) progressPercent + "%");
+//                             double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+//                             pd.setMessage("Porcentaje: " + (int) progressPercent + "%");
                          }
                      });
     }

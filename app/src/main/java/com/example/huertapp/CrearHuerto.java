@@ -166,7 +166,7 @@ public class CrearHuerto extends AppCompatActivity {
     }
 
     private void subirFoto(Uri uri) {
-        final ProgressDialog pd = new ProgressDialog(this);
+//        final ProgressDialog pd = new ProgressDialog(this);
 //        pd.setTitle("Subiendo imagen...");
 //        pd.show();
         imageName = keyHuerto + "." + getFileExtension(uri);
@@ -182,7 +182,7 @@ public class CrearHuerto extends AppCompatActivity {
                    .addOnFailureListener(new OnFailureListener() {
                        @Override
                        public void onFailure(@NonNull Exception e) {
-                           pd.dismiss();
+//                           pd.dismiss();
                            Toast.makeText(getApplicationContext(), "Error en la subida, inténtelo de nuevo más tarde", Toast.LENGTH_LONG).show();
                        }
                    })
