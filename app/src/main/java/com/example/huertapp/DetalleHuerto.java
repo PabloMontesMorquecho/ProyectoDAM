@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.huertapp.adaptador.AdaptadorDetalleHuerto;
 import com.example.huertapp.databinding.ActivityDetalleHuertoBinding;
+import com.example.huertapp.modelo.Actividad;
 import com.example.huertapp.modelo.Huerto;
 import com.example.huertapp.modelo.Planta;
 import com.example.huertapp.modelo.Usuario;
@@ -42,8 +43,9 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     private static final String TAG = "DetalleHuerto Activity";
 
     ActivityDetalleHuertoBinding binding;
-    DatabaseReference databaseReference, dbHuertoActual;
+    DatabaseReference databaseReference, dbHuertoActual, dbActividades;
     List<Planta> listaPlantas;
+    List<Actividad> listaActividades;
     AdaptadorDetalleHuerto adaptadorDetalleHuerto;
     Huerto huerto;
     String idUsuario, keyHuerto;
@@ -52,9 +54,9 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     private FirebaseStorage storage;
     private ImageView imagenHuerto;
 
-    private ValueEventListener mHuertoListener;
+    private ValueEventListener mHuertoListener, mActividadesListener;
 
-    private MenuItem mnItemColaborador;
+    private MenuItem mnItemColaborador, mnItemBorrarHuerto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,10 +220,14 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     protected void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP DetalleHuerto");
-        // Remove huerto value event listener
+        // Remove huerto y actividades value event listener
         if (mHuertoListener != null) {
             dbHuertoActual.removeEventListener(mHuertoListener);
             Log.i(TAG, "ON STOP DetalleHuerto : Huerto Listener REMOVED!");
+        }
+        if (mActividadesListener != null) {
+            dbActividades.removeEventListener(mActividadesListener);
+            Log.i(TAG, "ON STOP DetalleHuerto : Actividades Listener REMOVED!");
         }
     }
 
@@ -293,12 +299,47 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
         mHuertoListener = huertosListener;
     }
 
+    private void addActividadesEventListener(DatabaseReference dbActividadesReference) {
+        listaActividades = new ArrayList<>();
+        //        listaActividades.removeAll(listaActividades);
+        Log.i(TAG, "DetalleHuerto : Actividades Listener ATTACHED!");
+        // [START actividades_value_event_listener]
+        ValueEventListener actividadesListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Actividad actividad = ds.getValue(Actividad.class);
+                    for (Planta pl : listaPlantas) {
+                        if (actividad.getIdPlanta().equals(pl.getIdPlanta())) {
+                            Log.d(TAG, "Actividad del Huerto a Borrar · Actividad ID : " + actividad.getIdActividad());
+                            //            databaseReference.child("actividades").child(actividad.getIdActividad()).removeValue();
+                            listaActividades.add(actividad);
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Huerto failed, log a message
+                Log.w(TAG, "loadActividades:onCancelled", databaseError.toException());
+            }
+        };
+        dbActividadesReference.addValueEventListener(actividadesListener);
+        // [END huerto_value_event_listener]
+        // Keep copy of post listener so we can remove it when app stops
+        mActividadesListener = actividadesListener;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detalle_huerto, menu);
         if (!huerto.getidUsuario().equals(idUsuario)) {
             mnItemColaborador = menu.findItem(R.id.mnMisPlantasAddColaborador);
             mnItemColaborador.setVisible(false);
+            mnItemBorrarHuerto = menu.findItem(R.id.mnMisPlantasBorrarHuerto);
+            mnItemBorrarHuerto.setVisible(false);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -364,6 +405,7 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     }
 
     private void confirmarBorrado(String keyHuerto) {
+        borrarPlantasDelHuerto();
         new MaterialAlertDialogBuilder(DetalleHuerto.this, R.style.AlertDialogTheme)
                 .setTitle("Atención")
                 .setMessage("Si continuas, no podras recuperar los datos borrados.")
@@ -383,6 +425,7 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     }
 
     private void borrarHuerto(String keyHuerto) {
+        borrarPlantasDelHuerto();
         databaseReference.child("huertos").child(keyHuerto).removeValue();
         Log.d(TAG, "Huerto borrado.");
         Toast.makeText(getApplicationContext(),
@@ -392,6 +435,20 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
+    }
+
+    private void borrarPlantasDelHuerto() {
+        for (Planta pl: listaPlantas) {
+//            databaseReference.child("plantas").child(pl.getIdPlanta()).removeValue();
+            Log.d(TAG, "Planta del Huerto a Borrar · Planta ID : " + pl.getIdPlanta());
+        }
+        borrarActividadesDeLasPlantas();
+    }
+
+    private void borrarActividadesDeLasPlantas() {
+        // Carga todas las actividades de las plantas de este huerto y las borra
+        dbActividades = FirebaseDatabase.getInstance().getReference().child("actividades");
+        addActividadesEventListener(dbActividades);
     }
 
     /**
