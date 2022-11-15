@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,7 @@ import com.example.huertapp.modelo.Planta;
 import com.example.huertapp.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -332,7 +334,7 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
             }
 
             case R.id.mnMisPlantasBorrarHuerto: {
-                borrarHuerto(keyHuerto);
+                confirmarBorrado(keyHuerto);
                 break;
             }
 
@@ -361,13 +363,33 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
         return true;
     }
 
+    private void confirmarBorrado(String keyHuerto) {
+        new MaterialAlertDialogBuilder(DetalleHuerto.this, R.style.AlertDialogTheme)
+                .setTitle("Atención")
+                .setMessage("Si continuas, no podras recuperar los datos borrados.")
+                .setPositiveButton("BORRAR HUERTO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        borrarHuerto(keyHuerto);
+                    }
+                })
+                .setNeutralButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .show();
+    }
+
     private void borrarHuerto(String keyHuerto) {
         databaseReference.child("huertos").child(keyHuerto).removeValue();
-        Log.d(TAG, "Huerto borrada.");
+        Log.d(TAG, "Huerto borrado.");
         Toast.makeText(getApplicationContext(),
                        "Huerto borrado correctamente",
                        Toast.LENGTH_LONG).show();
         Intent intent = new Intent(getApplicationContext(), MisHuertos.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }
