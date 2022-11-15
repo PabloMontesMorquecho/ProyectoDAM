@@ -250,8 +250,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     }
 
     private void confirmarBorrado(String keyPlanta) {
-//        new MaterialAlertDialogBuilder(DetallePlanta.this, R.style.AlertDialogTheme)
-        new MaterialAlertDialogBuilder(DetallePlanta.this)
+        new MaterialAlertDialogBuilder(DetallePlanta.this, R.style.AlertDialogTheme)
                 .setTitle("Atención")
                 .setMessage("Si continuas, no podras recuperar los datos borrados.")
                 .setPositiveButton("BORRAR PLANTA", new DialogInterface.OnClickListener() {
