@@ -43,7 +43,7 @@
 <!--        <item name="android:textColor">@android:color/white</item>-->
 <!--        <item name="android:textSize">14sp</item>-->
 <!--        <item name="android:textAllCaps">false</item>-->
-        <item name="android:layout_marginRight">10sp</item>
+        <item name="android:layout_marginRight">8sp</item>
     </style>
 
     <style name="Alert.Button.Neutral" parent="Widget.MaterialComponents.Button.TextButton">
@@ -51,7 +51,7 @@
 <!--        <item name="rippleColor">@color/accent</item>-->
 <!--        <item name="android:textColor">@android:color/darker_gray</item>-->
 <!--        <item name="android:textSize">14sp</item>-->
-        <item name="android:layout_marginLeft">10sp</item>
+        <item name="android:layout_marginLeft">8sp</item>
     </style>
 
 </resources>
