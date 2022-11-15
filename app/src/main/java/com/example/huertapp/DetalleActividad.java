@@ -307,7 +307,7 @@ public class DetalleActividad extends AppCompatActivity {
     }
 
     private void confirmarBorrado() {
-        new MaterialAlertDialogBuilder(DetalleActividad.this)
+        new MaterialAlertDialogBuilder(DetalleActividad.this, R.style.AlertDialogTheme)
                 .setTitle("Atención")
                 .setMessage("Si continuas, no podras recuperar los datos borrados.")
                 .setPositiveButton("BORRAR REGISTRO", new DialogInterface.OnClickListener() {
@@ -336,8 +336,6 @@ public class DetalleActividad extends AppCompatActivity {
         bundle.putSerializable("planta", planta);
         intent.putExtras(bundle);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
     }
