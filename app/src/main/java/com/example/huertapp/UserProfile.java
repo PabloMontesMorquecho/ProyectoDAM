@@ -3,6 +3,7 @@ package com.example.huertapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -20,6 +21,7 @@ import com.example.huertapp.modelo.Planta;
 import com.example.huertapp.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -80,7 +82,7 @@ public class UserProfile extends AppCompatActivity {
         binding.btnEliminarCuenta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                eliminarCuenta();
+                confirmarBorrado();
             }
         });
 
@@ -159,6 +161,25 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void confirmarBorrado() {
+        new MaterialAlertDialogBuilder(UserProfile.this, R.style.AlertDialogTheme)
+                .setTitle("Atención")
+                .setMessage("Si continuas, no podras recuperar la cuenta ni los datos asociados.")
+                .setPositiveButton("ELIMINAR CUENTA", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        eliminarCuenta();
+                    }
+                })
+                .setNeutralButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .show();
     }
 
     private void eliminarCuenta() {
