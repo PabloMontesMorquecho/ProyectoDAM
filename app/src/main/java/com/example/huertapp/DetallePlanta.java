@@ -237,7 +237,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
         databaseReference.child("plantas").child(keyPlanta).removeValue();
         Log.d(TAG, "Planta borrada.");
         Toast.makeText(getApplicationContext(),
-                "Planta borrado correctamente",
+                "Planta borrada correctamente",
                 Toast.LENGTH_LONG).show();
         Intent intent = new Intent(getApplicationContext(), DetalleHuerto.class);
         Bundle bundle = new Bundle();
@@ -245,8 +245,6 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
         bundle.putSerializable("huerto", huerto);
         intent.putExtras(bundle);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
     }
