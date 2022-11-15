@@ -77,8 +77,6 @@ public class CrearPlanta extends AppCompatActivity {
         if (bundle != null) {
             huerto = (Huerto) getIntent().getSerializableExtra("huerto");
             keyHuerto = bundle.getString("idHuerto");
-            planta = (Planta) getIntent().getSerializableExtra("planta");
-            keyPlanta = bundle.getString("idPlanta");
         }
     }
 
@@ -89,7 +87,7 @@ public class CrearPlanta extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
 //        gsReference = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-        keyPlanta = databaseReference.child("plantas").push().getKey();
+//        keyPlanta = databaseReference.child("plantas").push().getKey();
 
         plantaImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,17 +107,26 @@ public class CrearPlanta extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 binding.pbCrearPlantaCargando.setVisibility(View.VISIBLE);
-
+                String nombrePlanta = binding.etCrearPlantaNombre.getText().toString().trim();
+                if (fecha == null) {
+                    binding.pbCrearPlantaCargando.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getApplicationContext(), "Es necesario elegir una fecha de creación",
+                                   Toast.LENGTH_LONG).show();
+                    return;
+                } else if (nombrePlanta.isEmpty()) {
+                    binding.pbCrearPlantaCargando.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getApplicationContext(), "El nombre de la planta no puede estar vacio",
+                                   Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (imagenElegida) {
                     subirFoto(imageUri);
                     direccionFoto = "gs://huertapp-db.appspot.com/fotos/planta/" + imageName;
                 } else {
                     direccionFoto = "gs://huertapp-db.appspot.com/fotos/planta/placeholder.jpg";
                 }
-
-                String nombrePlanta = binding.etCrearPlantaNombre.getText().toString().trim();
                 String descripcionPlanta = binding.etCrearPlantaDescripcion.getText().toString().trim();
-//                String keyPlanta = databaseReference.child("plantas").push().getKey();
+                keyPlanta = databaseReference.child("plantas").push().getKey();
                 Planta planta = new Planta(nombrePlanta, descripcionPlanta, direccionFoto, keyPlanta, keyHuerto,
                                            fecha, idUsuario);
 
@@ -194,7 +201,9 @@ public class CrearPlanta extends AppCompatActivity {
                        @Override
                        public void onFailure(@NonNull Exception e) {
 //                           pd.dismiss();
-                           Toast.makeText(getApplicationContext(), "Error en la subida, inténtelo de nuevo más tarde", Toast.LENGTH_LONG).show();
+                           Toast.makeText(getApplicationContext(), "Error en la subida de la imagen, inténtelo de " +
+                                                                   "nuevo más tarde", Toast.LENGTH_LONG).show();
+                           return;
                        }
                    })
                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

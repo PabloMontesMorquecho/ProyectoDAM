@@ -76,7 +76,7 @@ public class CrearHuerto extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         idUsuario = firebaseAuth.getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        keyHuerto = databaseReference.child("huertos").push().getKey();
+//        keyHuerto = databaseReference.child("huertos").push().getKey();
 
         storage = FirebaseStorage.getInstance();
         gsReference = FirebaseStorage.getInstance();
@@ -100,19 +100,28 @@ public class CrearHuerto extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 binding.pbCrearHuertoCargando.setVisibility(View.VISIBLE);
-
+                String nombreHuerto = binding.etCrearHuertoNombreHuerto.getText().toString().trim();
+                if (fecha == null) {
+                    binding.pbCrearHuertoCargando.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getApplicationContext(), "Es necesario elegir una fecha de creación",
+                                   Toast.LENGTH_LONG).show();
+                    return;
+                } else if (nombreHuerto.isEmpty()) {
+                    binding.pbCrearHuertoCargando.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getApplicationContext(), "El nombre del huerto no puede estar vacio",
+                                   Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (imagenElegida) {
                     subirFoto(imageUri);
                     direccionFoto = "gs://huertapp-db.appspot.com/fotos/huerto/" + imageName;
                 } else {
                     direccionFoto = "gs://huertapp-db.appspot.com/fotos/huerto/placeholder.jpg";
                 }
-
-                String nombreHuerto = binding.etCrearHuertoNombreHuerto.getText().toString().trim();
                 String descripcionHuerto = binding.etCrearHuertoDescripcion.getText().toString().trim();
+                keyHuerto = databaseReference.child("huertos").push().getKey();
                 Huerto huerto = new Huerto(nombreHuerto, descripcionHuerto, direccionFoto, keyHuerto, idUsuario,
                                            fecha);
-                Log.d(TAG, "NOMBRE DE LA IMAGEN: " + imageName);
 
                 // Guardar datos del huerto en Realtime Database
                 databaseReference.child("huertos").child(keyHuerto).setValue(huerto).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -120,7 +129,7 @@ public class CrearHuerto extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Huerto creado correctamente", Toast.LENGTH_LONG).show();
-//
+
                             Intent intent = new Intent(getApplicationContext(), DetalleHuerto.class);
 
                             final Handler handler = new Handler(Looper.getMainLooper());
@@ -183,7 +192,9 @@ public class CrearHuerto extends AppCompatActivity {
                        @Override
                        public void onFailure(@NonNull Exception e) {
 //                           pd.dismiss();
-                           Toast.makeText(getApplicationContext(), "Error en la subida, inténtelo de nuevo más tarde", Toast.LENGTH_LONG).show();
+                           Toast.makeText(getApplicationContext(), "Error en la subida de la imagen, inténtelo de " +
+                                                                   "nuevo más tarde", Toast.LENGTH_LONG).show();
+                           return;
                        }
                    })
                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

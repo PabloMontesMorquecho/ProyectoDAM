@@ -87,7 +87,7 @@ public class CrearActividad extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-        keyActividad = databaseReference.child("actividades").push().getKey();
+//        keyActividad = databaseReference.child("actividades").push().getKey();
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -121,16 +121,27 @@ public class CrearActividad extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 binding.pbCrearActividadCargando.setVisibility(View.VISIBLE);
+                String tipoActividad = binding.etCrearActividadTipoActividad.getText().toString().trim();
+                if (fecha == null) {
+                    binding.pbCrearActividadCargando.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getApplicationContext(), "Es necesario elegir una fecha de creación",
+                                   Toast.LENGTH_LONG).show();
+                    return;
+                } else if (tipoActividad.isEmpty()) {
+                    binding.pbCrearActividadCargando.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getApplicationContext(), "El tipo de actividad no puede estar vacio",
+                                   Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (imagenElegida) {
                     subirFoto(imageUri);
                     direccionFoto = "gs://huertapp-db.appspot.com/fotos/actividad/" + imageName;
                 } else {
                     direccionFoto = "gs://huertapp-db.appspot.com/fotos/actividad/placeholder.jpg";
                 }
-                String tipoActividad = binding.etCrearActividadTipoActividad.getText().toString().trim();
                 String descripcionActividad = binding.etCrearActividadDescripcion.getText().toString().trim();
-                String fechaActividad = binding.etCrearActividadFecha.getText().toString();
-                Actividad actividad = new Actividad(tipoActividad, descripcionActividad, fechaActividad, keyActividad
+                keyActividad = databaseReference.child("actividades").push().getKey();
+                Actividad actividad = new Actividad(tipoActividad, descripcionActividad, fecha, keyActividad
                         , keyPlanta, idUsuario, direccionFoto);
 
                 databaseReference.child("actividades").child(keyActividad).setValue(actividad).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -202,7 +213,9 @@ public class CrearActividad extends AppCompatActivity {
                          @Override
                          public void onFailure(@NonNull Exception e) {
 //                             pd.dismiss();
-                             Toast.makeText(getApplicationContext(), "Error en la subida, inténtelo de nuevo más tarde", Toast.LENGTH_LONG).show();
+                             Toast.makeText(getApplicationContext(), "Error en la subida de la imagen, inténtelo de " +
+                                                                     "nuevo más tarde", Toast.LENGTH_LONG).show();
+                             return;
                          }
                      })
                      .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
