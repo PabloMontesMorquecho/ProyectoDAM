@@ -349,18 +349,12 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
         switch (menuItem.getItemId()) {
 
             case R.id.mnMisPlantasAddColaborador: {
-//                if (huerto.getidUsuario().equals(idUsuario)) {
-//                    Log.i(TAG, "Usuario activo es creador");
                     Intent intent = new Intent(getApplicationContext(), CrearColaborador.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("idHuerto", keyHuerto);
                     bundle.putSerializable("huerto", huerto);
                     intent.putExtras(bundle);
                     startActivity(intent);
-//                } else {
-//                    Log.i(TAG, "Usuario activo no es el creador");
-//                    Toast.makeText(this, "Sólo el usuario creador puede añadir colaboradores", Toast.LENGTH_LONG).show();
-//                }
                 break;
             }
 
