@@ -133,6 +133,7 @@ public class CrearActividad extends AppCompatActivity {
                                    Toast.LENGTH_LONG).show();
                     return;
                 }
+                keyActividad = databaseReference.child("actividades").push().getKey();
                 if (imagenElegida) {
                     subirFoto(imageUri);
                     direccionFoto = "gs://huertapp-db.appspot.com/fotos/actividad/" + imageName;
@@ -140,7 +141,6 @@ public class CrearActividad extends AppCompatActivity {
                     direccionFoto = "gs://huertapp-db.appspot.com/fotos/actividad/placeholder.jpg";
                 }
                 String descripcionActividad = binding.etCrearActividadDescripcion.getText().toString().trim();
-                keyActividad = databaseReference.child("actividades").push().getKey();
                 Actividad actividad = new Actividad(tipoActividad, descripcionActividad, fecha, keyActividad
                         , keyPlanta, idUsuario, direccionFoto);
 

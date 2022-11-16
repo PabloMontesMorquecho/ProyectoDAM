@@ -119,6 +119,7 @@ public class CrearPlanta extends AppCompatActivity {
                                    Toast.LENGTH_LONG).show();
                     return;
                 }
+                keyPlanta = databaseReference.child("plantas").push().getKey();
                 if (imagenElegida) {
                     subirFoto(imageUri);
                     direccionFoto = "gs://huertapp-db.appspot.com/fotos/planta/" + imageName;
@@ -126,7 +127,6 @@ public class CrearPlanta extends AppCompatActivity {
                     direccionFoto = "gs://huertapp-db.appspot.com/fotos/planta/placeholder.jpg";
                 }
                 String descripcionPlanta = binding.etCrearPlantaDescripcion.getText().toString().trim();
-                keyPlanta = databaseReference.child("plantas").push().getKey();
                 Planta planta = new Planta(nombrePlanta, descripcionPlanta, direccionFoto, keyPlanta, keyHuerto,
                                            fecha, idUsuario);
 

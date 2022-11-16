@@ -112,6 +112,7 @@ public class CrearHuerto extends AppCompatActivity {
                                    Toast.LENGTH_LONG).show();
                     return;
                 }
+                keyHuerto = databaseReference.child("huertos").push().getKey();
                 if (imagenElegida) {
                     subirFoto(imageUri);
                     direccionFoto = "gs://huertapp-db.appspot.com/fotos/huerto/" + imageName;
@@ -119,7 +120,6 @@ public class CrearHuerto extends AppCompatActivity {
                     direccionFoto = "gs://huertapp-db.appspot.com/fotos/huerto/placeholder.jpg";
                 }
                 String descripcionHuerto = binding.etCrearHuertoDescripcion.getText().toString().trim();
-                keyHuerto = databaseReference.child("huertos").push().getKey();
                 Huerto huerto = new Huerto(nombreHuerto, descripcionHuerto, direccionFoto, keyHuerto, idUsuario,
                                            fecha);
 
