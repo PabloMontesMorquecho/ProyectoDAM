@@ -56,6 +56,8 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     String nombreUsuarioCreador;
     String idUsuario;
 
+    private MenuItem mnItemBorrarPlanta;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,7 +190,18 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detalle_planta, menu);
+        if (!planta.getIdUsuario().equals(idUsuario)) {
+            mnItemBorrarPlanta = menu.findItem(R.id.mnDetallePlantaBorrarPlanta);
+            mnItemBorrarPlanta.setVisible(false);
+        }
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void borrarActividadesDeLasPlantas() {
+        for (Actividad actividad : listaActividades) {
+            databaseReference.child("actividades").child(actividad.getIdActividad()).removeValue();
+            Log.d(TAG, "Actividad a Borrar · ID : " + actividad.getIdActividad());
+        }
     }
 
     public boolean onOptionsItemSelected(MenuItem menuItem) {
@@ -234,6 +247,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     }
 
     private void borrarPlanta(String keyPlanta) {
+        borrarActividadesDeLasPlantas();
         databaseReference.child("plantas").child(keyPlanta).removeValue();
         Log.d(TAG, "Planta borrada.");
         Toast.makeText(getApplicationContext(),
