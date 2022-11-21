@@ -24,6 +24,8 @@ import com.example.huertapp.modelo.Huerto;
 import com.example.huertapp.modelo.Planta;
 import com.example.huertapp.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
@@ -311,8 +313,8 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
                     Actividad actividad = ds.getValue(Actividad.class);
                     for (Planta pl : listaPlantas) {
                         if (actividad.getIdPlanta().equals(pl.getIdPlanta())) {
+                            databaseReference.child("actividades").child(actividad.getIdActividad()).removeValue();
                             Log.d(TAG, "Actividad del Huerto a Borrar · Actividad ID : " + actividad.getIdActividad());
-                            //            databaseReference.child("actividades").child(actividad.getIdActividad()).removeValue();
                             listaActividades.add(actividad);
                         }
                     }
@@ -399,7 +401,6 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     }
 
     private void confirmarBorrado(String keyHuerto) {
-        borrarPlantasDelHuerto();
         new MaterialAlertDialogBuilder(DetalleHuerto.this, R.style.AlertDialogTheme)
                 .setTitle("Atención")
                 .setMessage("Si continuas, no podras recuperar los datos borrados.")
@@ -419,7 +420,7 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     }
 
     private void borrarHuerto(String keyHuerto) {
-        borrarPlantasDelHuerto();
+        borrarActividadesDeLasPlantas();
         databaseReference.child("huertos").child(keyHuerto).removeValue();
         Log.d(TAG, "Huerto borrado.");
         Toast.makeText(getApplicationContext(),
@@ -433,16 +434,16 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
 
     private void borrarPlantasDelHuerto() {
         for (Planta pl: listaPlantas) {
-//            databaseReference.child("plantas").child(pl.getIdPlanta()).removeValue();
+            databaseReference.child("plantas").child(pl.getIdPlanta()).removeValue();
             Log.d(TAG, "Planta del Huerto a Borrar · Planta ID : " + pl.getIdPlanta());
         }
-        borrarActividadesDeLasPlantas();
     }
 
     private void borrarActividadesDeLasPlantas() {
         // Carga todas las actividades de las plantas de este huerto y las borra
         dbActividades = FirebaseDatabase.getInstance().getReference().child("actividades");
         addActividadesEventListener(dbActividades);
+        borrarPlantasDelHuerto();
     }
 
     /**
