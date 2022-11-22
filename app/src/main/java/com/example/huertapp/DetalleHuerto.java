@@ -58,7 +58,7 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
 
     private ValueEventListener mHuertoListener, mActividadesListener;
 
-    private MenuItem mnItemColaborador, mnItemBorrarHuerto;
+    private MenuItem mnItemColaborador, mnItemVerColaboradores, mnItemBorrarHuerto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,11 +131,21 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
     protected void onStart() {
         super.onStart();
         Log.i(TAG, "ON START DetalleHuerto");
+
+        if (huerto.getidUsuario().equals(idUsuario)) {
+            binding.tvHuertoNumeroColaboradores.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToVerColaboradores();
+                }
+            });
+        }
+
         // Carga el numero total de miembros y actualiza el texto N Colaboradores;
         dbHuertoActual = FirebaseDatabase.getInstance().getReference().child("huertos").child(huerto.getIdHuerto());
         addHuertoEventListener(dbHuertoActual);
 
-        // Preparo el RecyclerView de Plantas con un adaptador vacío
+        // Preparo el RecyclerView de Plantas con un adaptador vacío en orden inverso
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
@@ -340,6 +350,8 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
         if (!huerto.getidUsuario().equals(idUsuario)) {
             mnItemColaborador = menu.findItem(R.id.mnMisPlantasAddColaborador);
             mnItemColaborador.setVisible(false);
+            mnItemVerColaboradores = menu.findItem(R.id.mnMisPlantasVerColaboradores);
+            mnItemVerColaboradores.setVisible(false);
             mnItemBorrarHuerto = menu.findItem(R.id.mnMisPlantasBorrarHuerto);
             mnItemBorrarHuerto.setVisible(false);
         }
@@ -357,6 +369,11 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
                     bundle.putSerializable("huerto", huerto);
                     intent.putExtras(bundle);
                     startActivity(intent);
+                break;
+            }
+
+            case R.id.mnMisPlantasVerColaboradores: {
+                    goToVerColaboradores();
                 break;
             }
 
@@ -444,6 +461,15 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
         dbActividades = FirebaseDatabase.getInstance().getReference().child("actividades");
         addActividadesEventListener(dbActividades);
         borrarPlantasDelHuerto();
+    }
+
+    private void goToVerColaboradores() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("huerto", huerto);
+        bundle.putString("nombreCreador", binding.tvHuertoNombreUsuarioCreador.getText().toString().trim());
+        Intent intent = new Intent(getApplicationContext(), VerColaboradores.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     /**

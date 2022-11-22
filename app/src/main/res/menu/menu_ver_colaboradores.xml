@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/mnVerColaboradoresAddColaborador"
+        android:title="Añadir colaborador" />
+
+    <item
+        android:id="@+id/mnVerColaboradoresPerfil"
+        android:title="Perfil de usuario" />
+
+    <item
+        android:id="@+id/mnVerColaboradoresLogout"
+        android:title="Cerrar sesión" />
+</menu>
