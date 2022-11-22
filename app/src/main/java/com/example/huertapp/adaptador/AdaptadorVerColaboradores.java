@@ -21,7 +21,7 @@ import java.util.List;
 
 public class AdaptadorVerColaboradores extends RecyclerView.Adapter<AdaptadorVerColaboradores.ColaboradoresViewHolder> {
 
-     List<Usuario> listaUsuarios;
+    List<Usuario> listaUsuarios;
     private Context context;
     static ItemClickListener clickListener;
     private DatabaseReference databaseReference;
@@ -52,7 +52,7 @@ public class AdaptadorVerColaboradores extends RecyclerView.Adapter<AdaptadorVer
         holder.btnBorrarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("AdpVerColaboradores", "BORRAR USUARIO " + usuario.getIdUsuario());
+//                Log.i("AdpVerColaboradores", "BORRAR USUARIO " + usuario.getIdUsuario());
                 databaseReference.child("huertos").child(idHuerto).child("miembros").child(usuario.getIdUsuario()).removeValue();
             }
         });

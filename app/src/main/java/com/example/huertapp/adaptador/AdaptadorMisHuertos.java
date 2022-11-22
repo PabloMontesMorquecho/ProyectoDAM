@@ -63,7 +63,7 @@ public class AdaptadorMisHuertos extends RecyclerView.Adapter<AdaptadorMisHuerto
                                           "Error getting data from user id :" + huerto.getidUsuario(),
                                           task.getException());
                                 } else {
-                                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+//                                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
                                     holder.creadorHuerto.setText(String.valueOf(task.getResult().child("nombre").getValue()));
                                 }
                             }

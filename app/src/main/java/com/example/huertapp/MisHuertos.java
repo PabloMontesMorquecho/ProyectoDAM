@@ -114,7 +114,6 @@ public class MisHuertos extends AppCompatActivity implements ItemClickListener {
                     if (huerto.getidUsuario().equals(firebaseAuth.getUid())) listaHuertos.add(huerto);
                     else if (ds.child("miembros/" + IdUsuario).exists()) {
                         listaHuertos.add(huerto);
-                        Log.i(TAG, "Miembro: "+ ds.child("miembros/" + IdUsuario + "").getValue().toString());
                     }
                 }
                 if (listaHuertos.isEmpty()) {

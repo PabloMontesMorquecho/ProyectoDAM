@@ -63,8 +63,8 @@ public class AdaptadorDetalleHuerto extends RecyclerView.Adapter<AdaptadorDetall
                                     Log.e("AdpDetHuerto FIREBASE", "Error getting data from user id :" + planta.getIdUsuario(),
                                           task.getException());
                                 } else {
-                                    Log.i("AdpDetHuerto FIREBASE",
-                                          "Datos del usuario obtenidos mediante su Id" + String.valueOf(task.getResult().getValue()));
+//                                    Log.i("AdpDetHuerto FIREBASE",
+//                                          "Datos del usuario obtenidos mediante su Id" + String.valueOf(task.getResult().getValue()));
                                     holder.creadorPlanta.setText(String.valueOf(task.getResult().child("nombre").getValue()));
                                 }
                             }

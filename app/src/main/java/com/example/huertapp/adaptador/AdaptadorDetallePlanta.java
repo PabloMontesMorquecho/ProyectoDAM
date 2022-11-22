@@ -62,7 +62,7 @@ public class AdaptadorDetallePlanta extends RecyclerView.Adapter<AdaptadorDetall
                                  if (!task.isSuccessful()) {
                                      Log.e("firebase", "Error getting data", task.getException());
                                  } else {
-                                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
+//                                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
                                      holder.creadorActividad.setText(String.valueOf(task.getResult().child("nombre").getValue()));
                                  }
                              }
