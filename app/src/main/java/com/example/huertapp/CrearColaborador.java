@@ -66,8 +66,10 @@ public class CrearColaborador extends AppCompatActivity {
 
     public void basicQueryValueListener(String emailColaborador) {
         idUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Query usuarioConEmail = databaseReference.child("usuarios").child(idUsuario)
-                                                 .orderByChild("email");
+//        Query usuarioConEmail = databaseReference.child("usuarios").child(idUsuario)
+//                                                 .orderByChild("email");
+        Query usuarioConEmail = databaseReference.child("usuarios")
+                                                 .orderByChild("email").equalTo(emailColaborador);
 
         // [START basic_query_value_listener]
         // My top posts by number of stars
@@ -97,7 +99,8 @@ public class CrearColaborador extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-//        basicQueryValueListener("pablo@garcia.es");
+        basicQueryValueListener("pablomontes@gmail.com");
+        basicQueryValueListener("Mercedeslimon@gmail.co");
 
         firebaseAuth = FirebaseAuth.getInstance();
         idUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
