@@ -58,7 +58,7 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
 
     private ValueEventListener mHuertoListener, mActividadesListener;
 
-    private MenuItem mnItemColaborador, mnItemVerColaboradores, mnItemBorrarHuerto;
+    private MenuItem mnItemColaborador, mnItemVerColaboradores, mnItemEditarHuerto, mnItemBorrarHuerto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -297,6 +297,18 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
                     binding.tvHuertoNumeroColaboradores.setHeight(104);
                 }
 
+                // Inserto el nombre, la fecha de creación y la descripción del huerto en la vista
+                binding.toolbarDetalleHuerto.setTitle(huerto.getNombre());
+                binding.tvHuertoFechaDetalleHuerto.setText(huerto.getFecha());
+                binding.tvHuertoDescripcionDetalleHuerto.setText(huerto.getDescripcion());
+
+                // Creo una referencia de archivo usando una Google Cloud Storage URI
+                StorageReference srReference = storage.getReferenceFromUrl(huerto.getFoto());
+                // Inserto la imagen en la vista
+                Glide.with(DetalleHuerto.this)
+                     .load(srReference)
+                     .into(imagenHuerto);
+
             }
 
             @Override
@@ -352,6 +364,8 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
             mnItemColaborador.setVisible(false);
             mnItemVerColaboradores = menu.findItem(R.id.mnMisPlantasVerColaboradores);
             mnItemVerColaboradores.setVisible(false);
+            mnItemEditarHuerto = menu.findItem(R.id.mnMisPlantasEditarHuerto);
+            mnItemEditarHuerto.setVisible(false);
             mnItemBorrarHuerto = menu.findItem(R.id.mnMisPlantasBorrarHuerto);
             mnItemBorrarHuerto.setVisible(false);
         }
@@ -381,6 +395,15 @@ public class DetalleHuerto extends AppCompatActivity implements ItemClickListene
                 Intent intent = new Intent(getApplicationContext(), CrearPlanta.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("idHuerto", keyHuerto);
+                bundle.putSerializable("huerto", huerto);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.mnMisPlantasEditarHuerto: {
+                Intent intent = new Intent(getApplicationContext(), EditarHuerto.class);
+                Bundle bundle = new Bundle();
                 bundle.putSerializable("huerto", huerto);
                 intent.putExtras(bundle);
                 startActivity(intent);

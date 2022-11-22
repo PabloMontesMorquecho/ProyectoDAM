@@ -17,6 +17,10 @@
     </item>
 
     <item
+        android:id="@+id/mnMisPlantasEditarHuerto"
+        android:title="Editar huerto" />
+
+    <item
         android:id="@+id/mnMisPlantasBorrarHuerto"
         android:title="Borrar huerto">
 

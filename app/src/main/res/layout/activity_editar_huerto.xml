@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_light"
+    tools:context=".EditarHuerto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgEditarHuerto"
+            android:layout_width="match_parent"
+            android:layout_height="194dp"
+            android:contentDescription="Imagen del huerto"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sin_foto" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="194dp"
+            android:layout_marginTop="-194dp"
+            android:alpha="0.5"
+            android:background="@drawable/gradient_black" />
+
+        <TextView
+            android:id="@+id/tvEditarHuertoNombreUsuarioCreador"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-54dp"
+            android:layout_marginRight="15dp"
+            android:text="Pablo Montes"
+            android:textAlignment="textEnd"
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/tvEditarHuertoFechaCreacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="18dp"
+            android:fontFamily="@font/roboto_slab"
+            android:text="22 / 10 / 01"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+        <!-- Title, secondary and supporting text -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Fecha"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEditarHuertoFecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
+                android:inputType="date"
+                android:text=" " />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Nombre"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEditarHuertoNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" " />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Descripción"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEditarHuertoDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" " />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnActualizarHuerto"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="0dp"
+            android:text="ACTUALIZAR HUERTO"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <Button
+            style="@style/Widget.AppCompat.ActionButton"
+            android:id="@+id/btnBorrarHuerto"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="14dp"
+            android:text="ELIMINAR HUERTO"
+            android:textColor="@color/primary_dark"
+            android:textSize="16sp" />
+
+        <ProgressBar
+            android:id="@+id/pbEditarHuertoCargando"
+            android:layout_width="114dp"
+            android:layout_height="114dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="-278dp"
+            android:alpha="0.3"
+            android:clickable="false"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+</ScrollView>
