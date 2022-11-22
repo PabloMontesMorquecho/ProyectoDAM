@@ -96,7 +96,7 @@
                 android:layout_marginTop="-54dp"
                 android:layout_marginRight="15dp"
                 android:textAlignment="textEnd"
-                android:text="Ruben Serrano"
+                android:text="Nombre Usuario Creador"
                 android:textAppearance="?attr/textAppearanceCaption"
                 android:textColor="@color/white" />
 
