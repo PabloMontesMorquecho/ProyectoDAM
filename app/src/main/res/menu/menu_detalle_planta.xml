@@ -7,6 +7,10 @@
         android:title="Registrar actividad"/>
 
     <item
+        android:id="@+id/mnDetallePlantaEditarPlanta"
+        android:title="Editar planta"/>
+
+    <item
         android:id="@+id/mnDetallePlantaBorrarPlanta"
         android:title="Borrar planta"/>
 

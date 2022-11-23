@@ -56,7 +56,7 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
     String nombreUsuarioCreador;
     String idUsuario;
 
-    private MenuItem mnItemBorrarPlanta;
+    private MenuItem mnItemEditarPlanta, mnItemBorrarPlanta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +78,12 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
 
         storage = FirebaseStorage.getInstance();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             huerto = (Huerto) getIntent().getSerializableExtra("huerto");
@@ -86,29 +92,23 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
             keyPlanta = planta.getIdPlanta();
         }
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
         cargaNombreCreadorPlanta();
 
-            //Inserto en el título el nombre de la planta
-            binding.toolbarDetallePlanta.setTitle(planta.getNombre());
+        //Inserto en el título el nombre de la planta
+        binding.toolbarDetallePlanta.setTitle(planta.getNombre());
 
-            binding.tvPlantaFechaDetallePlanta.setText(planta.getFecha());
-            if (planta.getDescripcion().isEmpty()) {
-                binding.tvPlantaDescripcionDetallePlanta.setHeight(0);
-            }
-            binding.tvPlantaDescripcionDetallePlanta.setText(planta.getDescripcion());
+        binding.tvPlantaFechaDetallePlanta.setText(planta.getFecha());
+        if (planta.getDescripcion().isEmpty()) {
+            binding.tvPlantaDescripcionDetallePlanta.setHeight(0);
+        }
+        binding.tvPlantaDescripcionDetallePlanta.setText(planta.getDescripcion());
 
-            // Create a reference to a file from a Google Cloud Storage URI
-            StorageReference
-                    srReference = storage.getReferenceFromUrl(planta.getFoto());
-            Glide.with(this)
-                 .load(srReference)
-                 .into(imagenPlanta);
+        // Create a reference to a file from a Google Cloud Storage URI
+        StorageReference
+                srReference = storage.getReferenceFromUrl(planta.getFoto());
+        Glide.with(this)
+             .load(srReference)
+             .into(imagenPlanta);
 
         // Preparo el Recycler View de Actividades
         // Con un adaptador vacío
@@ -193,6 +193,8 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
         if (!planta.getIdUsuario().equals(idUsuario)) {
             mnItemBorrarPlanta = menu.findItem(R.id.mnDetallePlantaBorrarPlanta);
             mnItemBorrarPlanta.setVisible(false);
+            mnItemEditarPlanta = menu.findItem(R.id.mnDetallePlantaEditarPlanta);
+            mnItemEditarPlanta.setVisible(false);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -210,6 +212,18 @@ public class DetallePlanta extends AppCompatActivity implements ItemClickListene
 
             case R.id.mnDetallePlantaCrearActividad: {
                 Intent intent = new Intent(getApplicationContext(), CrearActividad.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("idHuerto", keyHuerto);
+                bundle.putSerializable("huerto", huerto);
+                bundle.putString("idPlanta", keyPlanta);
+                bundle.putSerializable("planta", planta);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.mnDetallePlantaEditarPlanta: {
+                Intent intent = new Intent(getApplicationContext(), EditarPlanta.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("idHuerto", keyHuerto);
                 bundle.putSerializable("huerto", huerto);

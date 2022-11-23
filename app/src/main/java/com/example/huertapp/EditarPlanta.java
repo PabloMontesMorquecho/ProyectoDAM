@@ -20,8 +20,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.huertapp.databinding.ActivityEditarHuertoBinding;
+import com.example.huertapp.databinding.ActivityEditarPlantaBinding;
 import com.example.huertapp.modelo.Huerto;
+import com.example.huertapp.modelo.Planta;
 import com.example.huertapp.modelo.Usuario;
 import com.example.huertapp.ui.dialog.DatePickerFragment;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,18 +37,18 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-public class EditarHuerto extends AppCompatActivity {
+public class EditarPlanta extends AppCompatActivity {
 
-    private static final String TAG = "EditarHuerto.Class";
-    ActivityEditarHuertoBinding binding;
+    private static final String TAG = "EditarPlanta.Class";
+    ActivityEditarPlantaBinding binding;
 
-    Huerto huerto;
-    String _dbFechaHuerto, _dbNombreHuerto, _dbDescripcionHuerto, _dbFotoHuerto;
+    Planta planta;
+    String _dbFechaPlanta, _dbNombrePlanta, _dbDescripcionPlanta, _dbFotoPlanta;
 
     DatabaseReference databaseReference;
     FirebaseStorage storage;
 
-    ImageView imagenHuerto;
+    ImageView imagenPlanta;
 
     StorageReference storageReference;
 
@@ -60,28 +61,28 @@ public class EditarHuerto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        binding = ActivityEditarHuertoBinding.inflate(getLayoutInflater());
+        binding = ActivityEditarPlantaBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            huerto = (Huerto) getIntent().getSerializableExtra("huerto");
-            _dbFechaHuerto = huerto.getFecha();
-            _dbNombreHuerto = huerto.getNombre();
-            _dbDescripcionHuerto = huerto.getDescripcion();
-            _dbFotoHuerto = huerto.getFoto();
+            planta = (Planta) getIntent().getSerializableExtra("planta");
+            _dbFechaPlanta = planta.getFecha();
+            _dbNombrePlanta = planta.getNombre();
+            _dbDescripcionPlanta = planta.getDescripcion();
+            _dbFotoPlanta = planta.getFoto();
         }
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         storage = FirebaseStorage.getInstance();
 
-        imagenHuerto = findViewById(R.id.imgEditarHuerto);
+        imagenPlanta = findViewById(R.id.imgEditarPlanta);
 
-        StorageReference srReference = storage.getReferenceFromUrl(_dbFotoHuerto);
+        StorageReference srReference = storage.getReferenceFromUrl(_dbFotoPlanta);
         Glide.with(this)
              .load(srReference)
-             .into(imagenHuerto);
+             .into(imagenPlanta);
 
     }
 
@@ -92,47 +93,47 @@ public class EditarHuerto extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-        binding.tvEditarHuertoFechaCreacion.setText(huerto.getFecha());
-        binding.etEditarHuertoFecha.setText(huerto.getFecha());
-        binding.etEditarHuertoNombre.setText(huerto.getNombre());
-        binding.etEditarHuertoDescripcion.setText(huerto.getDescripcion());
+        binding.tvEditarPlantaFechaCreacion.setText(planta.getFecha());
+        binding.etEditarPlantaFecha.setText(planta.getFecha());
+        binding.etEditarPlantaNombre.setText(planta.getNombre());
+        binding.etEditarPlantaDescripcion.setText(planta.getDescripcion());
 
-        cargarNombreCreadorHuerto();
+        cargarNombreCreadorPlanta();
 
-        imagenHuerto.setOnClickListener(new View.OnClickListener() {
+        imagenPlanta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 elegirFoto();
             }
         });
 
-        binding.etEditarHuertoFecha.setOnClickListener(new View.OnClickListener() {
+        binding.etEditarPlantaFecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog();
             }
         });
 
-        binding.btnActualizarHuerto.setOnClickListener(new View.OnClickListener() {
+        binding.btnActualizarPlanta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                binding.pbEditarHuertoCargando.setVisibility(View.VISIBLE);
+                binding.pbEditarPlantaCargando.setVisibility(View.VISIBLE);
                 if (validarCampos()) {
-                    actualizarDatosHuerto();
+                    actualizarDatosPlanta();
                     final Handler handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            binding.pbEditarHuertoCargando.setVisibility(View.INVISIBLE);
+                            binding.pbEditarPlantaCargando.setVisibility(View.INVISIBLE);
                             finish();
                         }
-                    }, 3600);
+                    }, 5000);
                 }
-                binding.pbEditarHuertoCargando.setVisibility(View.INVISIBLE);
+                binding.pbEditarPlantaCargando.setVisibility(View.INVISIBLE);
             }
         });
 
-//        binding.btnBorrarHuerto.setOnClickListener(new View.OnClickListener() {
+//        binding.btnBorrarPlanta.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                confirmarBorrado();
@@ -141,15 +142,15 @@ public class EditarHuerto extends AppCompatActivity {
 
     }
 
-    private void cargarNombreCreadorHuerto() {
+    private void cargarNombreCreadorPlanta() {
         databaseReference.child("usuarios").orderByChild("idUsuario").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Usuario usuario = ds.getValue(Usuario.class);
-                    if (usuario.getIdUsuario().equals(huerto.getidUsuario())) {
+                    if (usuario.getIdUsuario().equals(planta.getIdUsuario())) {
                         String nombreUsuarioCreador = ds.child("nombre").getValue().toString();
-                        binding.tvEditarHuertoNombreUsuarioCreador.setText(nombreUsuarioCreador);
+                        binding.tvEditarPlantaNombreUsuarioCreador.setText(nombreUsuarioCreador);
                     }
                 }
             }
@@ -173,7 +174,7 @@ public class EditarHuerto extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data.getData() != null) {
             imageUri = data.getData();
-            imagenHuerto.setImageURI(imageUri);
+            imagenPlanta.setImageURI(imageUri);
             imagenElegida = true;
         }
     }
@@ -184,7 +185,7 @@ public class EditarHuerto extends AppCompatActivity {
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 // +1 because January is zero
                 final String selectedDate = twoDigits(year) + " / " + twoDigits(month+1) + " / " + twoDigits(day);
-                binding.etEditarHuertoFecha.setText(selectedDate);
+                binding.etEditarPlantaFecha.setText(selectedDate);
             }
         });
 
@@ -196,63 +197,58 @@ public class EditarHuerto extends AppCompatActivity {
     }
 
     private boolean validarCampos() {
-        binding.pbEditarHuertoCargando.setVisibility(View.VISIBLE);
         if (imagenElegida || isTypeChanged() || isDetailsChanged() || isDateChanged()) {
             return true;
         } else {
             Toast.makeText(this, "No hay datos que modificar", Toast.LENGTH_LONG).show();
-            binding.pbEditarHuertoCargando.setVisibility(View.INVISIBLE);
             return false;
         }
     }
     private boolean isDateChanged() {
-        if (_dbFechaHuerto.equals(binding.etEditarHuertoFecha.getText().toString())) {
-            binding.pbEditarHuertoCargando.setVisibility(View.INVISIBLE);
+        if (_dbFechaPlanta.equals(binding.etEditarPlantaFecha.getText().toString())) {
             return false;
         } else {
             return true;
         }
     }
     private boolean isTypeChanged() {
-        if (_dbNombreHuerto.equals(binding.etEditarHuertoNombre.getText().toString())) {
-            binding.pbEditarHuertoCargando.setVisibility(View.INVISIBLE);
+        if (_dbNombrePlanta.equals(binding.etEditarPlantaNombre.getText().toString())) {
             return false;
         } else {
             return true;
         }
     }
     private boolean isDetailsChanged() {
-        if (_dbDescripcionHuerto.equals(binding.etEditarHuertoDescripcion.getText().toString())) {
-            binding.pbEditarHuertoCargando.setVisibility(View.INVISIBLE);
+        if (_dbDescripcionPlanta.equals(binding.etEditarPlantaDescripcion.getText().toString())) {
             return false;
         } else {
             return true;
         }
     }
 
-    private void actualizarDatosHuerto() {
+    private void actualizarDatosPlanta() {
         if (imagenElegida) {
             // Actualizar foto en F.Storage y Realtime Database
             subirFoto(imageUri);
-            String direccionFoto = "gs://huertapp-db.appspot.com/fotos/huerto/" + nombreImagenNueva;
-            databaseReference.child("huertos").child(huerto.getIdHuerto()).child("foto").setValue(direccionFoto);
-            Log.d(TAG, "Foto del huerto actualizado : " + direccionFoto);
+            String direccionFoto = "gs://huertapp-db.appspot.com/fotos/planta/" + nombreImagenNueva;
+            databaseReference.child("plantas").child(planta.getIdPlanta()).child("foto").setValue(direccionFoto);
+            Log.d(TAG, "Foto de la planta actualizado : " + direccionFoto);
         }
         if (isDateChanged()) {
-            databaseReference.child("huertos").child(huerto.getIdHuerto()).child("fecha").setValue(binding.etEditarHuertoFecha.getText().toString());
-            _dbFechaHuerto = binding.etEditarHuertoFecha.getText().toString();
-            binding.tvEditarHuertoFechaCreacion.setText(binding.etEditarHuertoFecha.getText().toString());
-            Log.d(TAG, "Fecha creación del huerto actualizado : " + _dbFechaHuerto);
+            databaseReference.child("plantas").child(planta.getIdPlanta()).child("fecha").setValue(binding.etEditarPlantaFecha.getText().toString());
+            _dbFechaPlanta = binding.etEditarPlantaFecha.getText().toString();
+            binding.tvEditarPlantaFechaCreacion.setText(binding.etEditarPlantaFecha.getText().toString());
+            Log.d(TAG, "Fecha creación de la planta actualizada : " + _dbFechaPlanta);
         }
         if (isTypeChanged()) {
-            databaseReference.child("huertos").child(huerto.getIdHuerto()).child("nombre").setValue(binding.etEditarHuertoNombre.getText().toString());
-            _dbNombreHuerto = binding.etEditarHuertoNombre.getText().toString();
-            Log.d(TAG, "Nombre huerto actualizado : " + _dbNombreHuerto);
+            databaseReference.child("plantas").child(planta.getIdPlanta()).child("nombre").setValue(binding.etEditarPlantaNombre.getText().toString());
+            _dbNombrePlanta = binding.etEditarPlantaNombre.getText().toString();
+            Log.d(TAG, "Nombre planta actualizado : " + _dbNombrePlanta);
         }
         if (isDetailsChanged()) {
-            databaseReference.child("huertos").child(huerto.getIdHuerto()).child("descripcion").setValue(binding.etEditarHuertoDescripcion.getText().toString());
-            _dbDescripcionHuerto = binding.etEditarHuertoDescripcion.getText().toString();
-            Log.d(TAG, "Descripción del huerto actualizado : " + _dbDescripcionHuerto);
+            databaseReference.child("plantas").child(planta.getIdPlanta()).child("descripcion").setValue(binding.etEditarPlantaDescripcion.getText().toString());
+            _dbDescripcionPlanta = binding.etEditarPlantaDescripcion.getText().toString();
+            Log.d(TAG, "Descripción de la planta actualizada : " + _dbDescripcionPlanta);
         }
         Toast.makeText(this, "Datos actualizados correctamente", Toast.LENGTH_LONG).show();
     }
@@ -260,8 +256,8 @@ public class EditarHuerto extends AppCompatActivity {
     private void subirFoto(Uri uri) {
         Long tsLong = System.currentTimeMillis()/1000;
         String ts = tsLong.toString();
-        nombreImagenNueva = huerto.getIdHuerto() + ts + "." + getFileExtension(uri);
-        StorageReference plantaFotoRef = storageReference.child("fotos/huerto/" + nombreImagenNueva);
+        nombreImagenNueva = planta.getIdPlanta() + ts + "." + getFileExtension(uri);
+        StorageReference plantaFotoRef = storageReference.child("fotos/planta/" + nombreImagenNueva);
         plantaFotoRef.putFile(uri)
                      .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                          @Override
