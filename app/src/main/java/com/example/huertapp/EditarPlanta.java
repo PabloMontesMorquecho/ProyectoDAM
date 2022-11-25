@@ -133,13 +133,6 @@ public class EditarPlanta extends AppCompatActivity {
             }
         });
 
-//        binding.btnBorrarPlanta.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                confirmarBorrado();
-//            }
-//        });
-
     }
 
     private void cargarNombreCreadorPlanta() {

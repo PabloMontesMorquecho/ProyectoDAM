@@ -132,13 +132,6 @@ public class EditarHuerto extends AppCompatActivity {
             }
         });
 
-//        binding.btnBorrarHuerto.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                confirmarBorrado();
-//            }
-//        });
-
     }
 
     private void cargarNombreCreadorHuerto() {
